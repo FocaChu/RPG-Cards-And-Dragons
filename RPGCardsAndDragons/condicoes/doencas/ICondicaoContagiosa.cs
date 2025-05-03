@@ -13,12 +13,11 @@ namespace RPGCardsAndDragons.doencas
     {
         string Descricao { get; set; }
 
-        ITipoTransmissao Transmissao { get; set; } 
+        ITipoTransmissao Transmissao { get; set; }
 
-        List<IEfeitoDoenca> Efeitos { get;  set; }
+        List<IEfeitoDoenca> Efeitos { get; set; }
 
-        bool TentarTransmitir(List<OInimigo> alvos, int chance);
-
+        bool TentarTransmitir(List<OInimigo> alvos, int chance, Doenca clone);
     }
 
 }

@@ -6,31 +6,29 @@ using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.condicoes.doencas;
 
 namespace RPGCardsAndDragons.doencas
 {
     public class Doenca : ICondicaoContagiosa
     {
         public string Nome { get; set; }
-
         public string Descricao { get; set; }
-
-        public int Nivel { get; set; }
-
+        public int Nivel { get; set; }      // nível fixo ao ser transmitido
+        public int NivelAtual { get; set; }     // nível que pode evoluir no hospedeiro
         public bool EAgrassiva { get; set; }
-
         public int Duracao { get; set; }
-
         public ITipoTransmissao Transmissao { get; set; }
-
         public List<IEfeitoDoenca> Efeitos { get; set; }
+        public TipoDoenca Tipo { get; set; }
 
-
-        public Doenca(string nome, string descricao, int nivel, bool eagressiva, int duracao, ITipoTransmissao transmissao, List<IEfeitoDoenca> efeitos)
+        public Doenca(TipoDoenca tipo, int nivel, bool eagressiva, int duracao, ITipoTransmissao transmissao, List<IEfeitoDoenca> efeitos)
         {
-            this.Nome = nome;
-            this.Descricao = descricao;
+            this.Tipo = tipo;
+            this.Nome = tipo.Nome;
+            this.Descricao = tipo.Descricao;
             this.Nivel = nivel;
+            this.NivelAtual = nivel;
             this.EAgrassiva = eagressiva;
             this.Duracao = duracao;
             this.Transmissao = transmissao;
@@ -39,71 +37,42 @@ namespace RPGCardsAndDragons.doencas
 
         public Doenca(Doenca doenca)
         {
+            this.Tipo = doenca.Tipo;
             this.Nome = doenca.Nome;
             this.Descricao = doenca.Descricao;
             this.Nivel = doenca.Nivel;
+            this.NivelAtual = doenca.Nivel;
             this.EAgrassiva = doenca.EAgrassiva;
             this.Duracao = doenca.Duracao;
-
             this.Transmissao = (ITipoTransmissao)Activator.CreateInstance(doenca.Transmissao.GetType());
-
-            this.Efeitos = PegarEfeitos(doenca.Efeitos);
-        }
-
-        public List<IEfeitoDoenca> PegarEfeitos(List<IEfeitoDoenca> efeitos)
-        {
-            List<IEfeitoDoenca> efeistosCopia = new List<IEfeitoDoenca>();
-
-            for(int i = 0; i < efeitos.Count; i++)
-            {
-                var efeitoCopia = (IEfeitoDoenca)Activator.CreateInstance(efeitos[i].GetType());
-
-                efeistosCopia.Add(efeitoCopia);
-            }
-
-            return efeistosCopia;
+            this.Efeitos = Tipo.CriarEfeitos(); // recria os efeitos corretamente
         }
 
         public void AplicarEfeito(OInimigo alvo, Batalha batalha)
         {
             foreach (var efeito in Efeitos)
-                efeito.Aplicar(alvo, this.Nivel);
+                efeito.Aplicar(alvo, this.NivelAtual);
 
-            int chance = Nivel * 10;
+            int chance = NivelAtual * 5;
 
-            // filtra os alvos: apenas os que ainda não estão com essa doença e não o próprio
             var alvosValidos = batalha.Inimigos
                 .Where(i => i != alvo && !i.Condicoes.Any(c => c is ICondicaoContagiosa d && c.Nome == this.Nome))
                 .ToList();
 
-            if (!TentarTransmitir(alvosValidos, chance))
+            // CLONA a doença ANTES
+            var cloneParaTransmitir = new Doenca(this);
+
+            if (!cloneParaTransmitir.TentarTransmitir(alvosValidos, chance, this))
             {
-                Nivel += EAgrassiva ? 1 : 0;
+                // Aumenta o nível SOMENTE da original
+                NivelAtual += EAgrassiva ? 1 : 0;
             }
         }
 
 
-
-        public bool TentarTransmitir(List<OInimigo> alvos, int chance)
+        public bool TentarTransmitir(List<OInimigo> alvos, int chance, Doenca clone)
         {
-            // Cria um clone da doença para transmitir aos outros inimigos
-            Doenca clone = new Doenca(this);
             return Transmissao.TentarTransmitir(clone, alvos, chance);
-        }
-
-        //jogador é imune
-        public void AplicarEfeito(Personagem jogador)
-        {
-        }
-
-        public void AplicarEfeito(ICriaturaCombatente alvo)
-        {
-        }
-
-
-        public Doenca Clonar(Doenca doenca)
-        {
-            return new Doenca(this);
         }
 
         public bool Expirou()
@@ -111,14 +80,27 @@ namespace RPGCardsAndDragons.doencas
             return Duracao <= 0;
         }
 
-        public void Atualizar()
-        {
-        }
-
         public override string ToString()
         {
-            return $"{this.Nome} - Nivel: {this.Nivel} | Vigor: {this.Duracao}";
+            return $"{this.Nome} - Nivel: {this.NivelAtual} | Vigor: {this.Duracao}";
+        }
+
+
+        public void Atualizar()
+        {
+            
+        }
+
+
+        public void AplicarEfeito(Personagem jogador)
+        {
+            throw new NotImplementedException();
+        }
+        public void AplicarEfeito(ICriaturaCombatente criatura)
+        {
+            throw new NotImplementedException();
         }
     }
+
 
 }

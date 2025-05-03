@@ -11,6 +11,7 @@ using CardsAndDragons.Aliados;
 using CardsAndDragons.Inimigos;
 using CardsAndDragons.Cartas;
 using RPGCardsAndDragons.doencas;
+using RPGCardsAndDragons.condicoes.doencas.tipoDoenca;
 
 namespace CardsAndDragons.ClassesDasCartas
 {
@@ -54,51 +55,38 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
-        public static ICartaUsavel CriarVirus()
+        public static ICartaUsavel CriarFungo()
         {
             return new CartaGenerica
             {
-                //O nome da carta
-                Nome = "Praga: Virus",
-
-                //A descrição dela em jogo
-                Descricao = "Infecta um inimigo com o vírus covid-19",
-
-                //A raridade
+                Nome = "Praga: Fungo",
+                Descricao = "Infesta um inimigo com um fungo agressivo que drena vida e escudo.",
                 RaridadeCarta = Raridade.Rara,
-
                 Preco = GerarPreco(Raridade.Rara),
+                CustoMana = 30,
+                Modelo = GerarModeloCarta("☣", 1),
 
-                //Seus custos
-                CustoMana = 35,
-
-                //Seu modelo
-                Modelo = GerarModeloCarta("¨", 1),
-
-                //Seu efeito
                 Efeito = batalha =>
                 {
                     var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
-                    Doenca covid = new Doenca(
-                   "Virus", 
-                   "Causa dano percentual a vida e se espalha pelo ar",
-                   3, 
-                   false, 
-                   10, 
-                   new TransmissaoTeleguiada(), 
-                   new List<IEfeitoDoenca> {new ReduzirDano(), new DanoPercentualVida()}
-                   );
+                    var tipoDoenca = new TipoFungo();
 
-                    CondicaoController.AplicarOuAtualizarCondicao(covid, alvo.Condicoes);
-                    Console.WriteLine();
-                    TextoController.CentralizarTexto($"{alvo.Nome} foi silênciado...");
+                    var efeitos = tipoDoenca.CriarEfeitos();
+
+                    // Aplica a modificação de custo em cada efeito
+                    foreach (var efeito in efeitos)
+                    {
+                        efeito.Custo += tipoDoenca.ModificarCusto(efeito);
+                    }
+
+                    var fungo = new Doenca(tipoDoenca, 3, true, 5, new TransmissaoAr(), efeitos);
+
+                    CondicaoController.AplicarOuAtualizarCondicao(fungo, alvo.Condicoes);
+                    TextoController.CentralizarTexto($"{alvo.Nome} foi infectado por esporos fúngicos!");
                 }
             };
         }
-
-
-
 
         #region Cartas Lendárias e Profanas
 
