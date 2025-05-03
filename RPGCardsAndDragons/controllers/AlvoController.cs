@@ -84,5 +84,14 @@ namespace CardsAndDragons.Controllers
             return aliados[indice];
         }
 
+        public static OInimigo EscolherInimigoAleatorio(List<OInimigo> inimigos)
+        {
+            int indiceAleatorio = rng.Next(inimigos.Count);
+
+            var alvo = inimigos[indiceAleatorio];
+
+            return alvo;
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.doencas;
 
 namespace CardsAndDragons.Controllers
 {
@@ -30,6 +31,11 @@ namespace CardsAndDragons.Controllers
             {
                 empilhavel.Fundir(nova);
             }
+        }
+
+        public static void AplicarDoenca(ICondicaoContagiosa doenca, List<ICondicaoContagiosa> doencas)
+        {
+
         }
 
 
@@ -67,8 +73,16 @@ namespace CardsAndDragons.Controllers
 
                         TextoController.CentralizarTexto($"{inimigo.Nome} sofre os efeitos de {condicao.Nome}!");
 
-                        condicao.AplicarEfeito(inimigo);
-                        condicao.Atualizar();
+                        if (condicao is Doenca doenca)
+                        {
+                            doenca.AplicarEfeito(inimigo, batalha);
+                            doenca.Atualizar();
+                        }
+                        else
+                        {
+                            condicao.AplicarEfeito(inimigo);
+                            condicao.Atualizar();
+                        }
 
                         if (condicao.Expirou())
                         {

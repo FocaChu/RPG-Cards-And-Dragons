@@ -133,6 +133,7 @@ namespace CardsAndDragonsJogo
             else
             {
                 this.VidaAtual -= quantidade;
+                TextoController.CentralizarTexto($"{this.Nome} recebeu {quantidade} de dano!");
             }
         }
 

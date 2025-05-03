@@ -313,9 +313,9 @@ namespace CardsAndDragons.Aliados
             int danoTotal = this.Eficiencia + ModificadorDano;
 
             Random random = new Random();
-            int indiceAleatorio = random.Next(batalha.Inimigos.Count);
 
-            var alvo = batalha.Inimigos[indiceAleatorio];
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+
             alvo.SofrerDano(danoTotal, false);
 
         }
@@ -360,11 +360,9 @@ namespace CardsAndDragons.Aliados
             int duracao = modificador / 6;
 
             Random random = new Random();
-            int indiceAleatorio = random.Next(batalha.Inimigos.Count);
+            int indiceAleatorio = random.Next(3);
 
-            var alvo = batalha.Inimigos[indiceAleatorio];
-
-            indiceAleatorio = random.Next(3);
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
             switch (indiceAleatorio)
             {

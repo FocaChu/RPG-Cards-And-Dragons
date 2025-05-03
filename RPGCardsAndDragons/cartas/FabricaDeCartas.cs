@@ -10,6 +10,7 @@ using CardsAndDragons.Controllers;
 using CardsAndDragons.Aliados;
 using CardsAndDragons.Inimigos;
 using CardsAndDragons.Cartas;
+using RPGCardsAndDragons.doencas;
 
 namespace CardsAndDragons.ClassesDasCartas
 {
@@ -53,7 +54,50 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
-        
+        public static ICartaUsavel CriarVirus()
+        {
+            return new CartaGenerica
+            {
+                //O nome da carta
+                Nome = "Praga: Virus",
+
+                //A descrição dela em jogo
+                Descricao = "Infecta um inimigo com o vírus covid-19",
+
+                //A raridade
+                RaridadeCarta = Raridade.Rara,
+
+                Preco = GerarPreco(Raridade.Rara),
+
+                //Seus custos
+                CustoMana = 35,
+
+                //Seu modelo
+                Modelo = GerarModeloCarta("¨", 1),
+
+                //Seu efeito
+                Efeito = batalha =>
+                {
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    Doenca covid = new Doenca(
+                   "Virus", 
+                   "Causa dano percentual a vida e se espalha pelo ar",
+                   3, 
+                   false, 
+                   10, 
+                   new TransmissaoTeleguiada(), 
+                   new List<IEfeitoDoenca> {new ReduzirDano(), new DanoPercentualVida()}
+                   );
+
+                    CondicaoController.AplicarOuAtualizarCondicao(covid, alvo.Condicoes);
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto($"{alvo.Nome} foi silênciado...");
+                }
+            };
+        }
+
+
 
 
         #region Cartas Lendárias e Profanas

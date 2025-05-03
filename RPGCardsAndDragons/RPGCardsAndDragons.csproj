@@ -78,6 +78,10 @@
     <Compile Include="controllers\LojaController.cs" />
     <Compile Include="controllers\PersonagemController.cs" />
     <Compile Include="controllers\TextoController.cs" />
+    <Compile Include="condicoes\doencas\Doenca.cs" />
+    <Compile Include="condicoes\doencas\IEfeitoDoenca.cs" />
+    <Compile Include="condicoes\doencas\ICondicaoContagiosa.cs" />
+    <Compile Include="condicoes\doencas\ITipoTransmissao.cs" />
     <Compile Include="especiesrpg\Anao.cs" />
     <Compile Include="especiesrpg\Elfo.cs" />
     <Compile Include="especiesrpg\EspecieRPG.cs" />
