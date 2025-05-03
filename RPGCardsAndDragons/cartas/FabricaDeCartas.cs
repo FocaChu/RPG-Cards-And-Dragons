@@ -181,6 +181,25 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarMimico()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Mimico",
+                Descricao = "Invoca um robô auxiliar temporário para esta batalha.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoMana = 20,
+                Modelo = GerarModeloCarta("M", 1),
+                Efeito = batalha =>
+                {
+                    var carta = batalha.Jogador.Mao[PersonagemController.SelecionarCarta(batalha.Jogador, 0)];
+
+                    carta.Usar(batalha);
+                }
+            };
+        }
+
         public static ICartaUsavel CriarRessureicao()
         {
             return new CartaGenerica

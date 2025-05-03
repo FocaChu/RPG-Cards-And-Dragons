@@ -8,11 +8,11 @@ using CardsAndDragonsJogo;
 
 namespace CardsAndDragons.ClassesEspecies
 {
-    public class Elfo : EspecieRPG
+    public class ShapeShifter : EspecieRPG
     {
-        public override string NomeEspecie => "Elfo";
+        public override string NomeEspecie => "ShapeShifter";
 
-        public override string DescricaoEspecie => "Agil e habilidoso. Grande amigo da natureza.";
+        public override string DescricaoEspecie => "Um vulto amorfo e inconstante com intenções dubias";
 
         public override List<ICartaUsavel> DefinirCartasIniciais()
         {

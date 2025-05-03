@@ -28,7 +28,6 @@ namespace CardsAndDragons.ClassesClasses
     {
         FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(),
         FabricaDeCartas.CriarPocaoDeCura(), FabricaDeCartas.CriarPocaoDeCura(),
-        FabricaDeCartas.CriarSortearDestino(), FabricaDeCartas.CriarSortearDestino(),
         FabricaDeCartas.CriarFeiticoDeGelo(),
         FabricaDeCartas.CriarExplosaoArcana()
     };

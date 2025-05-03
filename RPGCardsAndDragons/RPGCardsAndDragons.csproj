@@ -82,7 +82,7 @@
     <Compile Include="especiesrpg\Elfo.cs" />
     <Compile Include="especiesrpg\EspecieRPG.cs" />
     <Compile Include="especiesrpg\Humano.cs" />
-    <Compile Include="especiesrpg\Silfo.cs" />
+    <Compile Include="especiesrpg\ShapeShifter.cs" />
     <Compile Include="especiesrpg\Vampiro.cs" />
     <Compile Include="eventos\Batalha.cs" />
     <Compile Include="eventos\Loja.cs" />

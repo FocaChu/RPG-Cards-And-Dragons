@@ -238,10 +238,18 @@ namespace CardsAndDragons
             bool vendo = false;
 
             int opcaoSelecionada = 0;
+            const int cartasPorPagina = 5;
+            int paginaAtual = 0;
 
             while (!vendo)
             {
                 Console.Clear();
+
+                int totalCartas = jogador.BaralhoCompleto.Count;
+                int totalPaginas = (int)Math.Ceiling(totalCartas / (float)cartasPorPagina);
+
+                int inicio = paginaAtual * cartasPorPagina;
+                int fim = Math.Min(inicio + cartasPorPagina, totalCartas);
 
                 Console.WriteLine("\n\n\n");
                 TextoController.CentralizarTexto($"================================  < {jogador.Nome} > ================================\n\n");
@@ -256,32 +264,33 @@ namespace CardsAndDragons
                 CondicaoController.ExibirCondicoes(jogador);
 
                 Console.WriteLine("\n\n\n");
-                TextoController.CentralizarTexto($"=============== Baralho de {jogador.Nome} ===============\n\n");
+                TextoController.CentralizarTexto($"=============== Baralho de {jogador.Nome} ===============\n");
 
-                if(mostrarBaralhosAd) TextoController.CentralizarTexto($"Cartas Para Compra: {jogador.BaralhoCompra.Count} | Pilha de Discarte: {jogador.BaralhoDescarte.Count}\n");
+                if (mostrarBaralhosAd)
+                    TextoController.CentralizarTexto($"Cartas Para Compra: {jogador.BaralhoCompra.Count} | Pilha de Descarte: {jogador.BaralhoDescarte.Count}\n");
 
+                TextoController.CentralizarTexto($"Página {paginaAtual + 1} de {totalPaginas}");
 
                 int larguraModelo = jogador.BaralhoCompleto.First().Modelo[0].Length;
                 int espacoEntre = 2;
 
-                int larguraTotal = jogador.BaralhoCompleto.Count * larguraModelo + (jogador.BaralhoCompleto.Count - 1) * espacoEntre;
+                int cartasVisiveis = fim - inicio;
+                int larguraTotal = cartasVisiveis * larguraModelo + (cartasVisiveis - 1) * espacoEntre;
                 int margemEsquerda = (Console.WindowWidth - larguraTotal) / 2;
 
-                TextoController.CentralizarTexto($"Recursos Disponíveis\n");
+                TextoController.CentralizarTexto($"Recursos Disponíveis");
                 TextoController.CentralizarTexto($"Vida: {jogador.VidaAtual} | Ouro: {jogador.Ouro} | Mana: {jogador.ManaAtual} | Stamina: {jogador.StaminaAtual}\n\n");
 
                 for (int linha = 0; linha < 10; linha++)
                 {
-                    Console.SetCursorPosition(margemEsquerda, Console.CursorTop); // centraliza a linha atual
+                    Console.SetCursorPosition(margemEsquerda, Console.CursorTop);
 
-                    for (int i = 0; i < jogador.BaralhoCompleto.Count; i++)
+                    for (int i = inicio; i < fim; i++)
                     {
                         Console.ForegroundColor = (i == opcaoSelecionada) ? ConsoleColor.Red : ConsoleColor.Gray;
-
                         Console.Write(jogador.BaralhoCompleto[i].Modelo[linha]);
 
-                        // Espaço entre cartas, exceto após a última
-                        if (i < jogador.BaralhoCompleto.Count - 1)
+                        if (i < fim - 1)
                             Console.Write(new string(' ', espacoEntre));
                     }
 
@@ -290,20 +299,23 @@ namespace CardsAndDragons
 
                 Console.ResetColor();
 
-                TextoController.DefinirCorDaCarta(jogador.BaralhoCompleto[opcaoSelecionada].RaridadeCarta);
+                if (opcaoSelecionada >= 0 && opcaoSelecionada < jogador.BaralhoCompleto.Count)
+                {
+                    var carta = jogador.BaralhoCompleto[opcaoSelecionada];
 
-                TextoController.CentralizarTexto($"Carta - {jogador.BaralhoCompleto[opcaoSelecionada].Nome}");
-                TextoController.CentralizarTexto($"Efeito - {jogador.BaralhoCompleto[opcaoSelecionada].Descricao}");
+                    TextoController.DefinirCorDaCarta(carta.RaridadeCarta);
+                    TextoController.CentralizarTexto($"Carta - {carta.Nome}");
+                    TextoController.CentralizarTexto($"Efeito - {carta.Descricao}");
+                    Console.ResetColor();
 
-                Console.ResetColor();
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto("Custo:");
+                    if (carta.CustoVida > 0) TextoController.CentralizarTexto($" - {carta.CustoVida} de Vida");
+                    if (carta.CustoStamina > 0) TextoController.CentralizarTexto($" - {carta.CustoStamina} de Stamina");
+                    if (carta.CustoMana > 0) TextoController.CentralizarTexto($" - {carta.CustoMana} de Mana");
+                    if (carta.CustoOuro > 0) TextoController.CentralizarTexto($" - {carta.CustoOuro} de Ouro");
+                }
 
-                Console.WriteLine();
-
-                TextoController.CentralizarTexto("Custo:");
-                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoVida > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoVida} de Vida");
-                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoStamina > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoStamina} de Stamina");
-                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoMana > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoMana} de Mana");
-                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoOuro > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoOuro} de Ouro");
                 Console.WriteLine("\n");
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -311,23 +323,41 @@ namespace CardsAndDragons
                 switch (key.Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        if (opcaoSelecionada > 0) opcaoSelecionada--;
-                        else opcaoSelecionada = jogador.BaralhoCompleto.Count - 1;
+                        if (opcaoSelecionada > 0)
+                            opcaoSelecionada--;
+                        else
+                            opcaoSelecionada = totalCartas - 1;
+                        paginaAtual = opcaoSelecionada / cartasPorPagina;
                         break;
+
                     case ConsoleKey.RightArrow:
-                        if (opcaoSelecionada < jogador.BaralhoCompleto.Count - 1)
+                        if (opcaoSelecionada < totalCartas - 1)
                             opcaoSelecionada++;
                         else
                             opcaoSelecionada = 0;
+                        paginaAtual = opcaoSelecionada / cartasPorPagina;
                         break;
+
+                    case ConsoleKey.PageUp:
+                        if (paginaAtual > 0)
+                        {
+                            paginaAtual--;
+                            opcaoSelecionada = paginaAtual * cartasPorPagina;
+                        }
+                        break;
+
+                    case ConsoleKey.PageDown:
+                        if (paginaAtual < totalPaginas - 1)
+                        {
+                            paginaAtual++;
+                            opcaoSelecionada = paginaAtual * cartasPorPagina;
+                        }
+                        break;
+
                     case ConsoleKey.Escape:
-                        Console.WriteLine();
-                        TextoController.CentralizarTexto("Aperte qualquer tecla para prosseguir");
-                        vendo = true;
-                        break;
                     case ConsoleKey.Enter:
-                        Console.WriteLine();
                         TextoController.CentralizarTexto("Aperte qualquer tecla para prosseguir");
+                        Console.ReadKey();
                         vendo = true;
                         break;
                 }

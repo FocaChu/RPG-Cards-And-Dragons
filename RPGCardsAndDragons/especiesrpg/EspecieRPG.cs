@@ -14,6 +14,8 @@ namespace CardsAndDragons
 
         public abstract string DescricaoEspecie { get;  }
 
+        public abstract List<ICartaUsavel> DefinirCartasIniciais();
+
     }
 
     /* 

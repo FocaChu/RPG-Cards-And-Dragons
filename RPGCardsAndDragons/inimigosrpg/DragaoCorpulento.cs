@@ -10,8 +10,6 @@ using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
 using CardsAndDragonsJogo;
-using NAudio.CoreAudioApi;
-using NAudio.Wave;
 
 namespace CardsAndDragons
 {

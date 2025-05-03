@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using CardsAndDragons.ClassesDasCartas;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Inimigos;
-using NAudio.CoreAudioApi;
 using CardsAndDragonsJogo;
 using CardsAndDragonsJogo.ClassesCartas;
 using CardsAndDragons.Controllers;
@@ -159,13 +158,23 @@ namespace CardsAndDragons
             this.ModificadorDefesa = 0;
 
             // Adiciona o deck da classe ao baralho completo
-            this.BaralhoCompleto = new List<ICartaUsavel>(classe.DefinirCartasIniciais());
+            this.BaralhoCompleto = PegarCartasIniciais();
 
             // Embaralha o baralho completo e define como baralho de compra
             this.BaralhoCompra = PersonagemController.EmbaralharCartas(this.BaralhoCompleto);
 
             this.Robos = new Queue<ICriaturaCombatente>();
             this.Condicoes = new List<ICondicaoTemporaria>();
+        }
+
+        public List<ICartaUsavel> PegarCartasIniciais()
+        {
+            List<ICartaUsavel> cartas = new List<ICartaUsavel>();
+
+            cartas.AddRange(Classe.DefinirCartasIniciais());
+            cartas.AddRange(Especie.DefinirCartasIniciais());
+
+            return cartas;
         }
 
         //Usa uma carta
