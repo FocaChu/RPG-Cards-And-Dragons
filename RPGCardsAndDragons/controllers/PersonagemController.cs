@@ -1,0 +1,607 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Controllers;
+using CardsAndDragonsJogo;
+
+namespace CardsAndDragons
+{
+    public static class PersonagemController
+    {
+
+        #region Cria o Personagem
+        public static EspecieRPG SelecionarEspecie()
+        {
+            //mostra todas as especies
+            var especiesDisponiveis = EspecieRPGAjudante.ObterTodasAsEspeciesDisponiveis();
+
+            //variaveis que fazem a seleção funcionar
+            int opcaoSelecionada = 0;
+            bool selecionado = false;
+            bool voltar = false;
+
+            //tira o cursor da tela
+            Console.CursorVisible = false;
+
+            //manter o menu funcionando em quanto vc n selecionar algo
+            while (!selecionado)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("====================================== CRIAÇÃO DE PERSONAGEM ==================================");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                TextoController.CentralizarTexto("   Escolha sua Espécie:");
+                Console.WriteLine();
+                Console.WriteLine();
+
+                //é oque mostra o menu na tela com base no EspecieHelper e permite vc ver qual especie vc ta selecionando
+                for (int i = 0; i < especiesDisponiveis.Count; i++)
+                {
+                    if (i == opcaoSelecionada)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        TextoController.CentralizarTexto($">> {especiesDisponiveis[i].NomeEspecie}");
+                        TextoController.CentralizarTexto($" -- {especiesDisponiveis[i].DescricaoEspecie}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        TextoController.CentralizarTexto($"   {especiesDisponiveis[i].NomeEspecie}");
+                    }
+
+                }
+                Console.WriteLine();
+                Console.ResetColor();
+                TextoController.CentralizarTexto("============================================================================================================");
+                //pega a tecla que vc apertou pro switch
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                switch (tecla.Key)
+                {
+                    //se cliclar pra cima sobe pra opção de cima e ajusta o valor pra acompanhar ela na lista
+                    case ConsoleKey.UpArrow:
+                        if (opcaoSelecionada > 0) opcaoSelecionada--;
+                        else opcaoSelecionada = especiesDisponiveis.Count - 1;
+                        break;
+                    //se clicar pra baixo desce pra opção de baixo e ajusta o valor pra combinar com ela na lista
+                    case ConsoleKey.DownArrow:
+                        if (opcaoSelecionada < especiesDisponiveis.Count - 1) opcaoSelecionada++;
+                        else opcaoSelecionada = 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        selecionado = true;
+                        break;
+                    //Ao clicar em enter ele para o codigo e pega a especie correspondente ao valor escolhido(que é definido por opcaoSelecionada)
+
+                    case ConsoleKey.Escape:
+                        selecionado = true;
+                        voltar = true;
+                        break;
+                        //Serve para encerrar o codigo, mas n deixar ele continuar e forçar ele a voltar.
+                }
+            }
+
+            //se vc cliclou enter vem pra ca normal e devolve a especie escolhida
+            if (voltar == false)
+            {
+                Console.Clear();
+                Console.WriteLine("\n\n\n\n\n");
+                TextoController.CentralizarTexto("============================================================================================================");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine();
+                TextoController.CentralizarTexto($"Você escolheu a Espécie: {especiesDisponiveis[opcaoSelecionada].NomeEspecie}");
+                Console.ResetColor();
+                Console.WriteLine();
+                TextoController.CentralizarTexto("============================================================================================================");
+                Console.ReadKey();
+                Console.Clear();
+
+                return especiesDisponiveis[opcaoSelecionada];
+            }
+            //se vc clicou Esc, ele vai devolver um valor nulo
+            else
+            {
+                return null;
+            }
+        }
+
+        public static ClasseRPG EscolherClasse()
+        {
+            //Mostra todas as classes
+            var classesDisponiveis = ClasseRPGAjudante.ObterTodasAsClassesDisponiveis();
+
+            //variaveis que fazem a seleção funcionar
+            int opcaoSelecionada = 0;
+            bool selecionado = false;
+            bool voltar = false;
+
+            //tira o cursor da tela
+            Console.CursorVisible = false;
+
+            //manter o menu funcionando em quanto vc n selecionar algo
+            while (!selecionado)
+            {
+                Console.Clear();
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("====================================== CRIAÇÃO DE PERSONAGEM ==================================");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                TextoController.CentralizarTexto("   Escolha sua Classe:");
+                Console.WriteLine();
+                Console.WriteLine();
+
+                //é oque mostra o menu na tela com base no ClasseHelper e permite vc ver qual especie vc ta selecionando
+                for (int i = 0; i < classesDisponiveis.Count; i++)
+                {
+                    if (i == opcaoSelecionada)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        TextoController.CentralizarTexto($">> {classesDisponiveis[i].NomeClasse}");
+                        TextoController.CentralizarTexto($" -- {classesDisponiveis[i].DescricaoClasse}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        TextoController.CentralizarTexto($"   {classesDisponiveis[i].NomeClasse}");
+                    }
+                }
+                Console.WriteLine();
+                Console.ResetColor();
+                TextoController.CentralizarTexto("============================================================================================================");
+
+                //pega a tecla que vc apertou pro switch
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                switch (tecla.Key)
+                {
+                    //se cliclar pra cima sobe pra opção de cima e ajusta o valor pra acompanhar ela na lista
+                    case ConsoleKey.UpArrow:
+                        if (opcaoSelecionada > 0) opcaoSelecionada--;
+                        else opcaoSelecionada = classesDisponiveis.Count - 1;
+                        break;
+
+                    //se clicar pra baixo desce pra opção de baixo e ajusta o valor pra combinar com ela na lista
+                    case ConsoleKey.DownArrow:
+                        if (opcaoSelecionada < classesDisponiveis.Count - 1) opcaoSelecionada++;
+                        else opcaoSelecionada = 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        selecionado = true;
+                        break;
+                    //Ao clicar em enter ele para o codigo e pega a especie correspondente ao valor escolhido(que é definido por opcaoSelecionada)
+
+                    case ConsoleKey.Escape:
+                        selecionado = true;
+                        voltar = true;
+                        break;
+                        //Serve para encerrar o codigo, mas n deixar ele continuar e forçar ele a voltar.
+                }
+            }
+
+            //se vc cliclou enter vem pra ca normal e devolve a especie escolhida
+            if (voltar == false)
+            {
+                Console.Clear();
+                Console.WriteLine("\n\n\n\n\n");
+                TextoController.CentralizarTexto("============================================================================================================");
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine();
+                TextoController.CentralizarTexto($"Você escolheu a Classe: {classesDisponiveis[opcaoSelecionada].NomeClasse}");
+                Console.ResetColor();
+                Console.WriteLine();
+                TextoController.CentralizarTexto("============================================================================================================");
+                Console.ReadKey();
+                Console.Clear();
+
+                return classesDisponiveis[opcaoSelecionada];
+            }
+            //se vc clicou Esc, ele vai devolver um valor nulo
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Personagem CriarPersonagem(EspecieRPG especieEscolhida, ClasseRPG classeEscolhida)
+        {
+            string nome = "";
+            TextoController.CentralizarTexto("============================== CRIAÇÃO DE PERSONAGEM ==============================");
+            while (nome == null || nome == string.Empty)
+            {
+                Console.WriteLine();
+                TextoController.CentralizarTexto("Nomeie o seu personagem: ");
+                TextoController.CentralizarLinha("");
+                nome = Console.ReadLine();
+            }
+            Personagem jogador = new Personagem(nome, especieEscolhida, classeEscolhida);
+            return jogador;
+        }
+
+        #endregion
+
+        #region Exibi o Personagem, suas Cartas e seus Itens
+
+        //Mostrra o jogador e seus status, opcionalmente seu baralho
+
+        public static void ExibirJogador(Personagem jogador, bool mostrarBaralhosAd)
+        {
+            bool vendo = false;
+
+            int opcaoSelecionada = 0;
+
+            while (!vendo)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto($"================================  < {jogador.Nome} > ================================\n\n");
+
+                TextoController.CentralizarTexto($"Nível: {jogador.Nivel} - {jogador.XpAtual}/{jogador.XpTotal}");
+                TextoController.CentralizarTexto($"Classe: {jogador.Classe.NomeClasse} || Espécie: {jogador.Especie.NomeEspecie}");
+                TextoController.CentralizarTexto($"Vida: {jogador.VidaAtual}/{jogador.VidaMax}");
+                TextoController.CentralizarTexto($"Mana: {jogador.ManaAtual}/{jogador.ManaMax}");
+                TextoController.CentralizarTexto($"Stamina: {jogador.StaminaAtual}/{jogador.StaminaMax}");
+                TextoController.CentralizarTexto($"Ouro: {jogador.Ouro}");
+
+                CondicaoController.ExibirCondicoes(jogador);
+
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto($"=============== Baralho de {jogador.Nome} ===============\n\n");
+
+                if(mostrarBaralhosAd) TextoController.CentralizarTexto($"Cartas Para Compra: {jogador.BaralhoCompra.Count} | Pilha de Discarte: {jogador.BaralhoDescarte.Count}\n");
+
+
+                int larguraModelo = jogador.BaralhoCompleto.First().Modelo[0].Length;
+                int espacoEntre = 2;
+
+                int larguraTotal = jogador.BaralhoCompleto.Count * larguraModelo + (jogador.BaralhoCompleto.Count - 1) * espacoEntre;
+                int margemEsquerda = (Console.WindowWidth - larguraTotal) / 2;
+
+                TextoController.CentralizarTexto($"Recursos Disponíveis\n");
+                TextoController.CentralizarTexto($"Vida: {jogador.VidaAtual} | Ouro: {jogador.Ouro} | Mana: {jogador.ManaAtual} | Stamina: {jogador.StaminaAtual}\n\n");
+
+                for (int linha = 0; linha < 10; linha++)
+                {
+                    Console.SetCursorPosition(margemEsquerda, Console.CursorTop); // centraliza a linha atual
+
+                    for (int i = 0; i < jogador.BaralhoCompleto.Count; i++)
+                    {
+                        Console.ForegroundColor = (i == opcaoSelecionada) ? ConsoleColor.Red : ConsoleColor.Gray;
+
+                        Console.Write(jogador.BaralhoCompleto[i].Modelo[linha]);
+
+                        // Espaço entre cartas, exceto após a última
+                        if (i < jogador.BaralhoCompleto.Count - 1)
+                            Console.Write(new string(' ', espacoEntre));
+                    }
+
+                    Console.WriteLine();
+                }
+
+                Console.ResetColor();
+
+                TextoController.DefinirCorDaCarta(jogador.BaralhoCompleto[opcaoSelecionada].RaridadeCarta);
+
+                TextoController.CentralizarTexto($"Carta - {jogador.BaralhoCompleto[opcaoSelecionada].Nome}");
+                TextoController.CentralizarTexto($"Efeito - {jogador.BaralhoCompleto[opcaoSelecionada].Descricao}");
+
+                Console.ResetColor();
+
+                Console.WriteLine();
+
+                TextoController.CentralizarTexto("Custo:");
+                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoVida > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoVida} de Vida");
+                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoStamina > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoStamina} de Stamina");
+                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoMana > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoMana} de Mana");
+                if (jogador.BaralhoCompleto[opcaoSelecionada].CustoOuro > 0) TextoController.CentralizarTexto($" - {jogador.BaralhoCompleto[opcaoSelecionada].CustoOuro} de Ouro");
+                Console.WriteLine("\n");
+
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        if (opcaoSelecionada > 0) opcaoSelecionada--;
+                        else opcaoSelecionada = jogador.BaralhoCompleto.Count - 1;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (opcaoSelecionada < jogador.BaralhoCompleto.Count - 1)
+                            opcaoSelecionada++;
+                        else
+                            opcaoSelecionada = 0;
+                        break;
+                    case ConsoleKey.Escape:
+                        Console.WriteLine();
+                        TextoController.CentralizarTexto("Aperte qualquer tecla para prosseguir");
+                        vendo = true;
+                        break;
+                    case ConsoleKey.Enter:
+                        Console.WriteLine();
+                        TextoController.CentralizarTexto("Aperte qualquer tecla para prosseguir");
+                        vendo = true;
+                        break;
+                }
+            }
+        }
+
+
+        //Mostra todas aws cartas que o jogador tem na mão
+        public static void MostrarCartasNaMao(Personagem jogador, int opcao)
+        {
+            Console.Clear();
+            Console.WriteLine("\n\n\n");
+            TextoController.CentralizarTexto($"=============== Cartas de {jogador.Nome} ===============\n");
+
+            if (jogador.Mao.Count == 0)
+            {
+                TextoController.CentralizarTexto("Sua mão está vazia.");
+                return;
+            }
+
+            int larguraModelo = jogador.Mao.First().Modelo[0].Length;
+            int espacoEntre = 2;
+
+            int larguraTotal = jogador.Mao.Count * larguraModelo + (jogador.Mao.Count - 1) * espacoEntre;
+            int margemEsquerda = (Console.WindowWidth - larguraTotal) / 2;
+
+            TextoController.CentralizarTexto($"Recursos Disponíveis\n");
+            TextoController.CentralizarTexto($"Vida: {jogador.VidaAtual} | Ouro: {jogador.Ouro} | Mana: {jogador.ManaAtual} | Stamina: {jogador.StaminaAtual}\n\n");
+
+            CartaController.MostrarCartas(jogador.Mao, opcao);
+        }
+
+        #endregion
+
+        #region Gerencia as Cartas do Jogador
+
+        public static void EscolherCartaParaUsar(Batalha batalha)
+        {
+            Console.Clear();
+            TextoController.CentralizarTexto($"============================== Cartas na Mão ==============================");
+
+            int option = 0;
+
+            //seleciona uma carta para usar(ou voltac om um valor negativo)
+            int escolha = SelecionarCarta(batalha.Jogador, option);
+
+            //se o valor for posiivo ele usa a carta
+            if (escolha >= 0)
+            {
+                batalha.Jogador.UsarCarta(batalha, escolha);
+            }
+            //se for negativo ele cancela a ação
+            else
+            {
+                Console.WriteLine();
+                TextoController.CentralizarTexto("Ação cancelada.");
+                Console.ReadKey();
+            }
+        }
+
+        public static int SelecionarCarta(Personagem jogador, int option)
+        {
+            bool selecionado = false;
+            int totalOpcoes = jogador.Mao.Count;
+            bool voltar = false;
+
+            while (!selecionado)
+            {
+                Console.Clear();
+
+                TextoController.CentralizarTexto("==========================   !COMBATE!   ==========================");
+
+                MostrarCartasNaMao(jogador, option);
+
+                Console.ResetColor();
+                Console.WriteLine("\n");
+                TextoController.CentralizarTexto(@"Use <- -> para navegar | ENTER para selecionar e ESC para sair.");
+
+                ConsoleKeyInfo key = Console.ReadKey(true);
+
+                switch (key.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        if (option > 0) option--;
+                        else option = totalOpcoes - 1;
+                        break;
+
+                    case ConsoleKey.RightArrow:
+                        if (option < totalOpcoes - 1) option++;
+                        else option = 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+
+                        if (jogador.Mao.Count > 0)
+                        {
+                            TextoController.CentralizarTexto($"Você selecionou o carta {jogador.Mao[option].Nome}.");
+
+                            Console.WriteLine("\n");
+                            TextoController.CentralizarTexto("Aperte ENTER para confirmar, qualquer outra tecla para voltar.\n");
+
+                            if (Console.ReadKey(true).Key == ConsoleKey.Enter)
+                            {
+                                selecionado = true;
+                            }
+                        }
+                        else
+                        {
+                            selecionado = true;
+                            voltar = true;
+                        }
+                        break;
+
+                    case ConsoleKey.Escape:
+                        selecionado = true;
+                        voltar = true;
+                        TextoController.CentralizarTexto("Voltando....");
+                        break;
+                }
+            }
+            if (voltar) return -1;
+            else return option;
+        }
+
+        //embaralha as cartas do jogador
+        public static Queue<ICartaUsavel> EmbaralharCartas(List<ICartaUsavel> cartas)
+        {
+            // Embaralha a lista de cartas e coloca na fila
+            var cartasEmbaralhadas = cartas.OrderBy(c => Guid.NewGuid()).ToList();
+            return new Queue<ICartaUsavel>(cartasEmbaralhadas);
+        }
+
+        //Compra as cartas pra mão do jogador
+        public static void ComprarCartas(Personagem jogador)
+        {
+            Console.Clear();
+
+            List<ICartaUsavel> cartasCompradas = new List<ICartaUsavel>();
+
+            while (jogador.Mao.Count < 10 && jogador.BaralhoCompra.Count > 0)
+            {
+                var cartaComprada = jogador.BaralhoCompra.Dequeue();
+                jogador.Mao.Add(cartaComprada);
+                cartasCompradas.Add(cartaComprada);
+            }
+
+            if (jogador.BaralhoCompra.Count == 0)
+            {
+                TextoController.CentralizarTexto("Baralho vazio. Reciclando descarte...");
+                jogador.BaralhoCompra = PersonagemController.EmbaralharCartas(jogador.BaralhoDescarte);
+                jogador.BaralhoDescarte.Clear();
+            }
+
+            if (cartasCompradas.Count == 0)
+            {
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("========================= Nenhuma Carta Foi Comprada =========================");
+                Console.ReadKey(true);
+                return;
+            }
+
+            int index = 0;
+            ConsoleKey tecla;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("========================= Cartas Compradas Neste Turno =========================");
+                Console.WriteLine();
+                CartaController.MostrarCartas(cartasCompradas, index);
+
+                Console.WriteLine();
+                TextoController.CentralizarTexto($"Carta {index + 1} de {cartasCompradas.Count}");
+                TextoController.CentralizarTexto("     Use <- -> para navegar | ESC ou ENTER para continuar");
+                tecla = Console.ReadKey(true).Key;
+
+                if (tecla == ConsoleKey.RightArrow)
+                    index = (index + 1) % cartasCompradas.Count;
+                else if (tecla == ConsoleKey.LeftArrow)
+                    index = (index - 1 + cartasCompradas.Count) % cartasCompradas.Count;
+
+            } while (tecla != ConsoleKey.Enter && tecla != ConsoleKey.Escape);
+
+            Console.Clear();
+        }
+
+        public static void ComprarCartasExtras(Personagem jogador, int qtdCartas)
+        {
+            List<ICartaUsavel> cartasCompradas = new List<ICartaUsavel>();
+
+            for (int i = 0; i < qtdCartas; i++)
+            {
+                if (jogador.BaralhoCompra.Count > 0)
+                {
+                    var cartaComprada = jogador.BaralhoCompra.Dequeue();
+                    cartasCompradas.Add(cartaComprada);
+
+                }
+                else
+                {
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto($"{jogador.Nome} não possuia cartas para comprar");
+                }
+            }
+
+            foreach(var carta in cartasCompradas)
+            {
+                jogador.Mao.Add(carta);
+            }
+
+            int index = 0;
+            ConsoleKey tecla;
+
+            if(cartasCompradas.Count > 0)
+            {
+                do
+                {
+                    Console.ResetColor();
+                    Console.Clear();
+                    Console.WriteLine("\n\n\n");
+                    TextoController.CentralizarTexto("========================= Cartas Extras Compradas =========================");
+                    Console.WriteLine();
+                    CartaController.MostrarCartas(cartasCompradas, index);
+
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto($"Carta {index + 1} de {cartasCompradas.Count}");
+                    TextoController.CentralizarTexto("     Use <- -> para navegar | ESC ou ENTER para continuar");
+                    tecla = Console.ReadKey(true).Key;
+
+                    if (tecla == ConsoleKey.RightArrow)
+                        index = (index + 1) % cartasCompradas.Count;
+                    else if (tecla == ConsoleKey.LeftArrow)
+                        index = (index - 1 + cartasCompradas.Count) % cartasCompradas.Count;
+
+                } while (tecla != ConsoleKey.Enter && tecla != ConsoleKey.Escape);
+            }
+        }
+
+        public static void RecarregarBaralho(Personagem jogador)
+        {
+            if (jogador.BaralhoDescarte.Count > 0)
+            {
+                TextoController.CentralizarTexto("Reciclando cartas do baralho...");
+                jogador.BaralhoCompra = PersonagemController.EmbaralharCartas(jogador.BaralhoDescarte);
+                jogador.BaralhoDescarte.Clear();
+            }
+            else
+            {
+                TextoController.CentralizarTexto("Não há mais cartas para reciclar.");
+            }
+        }
+
+        //Working in progress
+        public static void AdicionarCartaAoBaralho(Personagem jogador, ICartaUsavel carta)
+        {
+            jogador.BaralhoCompleto.Add(carta);
+            jogador.BaralhoDescarte.Add(carta); // adiciona direto no descarte
+        }
+
+
+        #endregion
+
+        #region Cuida da condições e da vida do Personagem
+        //Restaura os status do jogador a cada rodada
+        public static void RestaurarJogador(Personagem jogador)
+        {
+            jogador.VidaAtual = jogador.VidaAtual + jogador.Regeneracao;
+            jogador.ManaAtual = jogador.ManaMax;
+            jogador.StaminaAtual = jogador.StaminaMax;
+        }
+
+        #endregion
+    }
+}
+

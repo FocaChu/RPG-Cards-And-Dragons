@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2EA2CEE5-DC94-4A9E-92D1-CB0B9D20E1B5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RPGCardsAndDragons</RootNamespace>
+    <AssemblyName>RPGCardsAndDragons</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ajudantes\ClasseRPGAjudante.cs" />
+    <Compile Include="ajudantes\EspecieRPGAjudante.cs" />
+    <Compile Include="ajudantes\InimigoRPGAjudante.cs" />
+    <Compile Include="aliados\InimigoRevivido.cs" />
+    <Compile Include="aliados\RoboAliado.cs" />
+    <Compile Include="cartas\CartaGenerica.cs" />
+    <Compile Include="cartas\CartaInvocarRoboFixa.cs" />
+    <Compile Include="cartas\CartaRecarregavel.cs" />
+    <Compile Include="cartas\FabricaDeCartas.cs" />
+    <Compile Include="cartas\ICartaUsavel.cs" />
+    <Compile Include="classesrpg\Arqueiro.cs" />
+    <Compile Include="classesrpg\ClasseRPG.cs" />
+    <Compile Include="classesrpg\Engenheiro.cs" />
+    <Compile Include="classesrpg\Guerreiro.cs" />
+    <Compile Include="classesrpg\Mago.cs" />
+    <Compile Include="classesrpg\Necromante.cs" />
+    <Compile Include="condicoes\Atordoamento.cs" />
+    <Compile Include="condicoes\ICondicaoEmpilhavel.cs" />
+    <Compile Include="condicoes\ICondicaoTemporaria.cs" />
+    <Compile Include="condicoes\Maldicao.cs" />
+    <Compile Include="condicoes\ModificacaoDano.cs" />
+    <Compile Include="condicoes\ModificacaoDefesa.cs" />
+    <Compile Include="condicoes\ModificacaoEscudo .cs" />
+    <Compile Include="condicoes\Sangramento.cs" />
+    <Compile Include="condicoes\Silencio.cs" />
+    <Compile Include="condicoes\Veneno.cs" />
+    <Compile Include="controllers\AliadoController.cs" />
+    <Compile Include="controllers\AlvoController.cs" />
+    <Compile Include="controllers\BatalhaController.cs" />
+    <Compile Include="controllers\CartaController.cs" />
+    <Compile Include="controllers\CondicaoController.cs" />
+    <Compile Include="controllers\InimigoController.cs" />
+    <Compile Include="controllers\LojaController.cs" />
+    <Compile Include="controllers\PersonagemController.cs" />
+    <Compile Include="controllers\TextoController.cs" />
+    <Compile Include="especiesrpg\Anao.cs" />
+    <Compile Include="especiesrpg\Elfo.cs" />
+    <Compile Include="especiesrpg\EspecieRPG.cs" />
+    <Compile Include="especiesrpg\Humano.cs" />
+    <Compile Include="especiesrpg\Vampiro.cs" />
+    <Compile Include="eventos\Batalha.cs" />
+    <Compile Include="eventos\Loja.cs" />
+    <Compile Include="ICriaturaCombatente.cs" />
+    <Compile Include="inimigosrpg\Caracol.cs" />
+    <Compile Include="inimigosrpg\CoelhoRaivoso.cs" />
+    <Compile Include="inimigosrpg\DragaoCorpulento.cs" />
+    <Compile Include="inimigosrpg\DragaoMagro.cs" />
+    <Compile Include="inimigosrpg\Esqueleto.cs" />
+    <Compile Include="inimigosrpg\InimigoRPG.cs" />
+    <Compile Include="inimigosrpg\Morcego.cs" />
+    <Compile Include="inimigosrpg\OInimigo.cs" />
+    <Compile Include="inimigosrpg\Slime.cs" />
+    <Compile Include="Personagem.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

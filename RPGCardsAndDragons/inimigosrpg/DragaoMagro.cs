@@ -1,0 +1,132 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CardsAndDragons.Aliados;
+using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Controllers;
+using CardsAndDragons.Inimigos;
+using CardsAndDragonsJogo;
+
+namespace CardsAndDragons
+{
+    public class DragaoMagro : InimigoRPG
+    {
+        public override int VidaMax => 200;
+
+        public int VidaAtual { get; set; }
+
+        public override int DanoBase => 25;
+
+        public override Bioma BiomaDeOrigem => Bioma.Floresta;
+
+        public override bool EBoss => true;
+
+        public override string Nome => "Dragão Lagarto";
+
+        public override List<string> Modelo => new List<string>()
+        {
+            //12345678901234567890123456789012345678901234 = 44
+            @"        ___===-_.  (    ) .___-===__        ", //1 
+            @"      -########//  |\^^/|  \\########-      ", //2 
+            @"   _/#########//   (@::@)   \\#########\_   ", //3 
+            @"  /#########((      \\//    ))###########\  ", //4
+            @" |############\\   _(oo)_   //############| ", //5
+            @" |##############\\/      \//##############| ", //6
+            @" |#######/\######(        )######/\#######| ", //7
+            @" |#/\#/\/  \#/\##\   /\   /##/\#/  \/\#/\#| ", //8
+            @" |/  V  `   V  \#\| |  | |/#/  V   '  V  \| ", //9
+            @"     `      `   / | |  | | \   '      '   ' ", //10
+            @"               (  | |  | |  )               ", //11
+            @"              __\ | |  | | /__              ", //12
+            @"             (vvv(VVV)(VVV)vvv)             ", //13
+             // preencher 10 linhas no total
+        };
+
+        /*
+         
+       ___===-_.  (    ) .___-===__
+     -########//  |\^^/|  \\########-
+  _/#########//   (@::@)   \\#########\_
+ /#########((      \\//    ))###########\
+|############\\   _(oo)_   //############|
+|##############\\/      \//##############|
+|#######/\######(        )######/\#######|
+|#/\#/\/  \#/\##\   /\   /##/\#/  \/\#/\#|
+|/  V  `   V  \#\| |  | |/#/  V   '  V  \|
+    `      `   / | |  | | \   '      '   '   
+              (  | |  | |  )
+             __\ | |  | | /__
+            (vvv(VVV)(VVV)vvv)
+        
+        */
+
+        public override int CooldownHabilidade => 5; // a cada 2 rodadas usa habilidada
+
+
+        public override void Atacar(Batalha batalha, OInimigo self)
+        {
+            int danoFinal = this.DanoBase + self.ModificadorDano;
+
+            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+
+
+            TextoController.CentralizarTexto($"{this.Nome} investiu contra {alvo.Nome} causando dano!");
+            alvo.SofrerDano(danoFinal, false);
+        }
+
+        public override bool PodeUsarHabilidade(int rodadaAtual)
+        {
+            return rodadaAtual % CooldownHabilidade == 0;
+        }
+
+        public override void UsarHabilidade(Batalha batalha, OInimigo self)
+        {
+            //faz o rng do golpe do boss
+            int chance = 50;
+
+
+            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+
+            int opcaoGolpe = BatalhaController.GerarRNG(chance);
+
+            if (opcaoGolpe == 1)
+            {
+                int danoFinal = (this.DanoBase * 2) + self.ModificadorDano;
+
+                TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com suas garras");
+
+                alvo.Escudo = alvo.Escudo / 2;
+
+                alvo.ModificadorDefesa = alvo.ModificadorDefesa / 2;
+
+                alvo.SofrerDano(danoFinal, false);
+                CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(3, 3), alvo.Condicoes);
+            }
+            else
+            {
+                int danoFinal = (this.DanoBase * 2) + self.ModificadorDano;
+
+                TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} mordendo com suas presas");
+
+                this.VidaAtual += 10;
+
+                alvo.SofrerDano(danoFinal, false);
+                CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvo.Condicoes);
+            }
+
+        }
+
+        public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
