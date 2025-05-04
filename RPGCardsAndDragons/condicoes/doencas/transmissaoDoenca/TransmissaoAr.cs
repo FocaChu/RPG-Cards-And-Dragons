@@ -29,7 +29,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
             }
 
             // Checa o RNG de infecção
-            int transmissao = BatalhaController.GerarRNG(100);
+            int transmissao = BatalhaController.GerarRNG(chance - 5);
 
             if (transmissao == 0)
             {
