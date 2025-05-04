@@ -28,7 +28,7 @@ namespace CardsAndDragons.ClassesClasses
             return new List<ICartaUsavel>
     {
         FabricaDeCartas.CriarEspadada(), FabricaDeCartas.CriarEspadada(), FabricaDeCartas.CriarEspadada(), FabricaDeCartas.CriarEspadada(),
-        FabricaDeCartas.CriarPocaoDeCura(), FabricaDeCartas.CriarPocaoDeCura(),
+        FabricaDeCartas.CriarPocaoDeCura(), 
         FabricaDeCartas.CriarEscudo(), FabricaDeCartas.CriarEscudo(),
         FabricaDeCartas.CriarEspadaEEscudo(),
         FabricaDeCartas.CriarGolpeEmpoderado(),

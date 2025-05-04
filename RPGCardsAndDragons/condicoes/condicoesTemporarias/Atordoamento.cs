@@ -9,9 +9,9 @@ using CardsAndDragonsJogo;
 namespace CardsAndDragons.ClassesCondicoes
 {
     //MAIS INFORMAÇÕES NA INTERFACE DE CONDIÇAO TEMPORARIA 
-    //Condição especial de Congelamento
-    //Resumo: Não faz nada diretamente, não acumula, n tem como passar parametros. Pq? Dentro do turno dos inimigos, existe um codigo de CondicaoController chamado VerificarCongelamento
-    //Esse codigo ve se o inimigo ta congelado, se sim ele não ataca. Ou seja, ela em si n faz nada, mas a presença dela sim.
+    //Condição especial de atordoamento
+    //Resumo: Não faz nada diretamente, não acumula, n tem como passar parametros. Pq? Dentro do turno dos inimigos, existe um codigo de CondicaoController chamado VerificarCondicao
+    //Esse codigo ve se o inimigo ta com uma condicao(nesse caso atordoamento), se sim ele não ataca. Ou seja, ela em si n faz nada, mas a presença dela sim.
 
     public class Atordoamento : ICondicaoTemporaria
     {

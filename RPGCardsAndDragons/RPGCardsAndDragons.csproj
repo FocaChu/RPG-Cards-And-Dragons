@@ -64,6 +64,7 @@
     <Compile Include="classesrpg\Necromante.cs" />
     <Compile Include="condicoes\AplicadorDeCondicao.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Atordoamento.cs" />
+    <Compile Include="condicoes\condicoesTemporarias\Queimadura.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Intoxicacao.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Necrose.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Fraqueza.cs" />

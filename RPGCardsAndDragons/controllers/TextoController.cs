@@ -82,6 +82,8 @@ namespace CardsAndDragons.Controllers
 
             Console.WriteLine(espaco + "Gráficos e História: Isaque Anacleto de Meira e Emylli Sousa Lima\n\n");
 
+            Console.WriteLine(espaco + "Menção Honrosa: Aymê Strithorst Ender\n\n");
+
             Console.WriteLine(espaco + "Obrigado por jogar nossa aventura!\n\n\n");
 
             Console.WriteLine(espaco + "Pressione qualquer tecla para voltar");
@@ -219,6 +221,9 @@ namespace CardsAndDragons.Controllers
                     break;
                 case "Silêncio":
                     Console.ForegroundColor = ConsoleColor.DarkGray;
+                    break;
+                case "Queimadura":
+                    Console.ForegroundColor = ConsoleColor.Red;
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Gray;

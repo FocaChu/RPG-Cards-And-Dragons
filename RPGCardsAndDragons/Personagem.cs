@@ -201,12 +201,30 @@ namespace CardsAndDragons
             }
         }
 
-        public void Curar(int cura)
+        public void Curar(int quantidade)
         {
-            this.VidaAtual = this.VidaAtual + cura;
-            Console.WriteLine();
-            TextoController.CentralizarTexto($"{this.Nome} recebeu {cura} de cura!");
+            if (CondicaoController.VerificarCondicao<Queimadura>(Condicoes))
+            {
+                foreach (var condicao in Condicoes)
+                {
+                    if (condicao is Queimadura queimadura)
+                    {
+                        quantidade -= queimadura.Nivel; // Reduz a cura com base no nível da queimadura
+                        quantidade = Math.Max(quantidade, 0); // Garante que a cura nunca seja negativa
+                    }
+                }
+
+                TextoController.CentralizarTexto($"{Nome} teve dificuldade em se curar devido a suas queimaduras...");
+            }
+
+            if (quantidade > 0)
+            {
+                this.VidaAtual += quantidade;
+                Console.WriteLine();
+                TextoController.CentralizarTexto($"{this.Nome} recebeu {quantidade} de cura!");
+            }
         }
+
 
         public void SofrerDano(int dano , bool foiCondicao)
         {

@@ -30,7 +30,7 @@ namespace CardsAndDragonsJogo
         {
             Jogador = jogadorAtual;
             Inimigos = inimigosDaFase;
-            
+
             InimigosDerrotados = new List<OInimigo>();
             Aliados = new List<ICriaturaCombatente>();
 
@@ -66,7 +66,21 @@ namespace CardsAndDragonsJogo
                 }
                 else
                 {
-                    TextoController.CentralizarTexto($"\n{aliado.Nome} está congelado e não pode agir...\n");
+                    TextoController.CentralizarTexto($"{aliado.Nome} está atordoado e não pode agir...\n");
+                    List<ICondicaoTemporaria> condicoes = new List<ICondicaoTemporaria>();
+                    foreach (var condicao in aliado.Condicoes)
+                    {
+                        if (condicao is Atordoamento atordoamento)
+                        {
+                            atordoamento.Duracao--;
+                            if (atordoamento.Duracao <= 0)
+                            {
+                                condicoes.Add(condicao);
+                                TextoController.CentralizarTexto($"{aliado.Nome} se libertou do atordoamento!");
+                            }
+                        }
+                    }
+                    aliado.Condicoes.RemoveAll(c => condicoes.Contains(c));
                 }
             }
         }
@@ -98,7 +112,21 @@ namespace CardsAndDragonsJogo
                 }
                 else
                 {
-                    TextoController.CentralizarTexto($"\n{inimigo.Nome} está congelado e não pode agir...\n");
+                    TextoController.CentralizarTexto($"{inimigo.Nome} está atordoado e não pode agir...\n");
+                    List<ICondicaoTemporaria> condicoes = new List<ICondicaoTemporaria>();
+                    foreach (var condicao in inimigo.Condicoes)
+                    {
+                        if (condicao is Atordoamento atordoamento)
+                        {
+                            atordoamento.Duracao--;
+                            if (atordoamento.Duracao <= 0)
+                            {
+                                condicoes.Add(condicao);
+                                TextoController.CentralizarTexto($"{inimigo.Nome} se libertou do atordoamento!");
+                            }
+                        }
+                    }
+                    inimigo.Condicoes.RemoveAll(c => condicoes.Contains(c));
                 }
             }
             rodadaAtual++;

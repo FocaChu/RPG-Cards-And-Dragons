@@ -27,7 +27,7 @@ namespace CardsAndDragons.ClassesClasses
             return new List<ICartaUsavel>
     {
         FabricaDeCartas.CriarSortearDestino(), FabricaDeCartas.CriarSortearDestino(), FabricaDeCartas.CriarSortearDestino(), FabricaDeCartas.CriarSortearDestino(),
-        FabricaDeCartas.CriarPocaoDeCura(), FabricaDeCartas.CriarPocaoDeCura(),
+        FabricaDeCartas.CriarPocaoDeCura(), 
         FabricaDeCartas.CriarRessureicao(), FabricaDeCartas.CriarRessureicao(),
         FabricaDeCartas.CriarCuidadosPosMortem(), FabricaDeCartas.CriarSacrificarServo()
     };

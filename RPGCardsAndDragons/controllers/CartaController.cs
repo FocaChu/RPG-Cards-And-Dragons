@@ -11,70 +11,65 @@ namespace CardsAndDragons.Controllers
 {
     public static class CartaController
     {
-        public static int MostrarOpcoes(List<string> opcaoUm, List<string> opcaoDois, string descricaoUm, string descricaoDois)
+        public static int MostrarOpcoes(List<List<string>> modelos, List<string> descricoes)
         {
-            int option = 0;
+            if (modelos.Count != descricoes.Count)
+                throw new ArgumentException("A quantidade de modelos deve ser igual à quantidade de descrições.");
+
+            int opcaoSelecionada = 0;
             bool selecionado = false;
 
-            int larguraModelo = opcaoUm[0].Length;
+            int larguraModelo = modelos[0][0].Length;
             int espacoEntre = 4;
+            int numeroOpcoes = modelos.Count;
+            int numeroLinhas = modelos[0].Count;
 
-            int larguraTotal = 2 * larguraModelo + (2 - 1) * espacoEntre;
+            int larguraTotal = numeroOpcoes * larguraModelo + (numeroOpcoes - 1) * espacoEntre;
             int margemEsquerda = (Console.WindowWidth - larguraTotal) / 2;
-
-            int numeroLinhas = opcaoUm.Count;
 
             while (!selecionado)
             {
                 Console.Clear();
                 Console.WriteLine("\n\n\n\n");
-                TextoController.CentralizarTexto("Escolha uma das opções:");
+                TextoController.CentralizarTexto("Escolha uma das opções:\n");
 
-                // Desenhar as duas opções
+                // Desenhar as opções
                 for (int linha = 0; linha < numeroLinhas; linha++)
                 {
-                    Console.SetCursorPosition(margemEsquerda, Console.CursorTop); // centralizar na tela
+                    Console.SetCursorPosition(margemEsquerda, Console.CursorTop);
 
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < numeroOpcoes; i++)
                     {
-                        Console.ForegroundColor = (i == option) ? ConsoleColor.Red : ConsoleColor.Gray;
+                        Console.ForegroundColor = (i == opcaoSelecionada) ? ConsoleColor.Red : ConsoleColor.Gray;
+                        Console.Write(modelos[i][linha]);
 
-                        if (i == 0)
-                            Console.Write(opcaoUm[linha]);
-                        else
-                            Console.Write(opcaoDois[linha]);
-
-                        if (i < 1)
-                            Console.Write(new string(' ', espacoEntre)); // espaço entre as cartas
+                        if (i < numeroOpcoes - 1)
+                            Console.Write(new string(' ', espacoEntre));
                     }
                     Console.WriteLine();
                 }
-                Console.ResetColor();
-                Console.WriteLine("\n");
-                if (option == 0) TextoController.CentralizarTexto(descricaoUm);
-                if (option == 1) TextoController.CentralizarTexto(descricaoDois);
 
                 Console.ResetColor();
+                Console.WriteLine();
+                TextoController.CentralizarTexto(descricoes[opcaoSelecionada]);
 
-                // Captura da tecla pressionada
+                // Leitura da tecla
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
                 switch (key.Key)
                 {
                     case ConsoleKey.LeftArrow:
-                        option = (option == 0) ? 1 : 0;
+                        opcaoSelecionada = (opcaoSelecionada - 1 + numeroOpcoes) % numeroOpcoes;
                         break;
                     case ConsoleKey.RightArrow:
-                        option = (option == 0) ? 1 : 0;
+                        opcaoSelecionada = (opcaoSelecionada + 1) % numeroOpcoes;
                         break;
                     case ConsoleKey.Enter:
-                        return option;
-                    case ConsoleKey.Escape:
-                        return -1;
+                        return opcaoSelecionada;
                 }
             }
 
-            return -1;
+            return -1; // fallback, não deve acontecer
         }
 
         public static void MostrarCartas(List<ICartaUsavel> cartas, int opcao)

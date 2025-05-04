@@ -98,11 +98,11 @@ namespace CardsAndDragons.Controllers
         }
 
         #region Funções que cuidam do Estoque das Lojas
-        public static List<ICartaUsavel> ObterTodasCartasDisponiveis()
+        public static List<ICartaUsavel> ObterTodasCartasDisponiveis(Loja loja)
         {
-            // Aqui tem a lista com todas as cartas disponiveis
-            return new List<ICartaUsavel>
-        {
+            List<ICartaUsavel> cartas = new List<ICartaUsavel>
+            {
+                
                 #region Cartas Lendárias e Profanas
 
                 FabricaDeCartas.CriarAbracoDaMariposa(),
@@ -113,22 +113,14 @@ namespace CardsAndDragons.Controllers
 
                 #region Cartas Raras
                 
+                FabricaDeCartas.CriarMimico(),
                 FabricaDeCartas.CriarSilenciar(),
-                FabricaDeCartas.CriarInvocarRoboFixo(),
-                FabricaDeCartas.CriarRoboTemporario(),
-                FabricaDeCartas.CriarPraga(),
                 FabricaDeCartas.CriarFeiticoDeGelo(),
                 FabricaDeCartas.CriarExplosaoDeEnergia(),
-                FabricaDeCartas.CriarExplosaoArcana(),
-                FabricaDeCartas.CriarSaraivada(),
-                FabricaDeCartas.CriarTiroMultiplo(),
-                FabricaDeCartas.CriarDisparoPerfurante(),
                 FabricaDeCartas.CriarGolpePesado(),
                 FabricaDeCartas.CriarSangueExplosivo(),
-                FabricaDeCartas.CriarMordidaVampirica(),
                 FabricaDeCartas.CriarGolpeEmpoderado(),
-                FabricaDeCartas.CriarEspadaEEscudo(),
-                FabricaDeCartas. CriarEscudoDeEspinhos(),
+                FabricaDeCartas.CriarEscudoDeEspinhos(),
                 FabricaDeCartas.CriarProtecao(),
                 FabricaDeCartas.CriarCompraPoderosa(),
                 FabricaDeCartas.CriarPurificacao(),
@@ -141,12 +133,7 @@ namespace CardsAndDragons.Controllers
                 FabricaDeCartas.CriarExplosaoImprudente(),
                 FabricaDeCartas.CriarBombardeio(),
                 FabricaDeCartas.CriarAtacarFerida(),
-                FabricaDeCartas.CriarSortearDestino(),
-                FabricaDeCartas.CriarMaldicaoAmarga(),
-                FabricaDeCartas.CriarFlechaAfiada(),
-                FabricaDeCartas.CriarFlechaEnvenenada(),
                 FabricaDeCartas.CriarEscudo(),
-                FabricaDeCartas.CriarBemMunido(),
                 FabricaDeCartas.CriarPocaoDeCura(),
                 FabricaDeCartas.CriarPocaoDeStamina(),
                 FabricaDeCartas.CriarPocaoDeMana(),
@@ -154,6 +141,61 @@ namespace CardsAndDragons.Controllers
 
                 #endregion
             };
+
+            #region Cartas exclusivas
+
+            switch (loja.Jogador.Classe.NomeClasse)
+            {
+                case "Arqueiro":
+                    cartas.Add(FabricaDeCartas.CriarSaraivada());
+                    cartas.Add(FabricaDeCartas.CriarTiroMultiplo());
+                    cartas.Add(FabricaDeCartas.CriarDisparoPerfurante());
+
+                    cartas.Add(FabricaDeCartas.CriarFlechaAfiada());
+                    cartas.Add(FabricaDeCartas.CriarFlechaEnvenenada());
+                    cartas.Add(FabricaDeCartas.CriarBemMunido());
+                    break;
+
+                case "Doutor":
+                    cartas.Add(FabricaDeCartas.CriarInvocarDoencaFixa());
+                    cartas.Add(FabricaDeCartas.CriarSacrificarServo());
+
+                    cartas.Add(FabricaDeCartas.CriarSortearDestino());
+                    break;
+
+                case "Engenheiro":
+                    cartas.Add(FabricaDeCartas.CriarInvocarRoboFixo());
+                    cartas.Add(FabricaDeCartas.CriarRoboTemporario());
+                    cartas.Add(FabricaDeCartas.CriarReparos());
+                    break;
+
+                case "Guerreiro":
+                    cartas.Add(FabricaDeCartas.CriarEspadaEEscudo());
+                    break;
+
+                case "Mago":
+                    cartas.Add(FabricaDeCartas.CriarLivroDeFeiços());
+                    cartas.Add(FabricaDeCartas.CriarPraga());
+                    cartas.Add(FabricaDeCartas.CriarExplosaoArcana());
+
+                    cartas.Add(FabricaDeCartas.CriarMaldicaoAmarga());
+                    cartas.Add(FabricaDeCartas.CriarFogoMagico());
+                    break;
+
+                case "Necromante":
+                    cartas.Add(FabricaDeCartas.CriarRessureicao());
+                    cartas.Add(FabricaDeCartas.CriarCuidadosPosMortem());
+                    cartas.Add(FabricaDeCartas.CriarPraga());
+                    cartas.Add(FabricaDeCartas.CriarSacrificarServo());
+
+                    cartas.Add(FabricaDeCartas.CriarMaldicaoAmarga());
+                    break;
+            };
+
+            #endregion
+
+            // Aqui tem a lista com todas as cartas disponiveis
+            return cartas;
         }
 
         #endregion

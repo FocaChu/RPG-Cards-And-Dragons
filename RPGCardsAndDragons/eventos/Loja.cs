@@ -19,14 +19,14 @@ namespace CardsAndDragons
 
         public Loja(Personagem jogador)
         {
-            this.CartasAVenda = GerarEstoque();
             this.Jogador = jogador;
+            this.CartasAVenda = GerarEstoque();
             this.CuraDisponivel = true;
         }
 
         public List<ICartaUsavel> GerarEstoque()
         {
-            List<ICartaUsavel> todasCartas = LojaController.ObterTodasCartasDisponiveis();
+            List<ICartaUsavel> todasCartas = LojaController.ObterTodasCartasDisponiveis(this);
 
             List<ICartaUsavel> estoque = new List<ICartaUsavel>();
 

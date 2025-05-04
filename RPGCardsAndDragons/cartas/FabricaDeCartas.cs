@@ -201,7 +201,7 @@ namespace CardsAndDragons.ClassesDasCartas
             return new CartaGenerica
             {
                 Nome = "Mimico",
-                Descricao = "Invoca um robô auxiliar temporário para esta batalha.",
+                Descricao = "Copia o efeito de outra carta.",
                 RaridadeCarta = Raridade.Comum,
                 Preco = GerarPreco(Raridade.Rara),
                 CustoMana = 20,
@@ -377,6 +377,91 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarLivroDeFeiços()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Livro de Feitiços",
+                Descricao = "Escolha entre 3 feitiços do livro: Gelo, Natureza e Fogo",
+                RaridadeCarta = Raridade.Rara,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoMana = 50,
+                Modelo = GerarModeloCarta("3", 3),
+                Efeito = batalha =>
+                {
+                    List<List<string>> modelos = new List<List<string>>();
+                    List<string> descricoes = new List<string>();
+
+                    List<string> modeloUm = GerarModeloCarta("<", 1);
+                    modelos.Add(modeloUm);
+
+                    List<string> modeloDois = GerarModeloCarta("^", 2);
+                    modelos.Add(modeloDois);
+
+                    List<string> modeloTres = GerarModeloCarta(">", 3);
+                    modelos.Add(modeloTres);
+
+
+                    string descricaoUm = "Projétil de Gelo: Causa 15 de dano a um inimigo e atordoa ele.";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Parede de Vinha: Causa 10 de dano a um inimigo. Ele e inimigos adjacentes sofreram de veneno por 3 turnos. O alvo principal ira sofrer 5 e os demais 3.";
+                    descricoes.Add(descricaoDois);
+
+
+                    string descricaoTres = "Rastro de Fogo: Causa 10 de dano base e aplica 3 de queimadura por 3 turnos em todos os inimigos.";
+                    descricoes.Add(descricaoTres);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
+
+                    if (opcao < 0) return;
+                    else if (opcao == 0)
+                    {
+                        int danoFinal = 15 + batalha.Jogador.ModificadorDano;
+
+                        int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
+
+                        var alvo = batalha.Inimigos[option];
+
+                        alvo.SofrerDano(danoFinal, false);
+                        CondicaoController.AplicarOuAtualizarCondicao(new Atordoamento(), alvo.Condicoes);
+                        TextoController.CentralizarTexto($"{alvo.Nome} foi atingido por Projétil de Gelo!\n");
+                    }
+                    else if (opcao == 1)
+                    {
+                        int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                        int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
+
+                        var alvo = batalha.Inimigos[option];
+                        alvo.SofrerDano(danoFinal, false);
+                        CondicaoController.AplicarOuAtualizarCondicao(new Veneno(5, 3), alvo.Condicoes);
+
+                        if (option > 0)
+                        {
+                            var alvoEsquerda = batalha.Inimigos[option - 1];
+                            CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvoEsquerda.Condicoes);
+                        }
+                        if (option < batalha.Inimigos.Count - 1)
+                        {
+                            var alvoDireita = batalha.Inimigos[option + 1];
+                            CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvoDireita.Condicoes);
+                        }
+                    }
+                    else if(opcao == 2)
+                    {
+                        int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                        foreach (var inimigo in batalha.Inimigos)
+                        {
+                            inimigo.SofrerDano(danoFinal, false);
+                            CondicaoController.AplicarOuAtualizarCondicao(new Queimadura(3, 3), inimigo.Condicoes);
+                        }
+                    }
+                }
+            };
+        }
+
         public static ICartaUsavel CriarSaraivada()
         {
             return new CartaGenerica
@@ -425,13 +510,22 @@ namespace CardsAndDragons.ClassesDasCartas
                 {
                     int danoFinal = 15 + batalha.Jogador.ModificadorDano;
 
+                    List<List<string>> modelos = new List<List<string>>();
+                    List<string> descricoes = new List<string>();
+
                     List<string> modeloUm = GerarModeloCarta("%", 2);
-                    string descricaoUm = "Disparo em Cone: Causa 15 de dano ao inimigo mais a esquerda e ao mais a direita";
+                    modelos.Add(modeloUm);
 
                     List<string> modeloDois = GerarModeloCarta("v", 2);
-                    string descricaoDois = "Tiro Duplicado: Causa 10 de dano em até 2 inimigos";
+                    modelos.Add(modeloDois);
 
-                    int opcao = CartaController.MostrarOpcoes(modeloUm, modeloDois, descricaoUm, descricaoDois);
+                    string descricaoUm = "Disparo em Cone: Causa 15 de dano ao inimigo mais a esquerda e ao mais a direita";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Tiro Duplicado: Causa 10 de dano em até 2 inimigos";
+                    descricoes.Add(descricaoDois);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
 
                     if (opcao < 0) return;
                     else if (opcao == 0)
@@ -617,13 +711,23 @@ namespace CardsAndDragons.ClassesDasCartas
                 Modelo = GerarModeloCarta("/", "}", 1),
                 Efeito = batalha =>
                 {
+                    List<List<string>> modelos = new List<List<string>>();
+                    List<string> descricoes = new List<string>();
+
                     List<string> modeloUm = GerarModeloCarta("/", 1);
-                    string descricaoUm = "Espada: Causa 15 de dano a um inimigo";
+                    modelos.Add(modeloUm);
 
                     List<string> modeloDois = GerarModeloCarta("}", 1);
-                    string descricaoDois = "Escudo: Concede ao jogador 10 de escudo pela rodada";
+                    modelos.Add(modeloDois);
 
-                    int opcao = CartaController.MostrarOpcoes(modeloUm, modeloDois, descricaoUm, descricaoDois);
+
+                    string descricaoUm = "Espada: Causa 15 de dano a um inimigo";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Escudo: Concede ao jogador 10 de escudo pela rodada";
+                    descricoes.Add(descricaoDois);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
 
                     if (opcao < 0) return;
                     else if (opcao == 0)
@@ -844,13 +948,24 @@ namespace CardsAndDragons.ClassesDasCartas
                 {
                     int danoFinal = batalha.Jogador.ModificadorDano;
 
+                    List<List<string>> modelos = new List<List<string>>();
+
+                    List<string> descricoes = new List<string>();
+
+
                     List<string> modeloUm = GerarModeloCarta("v", 1);
-                    string descricaoUm = "Rajada: Causa 5 de dano base a um inimigo 3 vezes";
+                    modelos.Add(modeloUm);
 
                     List<string> modeloDois = GerarModeloCarta("#", 3);
-                    string descricaoDois = "Chuva de Projetéis: Causa 10 de dano base em todos os inimigos";
+                    modelos.Add(modeloDois);
 
-                    int opcao = CartaController.MostrarOpcoes(modeloUm, modeloDois, descricaoUm, descricaoDois);
+                    string descricaoUm = "Rajada: Causa 5 de dano base a um inimigo 3 vezes";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Chuva de Projetéis: Causa 10 de dano base em todos os inimigos";
+                    descricoes.Add(descricaoDois);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
 
                     if (opcao < 0) return;
                     else if (opcao == 0)
@@ -885,6 +1000,39 @@ namespace CardsAndDragons.ClassesDasCartas
                     }
                 }
             };
+        }
+
+
+        public static ICartaUsavel CriarFogoMagico()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Fogo Mágico",
+                Descricao = "Causa 10 de dano base a um inimigo mais o nível de queimadura atual dele. Aplica 2 de queimadura por 2 rodadas.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 40,
+                Modelo = GerarModeloCarta("f", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    foreach(var condicao in alvo.Condicoes)
+                    {
+                        if (condicao is Queimadura queimadura)
+                        {
+                            danoFinal += queimadura.Nivel;
+                        }
+                    }
+
+                    alvo.SofrerDano(danoFinal, false);
+                    CondicaoController.AplicarOuAtualizarCondicao(new Queimadura(2, 2), alvo.Condicoes);
+                }
+
+            };
+
         }
 
         public static ICartaUsavel CriarAtacarFerida()
@@ -957,7 +1105,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
         public static ICartaUsavel CriarFlechaAfiada()
         {
-            return new CartaGenerica
+            return new CartaRecarregavel
             {
                 Nome = "Flecha Afiada",
                 Descricao = "Uma flecha de ponta afiada que causa 10 de dano base e corta o inimigo.",
@@ -965,7 +1113,9 @@ namespace CardsAndDragons.ClassesDasCartas
                 Preco = GerarPreco(Raridade.Comum),
                 CustoStamina = 30,
                 Modelo = GerarModeloCarta("!", 1),
-                Efeito = batalha =>
+                CargasMaximas = 1,
+                CargasAtuais = 1,
+                EfeitoComCarga = batalha =>
                 {
                     int danoFinal = 10 + batalha.Jogador.ModificadorDano;
 
@@ -976,13 +1126,17 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi cortado e está sangrando!");
+                },
+                EfeitoSemCarga = batalha =>
+                {
+                    TextoController.CentralizarTexto("A carta foi recarregada, mas não causou efeito.");
                 }
             };
         }
 
         public static ICartaUsavel CriarFlechaEnvenenada()
         {
-            return new CartaGenerica
+            return new CartaRecarregavel
             {
                 Nome = "Flecha Envenenada",
                 Descricao = "Causa 10 de dano base e aplica 3 de Veneno por 3 turnos",
@@ -991,7 +1145,9 @@ namespace CardsAndDragons.ClassesDasCartas
                 CustoStamina = 30,
                 CustoMana = 10,
                 Modelo = GerarModeloCarta("S", 1),
-                Efeito = batalha =>
+                CargasMaximas = 1,
+                CargasAtuais = 1,
+                EfeitoComCarga = batalha =>
                 {
                     int danoFinal = 10 + batalha.Jogador.ModificadorDano;
 
@@ -1000,6 +1156,10 @@ namespace CardsAndDragons.ClassesDasCartas
                     alvo.SofrerDano(danoFinal, false);
                     CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi envenenado!");
+                },
+                EfeitoSemCarga = batalha =>
+                {
+                    TextoController.CentralizarTexto("A carta foi recarregada, mas não causou efeito.");
                 }
             };
         }
@@ -1127,14 +1287,14 @@ namespace CardsAndDragons.ClassesDasCartas
             return new CartaGenerica
             {
                 Nome = "Poção de Cura",
-                Descricao = "Restaura 10 de vida.",
+                Descricao = "Restaura 15 de vida.",
                 RaridadeCarta = Raridade.Comum,
                 Preco = GerarPreco(Raridade.Comum),
                 CustoMana = 15,
                 Modelo = GerarModeloCarta("+", 1),
                 Efeito = batalha =>
                 {
-                    batalha.Jogador.Curar(10);
+                    batalha.Jogador.Curar(15);
                 }
             };
         }
