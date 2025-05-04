@@ -43,26 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ajudantes\TipoDoencaAjudante.cs" />
     <Compile Include="ajudantes\ClasseRPGAjudante.cs" />
     <Compile Include="ajudantes\EspecieRPGAjudante.cs" />
     <Compile Include="ajudantes\InimigoRPGAjudante.cs" />
     <Compile Include="aliados\InimigoRevivido.cs" />
     <Compile Include="aliados\RoboAliado.cs" />
     <Compile Include="cartas\CartaGenerica.cs" />
+    <Compile Include="cartas\CartaInvocarDoencaFixa.cs" />
     <Compile Include="cartas\CartaInvocarRoboFixa.cs" />
     <Compile Include="cartas\CartaRecarregavel.cs" />
     <Compile Include="cartas\FabricaDeCartas.cs" />
     <Compile Include="cartas\ICartaUsavel.cs" />
     <Compile Include="classesrpg\Arqueiro.cs" />
     <Compile Include="classesrpg\ClasseRPG.cs" />
+    <Compile Include="classesrpg\Doutor.cs" />
     <Compile Include="classesrpg\Engenheiro.cs" />
     <Compile Include="classesrpg\Guerreiro.cs" />
     <Compile Include="classesrpg\Mago.cs" />
     <Compile Include="classesrpg\Necromante.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Atordoamento.cs" />
-    <Compile Include="condicoes\doencas\efeitoDoenca\DanoPercentualVida.cs" />
-    <Compile Include="condicoes\doencas\efeitoDoenca\EfeitoDoencaBase.cs" />
-    <Compile Include="condicoes\doencas\efeitoDoenca\ReduzirEscudo.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Intoxicacao.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Necrose.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Fraqueza.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Sensibilidade.cs" />
+    <Compile Include="condicoes\doencas\tipoDoenca\TipoParasita.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoFungo.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoDoenca.cs" />
     <Compile Include="condicoes\doencas\transmissaoDoenca\TransmissaoAr.cs" />

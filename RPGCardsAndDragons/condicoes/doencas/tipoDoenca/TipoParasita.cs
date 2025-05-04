@@ -9,29 +9,28 @@ using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
 {
-    public class TipoFungo : TipoDoenca
+    public class TipoParasita : TipoDoenca
     {
         public override string Nome
         {
-            get { return "Fungo"; }
+            get { return "Parasita"; }
         }
 
         public override string Descricao
         {
-            get { return "Fungos que enfraquecem a criatura ao longo do tempo."; }
+            get { return "Parasitas que invadem e danificam o hospedeiro."; }
         }
 
         public override int ObterCustoEfeito(IEfeitoDoenca efeito)
         {
-            if (efeito is Necrose) return 30;
-            if (efeito is Sensibilidade) return 40;
+            if (efeito is Necrose) return +30;
+            if (efeito is Fraqueza) return +20;
+            if (efeito is Sensibilidade) return +30;
             return 0;
         }
-
         public override int ObterCustoTransmissao(ITipoTransmissao transmissao)
         {
-            if (transmissao is TransmissaoAr) return 15;
-            if (transmissao is TransmissaoTeleguiada) return 30;
+            if (transmissao is TransmissaoTeleguiada) return 20;
             return 0;
         }
 
@@ -40,6 +39,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
             return new List<IEfeitoDoenca>
         {
             new Necrose(this),
+            new Fraqueza(this),
             new Sensibilidade(this)
         };
         }
@@ -48,7 +48,6 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             return new List<ITipoTransmissao>
         {
-            new TransmissaoAr(),
             new TransmissaoTeleguiada()
         };
         }

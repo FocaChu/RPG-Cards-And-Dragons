@@ -22,10 +22,9 @@ namespace RPGCardsAndDragons.doencas
         public List<IEfeitoDoenca> Efeitos { get; set; }
         public TipoDoenca Tipo { get; set; }
 
-        public Doenca(TipoDoenca tipo, int nivel, bool eagressiva, int duracao, ITipoTransmissao transmissao, List<IEfeitoDoenca> efeitos)
+        public Doenca(TipoDoenca tipo, int nivel, bool eagressiva, int duracao, ITipoTransmissao transmissao, List<IEfeitoDoenca> efeitos, string nome)
         {
             this.Tipo = tipo;
-            this.Nome = tipo.Nome;
             this.Descricao = tipo.Descricao;
             this.Nivel = nivel;
             this.NivelAtual = nivel;
@@ -33,6 +32,8 @@ namespace RPGCardsAndDragons.doencas
             this.Duracao = duracao;
             this.Transmissao = transmissao;
             this.Efeitos = efeitos;
+
+            this.Nome = nome;
         }
 
         public Doenca(Doenca doenca)

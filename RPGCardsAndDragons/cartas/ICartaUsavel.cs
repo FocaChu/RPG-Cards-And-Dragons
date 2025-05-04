@@ -21,6 +21,7 @@ namespace CardsAndDragonsJogo
         Generica = 0,
         Robo = 1,
         Recarregavel = 2,
+        Doenca = 3,
     }
 
     //Interface que define todas as cartas do jogo. Desde de genericas até futuras cartas mais especiais

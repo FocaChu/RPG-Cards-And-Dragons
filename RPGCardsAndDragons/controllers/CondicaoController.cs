@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.condicoes.doencas;
 using RPGCardsAndDragons.doencas;
 
 namespace CardsAndDragons.Controllers
@@ -33,13 +34,339 @@ namespace CardsAndDragons.Controllers
             }
         }
 
-        public static void AplicarDoenca(ICondicaoContagiosa doenca, List<ICondicaoContagiosa> doencas)
-        {
+        #region Criar Doença
 
+        public static Doenca IncubarDoenca()
+        {
+            TipoDoenca tipoDoenca = EscolherTipoDoenca();
+
+            int nivel = 3;
+
+
+            //verifica se o jogador quer uma doença agressiva ou não
+            bool Eagrassiva = EscolherAgressividade();
+
+            int duracao = 10;
+
+            ITipoTransmissao transmissao = EscolherTipoTransmissao(tipoDoenca);
+
+            List<IEfeitoDoenca> efeitos = EscolherEfeitosDoenca(tipoDoenca);
+
+            string nome = EscolherNome();
+
+            return new Doenca(tipoDoenca, nivel, Eagrassiva, duracao, transmissao, efeitos, nome);
+        }
+
+        //Escolhe o tipo de doença
+        public static TipoDoenca EscolherTipoDoenca()
+        {
+            //variaveis que fazem a seleção funcionar
+            List<TipoDoenca> tiposDoencaDisponivel = TipoDoencaAjudante.ObterTodasOsTipoDoencaDisponiveis();
+
+            int opcaoSelecionada = 0;
+            bool selecionado = false;
+
+            //tira o cursor da tela
+            Console.CursorVisible = false;
+
+            //manter o menu funcionando em quanto vc n selecionar algo
+            while (!selecionado)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                TextoController.CentralizarTexto("   Escolha o tipo da sua doenca:\n");
+                TextoController.CentralizarTexto("   O tipo dela vai definir sua gama de efeitos e forma de transmissão\n\n\n");
+
+                //é oque mostra o menu na tela com base no EspecieHelper e permite vc ver qual especie vc ta selecionando
+                for (int i = 0; i < tiposDoencaDisponivel.Count; i++)
+                {
+                    if (i == opcaoSelecionada)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        TextoController.CentralizarTexto($">> {tiposDoencaDisponivel[i].Nome}");
+                        TextoController.CentralizarTexto($" -- {tiposDoencaDisponivel[i].Descricao}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        TextoController.CentralizarTexto($"   {tiposDoencaDisponivel[i].Nome}");
+                    }
+
+                }
+                Console.WriteLine();
+                Console.ResetColor();
+                TextoController.CentralizarTexto("============================================================================================================");
+                //pega a tecla que vc apertou pro switch
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                switch (tecla.Key)
+                {
+                    //se cliclar pra cima sobe pra opção de cima e ajusta o valor pra acompanhar ela na lista
+                    case ConsoleKey.UpArrow:
+                        if (opcaoSelecionada > 0) opcaoSelecionada--;
+                        else opcaoSelecionada = tiposDoencaDisponivel.Count - 1;
+                        break;
+                    //se clicar pra baixo desce pra opção de baixo e ajusta o valor pra combinar com ela na lista
+                    case ConsoleKey.DownArrow:
+                        if (opcaoSelecionada < tiposDoencaDisponivel.Count - 1) opcaoSelecionada++;
+                        else opcaoSelecionada = 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        selecionado = true;
+                        break;
+
+                }
+
+            }
+
+            TextoController.CentralizarTexto($"Você escolheu {tiposDoencaDisponivel[opcaoSelecionada].Nome} como tipo da doença\n");
+            Console.ReadKey();
+            return tiposDoencaDisponivel[opcaoSelecionada];
+        }
+
+        //Escolhe os efeitos da doença
+        public static List<IEfeitoDoenca> EscolherEfeitosDoenca(TipoDoenca tipoDoenca)
+        {
+            List<IEfeitoDoenca> efeitos = new List<IEfeitoDoenca>();
+            List<IEfeitoDoenca> efeitosDisponiveis = tipoDoenca.CriarEfeitos();
+
+            int opcaoSelecionada = 0;
+            bool selecionado = false;
+            bool continuar = true;
+
+            Console.CursorVisible = false;
+
+            while (continuar)
+            {
+                while (!selecionado && efeitosDisponiveis.Count > 0)
+                {
+                    Console.Clear();
+
+                    Console.WriteLine("\n\n\n");
+                    TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto("   Escolha seus sintomas:\n");
+                    TextoController.CentralizarTexto("   Quanto maior o preço final, mais caro será de produzir a doença\n\n\n");
+
+                    for (int i = 0; i < efeitosDisponiveis.Count; i++)
+                    {
+                        if (i == opcaoSelecionada)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            TextoController.CentralizarTexto($">> {efeitosDisponiveis[i].Nome}");
+                            TextoController.CentralizarTexto($" -- {efeitosDisponiveis[i].Descricao}");
+                            TextoController.CentralizarTexto($" -- {tipoDoenca.ObterCustoEfeito(efeitosDisponiveis[i])}");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.White;
+                            TextoController.CentralizarTexto($"   {efeitosDisponiveis[i].Nome}");
+                        }
+                    }
+
+                    Console.WriteLine();
+                    Console.ResetColor();
+                    TextoController.CentralizarTexto("============================================================================================================");
+
+                    ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                    switch (tecla.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            if (opcaoSelecionada > 0) opcaoSelecionada--;
+                            else opcaoSelecionada = efeitosDisponiveis.Count - 1;
+                            break;
+
+                        case ConsoleKey.DownArrow:
+                            if (opcaoSelecionada < efeitosDisponiveis.Count - 1) opcaoSelecionada++;
+                            else opcaoSelecionada = 0;
+                            break;
+
+                        case ConsoleKey.Enter:
+                            selecionado = true;
+                            efeitos.Add(efeitosDisponiveis[opcaoSelecionada]);
+                            efeitosDisponiveis.RemoveAt(opcaoSelecionada);
+
+                            // Ajusta o índice para evitar acesso inválido
+                            if (opcaoSelecionada >= efeitosDisponiveis.Count)
+                            {
+                                opcaoSelecionada = efeitosDisponiveis.Count - 1;
+                            }
+                            break;
+                    }
+                }
+
+                if (efeitosDisponiveis.Count > 0)
+                {
+                    TextoController.CentralizarTexto($"Você escolheu {efeitos[efeitos.Count - 1].Nome} como sintoma da doença\n");
+                    Console.ReadKey();
+
+                    while (true)
+                    {
+                        TextoController.CentralizarTexto($"Deseja continuar? (s/n)");
+                        TextoController.CentralizarLinha("- ");
+                        string continuarInput = Console.ReadLine().ToLower();
+
+                        if (continuarInput == "s")
+                        {
+                            continuar = true;
+                            selecionado = false;
+                            break;
+                        }
+                        else if (continuarInput == "n")
+                        {
+                            continuar = false;
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Opção inválida. Tente novamente.");
+                        }
+                    }
+                }
+                else
+                {
+                    TextoController.CentralizarTexto($"Você não pode adicionar mais efeitos à doença");
+                    Console.ReadKey();
+                    break;
+                }
+            }
+
+            return efeitos;
         }
 
 
-        //Verifica as condições especiais dos inimigos
+        //Escolhe o tipo de transmissão da doença
+        public static ITipoTransmissao EscolherTipoTransmissao(TipoDoenca tipoDoenca)
+        {
+            //variaveis que fazem a seleção funcionar
+            List<ITipoTransmissao> tiposTransmisssaoDisponivel = tipoDoenca.CriarTransmissoes();
+
+            int opcaoSelecionada = 0;
+            bool selecionado = false;
+
+            //tira o cursor da tela
+            Console.CursorVisible = false;
+
+            //manter o menu funcionando em quanto vc n selecionar algo
+            while (!selecionado)
+            {
+                Console.Clear();
+
+                Console.WriteLine("\n\n\n");
+                TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
+                TextoController.CentralizarTexto("   Escolha o tipo da sua doenca:\n");
+                TextoController.CentralizarTexto("   O tipo dela vai definir sua gama de efeitos e forma de transmissão\n\n\n");
+
+                //é oque mostra o menu na tela com base no EspecieHelper e permite vc ver qual especie vc ta selecionando
+                for (int i = 0; i < tiposTransmisssaoDisponivel.Count; i++)
+                {
+                    if (i == opcaoSelecionada)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        TextoController.CentralizarTexto($">> {tiposTransmisssaoDisponivel[i].Nome}");
+                        TextoController.CentralizarTexto($" -- {tiposTransmisssaoDisponivel[i].Descricao}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.White;
+                        TextoController.CentralizarTexto($"   {tiposTransmisssaoDisponivel[i].Nome}");
+                    }
+
+                }
+                Console.WriteLine();
+                Console.ResetColor();
+                TextoController.CentralizarTexto("============================================================================================================");
+                //pega a tecla que vc apertou pro switch
+                ConsoleKeyInfo tecla = Console.ReadKey(true);
+
+                switch (tecla.Key)
+                {
+                    //se cliclar pra cima sobe pra opção de cima e ajusta o valor pra acompanhar ela na lista
+                    case ConsoleKey.UpArrow:
+                        if (opcaoSelecionada > 0) opcaoSelecionada--;
+                        else opcaoSelecionada = tiposTransmisssaoDisponivel.Count - 1;
+                        break;
+                    //se clicar pra baixo desce pra opção de baixo e ajusta o valor pra combinar com ela na lista
+                    case ConsoleKey.DownArrow:
+                        if (opcaoSelecionada < tiposTransmisssaoDisponivel.Count - 1) opcaoSelecionada++;
+                        else opcaoSelecionada = 0;
+                        break;
+
+                    case ConsoleKey.Enter:
+                        selecionado = true;
+                        break;
+
+                }
+
+            }
+
+            TextoController.CentralizarTexto($"Você escolheu {tiposTransmisssaoDisponivel[opcaoSelecionada].Nome} como forma de transmissão da doença\n");
+            Console.ReadKey();
+            return tiposTransmisssaoDisponivel[opcaoSelecionada];
+        }
+
+        public static bool EscolherAgressividade()
+        {
+            bool Eagrassiva = false;
+
+
+            Console.Clear();
+
+            Console.WriteLine("\n\n\n");
+            TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
+
+            while (true)
+            {
+                TextoController.CentralizarTexto($"Deseja que a doença seja agressiva? (s/n)");
+                TextoController.CentralizarLinha("- ");
+                string continuarInput = Console.ReadLine().ToLower();
+                if (continuarInput == "s")
+                {
+                    Eagrassiva = true;
+                    break;
+                }
+                else if (continuarInput == "n")
+                {
+                    Eagrassiva = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                }
+            }
+
+            return Eagrassiva;
+        }
+
+        public static string EscolherNome()
+        {
+            Console.Clear();
+            Console.WriteLine("\n\n\n");
+            TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
+            TextoController.CentralizarTexto($"Escolha o nome da doença: ");
+            TextoController.CentralizarLinha("- ");
+            string nome = Console.ReadLine();
+            return nome;
+        }
+
+        #endregion
+
+        //Verifica as condições especiais dos inimigos e aliados
         public static void Checape(Batalha batalha)
         {
             Console.Clear();
@@ -100,7 +427,7 @@ namespace CardsAndDragons.Controllers
                 Console.ResetColor();
             }
 
-            if(batalha.Aliados.Count > 0)
+            if (batalha.Aliados.Count > 0)
             {
                 Console.Clear();
                 Console.ForegroundColor = ConsoleColor.Green;
@@ -155,7 +482,6 @@ namespace CardsAndDragons.Controllers
             }
             BatalhaController.VerificarMorte(batalha);
         }
-
 
         //Verifica as condições especiais do jogador
         public static void Checape(Personagem jogador)
@@ -226,7 +552,7 @@ namespace CardsAndDragons.Controllers
                 }
         }
 
-        //mostra as condições especiais que o inimigo tem no momento(elas já vem formatas pelo ToString delas)
+        //mostra as condições especiais que o inimigo/aliado tem no momento(elas já vem formatas pelo ToString delas)
         public static void ExibirCondicoes(OInimigo inimigo)
         {
             if (inimigo.Condicoes.Count > 0)
@@ -242,74 +568,13 @@ namespace CardsAndDragons.Controllers
                 }
         }
 
-
-        //Usado no turno dos inimigos pra ver se eles estão congelados. Sim? Não atacam
-        public static bool VerificarCongelamento(ICriaturaCombatente criatura)
+        //usado para ver se uma condição específica está ativa
+        public static bool VerificarCondicao<T>(List<ICondicaoTemporaria> condicoes) where T : ICondicaoTemporaria
         {
-            foreach (var condicao in criatura.Condicoes)
-            {
-                if (condicao is Atordoamento)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
+            return condicoes.Any(condicao => condicao is T tCondicao && tCondicao.Nivel > 0 && tCondicao.Duracao > 0);
         }
 
-        //Usado no ataque dos inimigos pra ver se eles estão silenciados. Sim? Não podem usar o especial.
-        public static bool VerificarSilencio(List<ICondicaoTemporaria> condicoes)
-        {
-            foreach (var condicao in condicoes)
-            {
-                if (condicao is Silencio)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        public static bool VerificarSangramento(List<ICondicaoTemporaria> condicoes)
-        {
-            foreach (var condicao in condicoes)
-            {
-                if (condicao is Sangramento && condicao.Duracao > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        public static bool VerificarEnvenenamento(List<ICondicaoTemporaria> condicoes)
-        {
-            foreach (var condicao in condicoes)
-            {
-                if (condicao is Veneno && condicao.Duracao > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-
-        //Verifica se o inimigo esta sangrando no turno dele. Sim? Aplica efeito apos atacar
+        //Verifica se o inimigo/aliado esta sangrando no turno dele. Sim? Aplica efeito apos atacar
         public static void SangrarFerida(ICriaturaCombatente criatura)
         {
             foreach (var condicao in criatura.Condicoes)
@@ -317,7 +582,7 @@ namespace CardsAndDragons.Controllers
                 if (condicao is Sangramento sangramento)
                 {
                     if (sangramento.Nivel > 0 && sangramento.Duracao > 0)
-                    sangramento.AplicarEfeito(criatura);
+                        sangramento.AplicarEfeito(criatura);
                 }
             }
         }

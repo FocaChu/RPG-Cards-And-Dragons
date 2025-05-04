@@ -8,11 +8,15 @@ using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 {
-    public class DanoPercentualVida : EfeitoDoencaBase
+    public class Necrose : IEfeitoDoenca
     {
-        public DanoPercentualVida(TipoDoenca tipo) : base(tipo, 10) { }
+        public string Nome { get; set; } = "Necrose";
 
-        public override void Aplicar(ICriaturaCombatente alvo, int nivel)
+        public string Descricao { get; set; } = "A criatura sofre dano igual a parte de sua vida máxima a cada turno.";
+
+        public Necrose(TipoDoenca tipo){ }
+
+        public void Aplicar(ICriaturaCombatente alvo, int nivel)
         {
             int porcentagem = nivel * 10;
             double dano = alvo.VidaAtual * (porcentagem / 100.0);

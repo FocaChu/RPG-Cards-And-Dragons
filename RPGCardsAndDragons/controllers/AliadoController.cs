@@ -85,9 +85,7 @@ namespace CardsAndDragons.Controllers
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
-                TextoController.CentralizarTexto("   Escolha seu Software:");
-                Console.WriteLine();
-                Console.WriteLine();
+                TextoController.CentralizarTexto("   Escolha seu Software:\n\n\n");
 
                 //é oque mostra o menu na tela com base no EspecieHelper e permite vc ver qual especie vc ta selecionando
                 for (int i = 0; i < 4; i++)

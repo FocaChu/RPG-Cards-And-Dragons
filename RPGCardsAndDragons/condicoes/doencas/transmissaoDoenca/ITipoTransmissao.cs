@@ -12,6 +12,10 @@ namespace RPGCardsAndDragons.doencas
 {
     public interface ITipoTransmissao
     {
+        string Nome { get; }
+
+        string Descricao { get; }
+
         bool TentarTransmitir(Doenca doenca, List<OInimigo> alvos, int chance);
     }
 

@@ -18,7 +18,9 @@ namespace RPGCardsAndDragons.condicoes.doencas
 
         public abstract List<ITipoTransmissao> CriarTransmissoes();
 
-        public abstract int ModificarCusto(IEfeitoDoenca efeito);
+        public abstract int ObterCustoEfeito(IEfeitoDoenca efeito);
+
+        public abstract int ObterCustoTransmissao(ITipoTransmissao transmissao);
     }
 
 }

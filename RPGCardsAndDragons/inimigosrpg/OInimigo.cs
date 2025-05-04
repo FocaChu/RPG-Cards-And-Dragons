@@ -73,13 +73,13 @@ namespace CardsAndDragonsJogo
 
             if (vidaAtual >= 0)
             {
-                if (PodeUsarHabilidade(rodada) && !CondicaoController.VerificarSilencio(Condicoes))
+                if (PodeUsarHabilidade(rodada) && !CondicaoController.VerificarCondicao<Silencio>(Condicoes))
                 {
                     InimigoBase.UsarHabilidade(batalha, this);
                 }
                 else
                 {
-                    if (PodeUsarHabilidade(rodada) && CondicaoController.VerificarSilencio(Condicoes))
+                    if (PodeUsarHabilidade(rodada) && CondicaoController.VerificarCondicao<Silencio>(Condicoes))
                     {
                         Console.WriteLine($"{this.Nome} foi silenciado e não pode usar sua habilidade...");
                         InimigoBase.Atacar(batalha, this);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
+using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
 
@@ -49,7 +50,7 @@ namespace CardsAndDragonsJogo
                 Console.WriteLine();
                 System.Threading.Thread.Sleep(200); // Delayzinho dramático
 
-                if (!CondicaoController.VerificarCongelamento(aliado))
+                if (!CondicaoController.VerificarCondicao<Atordoamento>(aliado.Condicoes))
                 {
                     aliado.RealizarTurno(this);
 
@@ -81,7 +82,7 @@ namespace CardsAndDragonsJogo
                 Console.WriteLine();
                 System.Threading.Thread.Sleep(200); // Delayzinho dramático
 
-                if (!CondicaoController.VerificarCongelamento(inimigo))
+                if (!CondicaoController.VerificarCondicao<Atordoamento>(inimigo.Condicoes))
                 {
                     inimigo.RealizarTurno(this);
 

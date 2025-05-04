@@ -12,6 +12,10 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
 {
     public class TransmissaoTeleguiada : ITipoTransmissao
     {
+        public string Nome => "Transmissão Teleguiada";
+
+        public string Descricao => "Permite escolher o alvo da transmissão, porem as chances são menores";
+
         public bool TentarTransmitir(Doenca doenca, List<OInimigo> alvos, int chance)
         {
             // Verifica se há alvos disponíveis para transmitir
@@ -25,8 +29,10 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
                 return false;
             }
 
+            int chanceFinal = chance / 2;
+
             // Checa o RNG de infecção
-            int transmissao = BatalhaController.GerarRNG(chance - 15);
+            int transmissao = BatalhaController.GerarRNG(chanceFinal);
 
             if (transmissao == 0)
             {

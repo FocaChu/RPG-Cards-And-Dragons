@@ -12,6 +12,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
 {
     public class TransmissaoAr : ITipoTransmissao
     {
+        public string Nome => "Transmissão pelo Ar";
+        public string Descricao => "Pode transmitir para qualquer inimigo no campo de batalha";
+
         public bool TentarTransmitir(Doenca doenca, List<OInimigo> alvos, int chance)
         {
             // Verifica se há alvos disponíveis para transmitir

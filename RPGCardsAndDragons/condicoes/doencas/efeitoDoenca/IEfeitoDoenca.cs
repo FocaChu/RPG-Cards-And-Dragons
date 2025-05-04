@@ -12,7 +12,9 @@ namespace RPGCardsAndDragons.doencas
 {
     public interface IEfeitoDoenca
     {
-        int Custo {  get; set; }
+        string Nome { get; set; }
+
+        string Descricao { get; set; }
 
         void Aplicar(ICriaturaCombatente alvo, int nivel);
     }

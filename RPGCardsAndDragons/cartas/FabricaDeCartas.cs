@@ -12,6 +12,8 @@ using CardsAndDragons.Inimigos;
 using CardsAndDragons.Cartas;
 using RPGCardsAndDragons.doencas;
 using RPGCardsAndDragons.condicoes.doencas.tipoDoenca;
+using RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca;
+using RPGCardsAndDragons.cartas;
 
 namespace CardsAndDragons.ClassesDasCartas
 {
@@ -55,36 +57,17 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
-        public static ICartaUsavel CriarFungo()
+        public static ICartaUsavel CriarInvocarDoencaFixa()
         {
-            return new CartaGenerica
+            return new CartaInvocarDoencaFixa
             {
-                Nome = "Praga: Fungo",
-                Descricao = "Infesta um inimigo com um fungo agressivo que drena vida e escudo.",
+                Nome = "Criar Doença",
+                Descricao = "Invoca uma doençã customizavel permanente.",
                 RaridadeCarta = Raridade.Rara,
                 Preco = GerarPreco(Raridade.Rara),
-                CustoMana = 30,
-                Modelo = GerarModeloCarta("☣", 1),
-
-                Efeito = batalha =>
-                {
-                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
-
-                    var tipoDoenca = new TipoFungo();
-
-                    var efeitos = tipoDoenca.CriarEfeitos();
-
-                    // Aplica a modificação de custo em cada efeito
-                    foreach (var efeito in efeitos)
-                    {
-                        efeito.Custo += tipoDoenca.ModificarCusto(efeito);
-                    }
-
-                    var fungo = new Doenca(tipoDoenca, 3, true, 5, new TransmissaoAr(), efeitos);
-
-                    CondicaoController.AplicarOuAtualizarCondicao(fungo, alvo.Condicoes);
-                    TextoController.CentralizarTexto($"{alvo.Nome} foi infectado por esporos fúngicos!");
-                }
+                CustoMana = 80,
+                CustoOuro = 40,
+                Modelo = GerarModeloCarta("D", 1) // opcional
             };
         }
 

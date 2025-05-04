@@ -258,7 +258,7 @@ namespace CardsAndDragons.Aliados
 
             foreach (var alvo in alvos)
             {
-                if (alvo.VidaAtual < alvo.VidaMax || CondicaoController.VerificarSangramento(alvo.Condicoes) || CondicaoController.VerificarEnvenenamento(alvo.Condicoes))
+                if (alvo.VidaAtual < alvo.VidaMax || CondicaoController.VerificarCondicao<Sangramento>(alvo.Condicoes) || CondicaoController.VerificarCondicao<Veneno>(alvo.Condicoes))
                 {
                     alvosValidos.Add(alvo);
                 }
