@@ -7,6 +7,7 @@ using CardsAndDragons.Condicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons;
 using RPGCardsAndDragons.doencas;
+using CardsAndDragonsJogo;
 
 namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 {
@@ -18,9 +19,10 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Fraqueza(TipoDoenca tipo) { }
 
-        public  void Aplicar(ICriaturaCombatente alvo, int nivel)
+        public  void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
-            CondicaoController.AplicarOuAtualizarCondicao(new ModificacaoDano(nivel * -1, 1), alvo.Condicoes);
+            batalha.Aplicadores.Add(new AplicadorDeCondicao(new ModificacaoDano(nivel * -1, 3), alvo));
+
             TextoController.CentralizarTexto($"{alvo.Nome} sofre de sintomas de fraqueza");
         }
     }

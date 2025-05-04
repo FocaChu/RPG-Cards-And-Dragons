@@ -62,6 +62,7 @@
     <Compile Include="classesrpg\Guerreiro.cs" />
     <Compile Include="classesrpg\Mago.cs" />
     <Compile Include="classesrpg\Necromante.cs" />
+    <Compile Include="condicoes\AplicadorDeCondicao.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Atordoamento.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Intoxicacao.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Necrose.cs" />

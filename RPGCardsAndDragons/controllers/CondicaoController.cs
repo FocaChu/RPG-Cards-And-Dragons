@@ -427,6 +427,13 @@ namespace CardsAndDragons.Controllers
                 Console.ResetColor();
             }
 
+            foreach (var aplicador in batalha.Aplicadores)
+            {
+                aplicador.AplicarCondicao();
+            }
+
+            batalha.Aplicadores.Clear();
+
             if (batalha.Aliados.Count > 0)
             {
                 Console.Clear();

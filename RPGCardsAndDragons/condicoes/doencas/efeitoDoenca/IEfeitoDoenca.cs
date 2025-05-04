@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.Condicoes;
 using CardsAndDragons.Controllers;
+using CardsAndDragonsJogo;
 using RPGCardsAndDragons.condicoes.doencas;
 
 namespace RPGCardsAndDragons.doencas
@@ -16,6 +17,6 @@ namespace RPGCardsAndDragons.doencas
 
         string Descricao { get; set; }
 
-        void Aplicar(ICriaturaCombatente alvo, int nivel);
+        void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel);
     }
 }

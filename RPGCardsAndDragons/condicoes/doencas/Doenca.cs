@@ -52,18 +52,13 @@ namespace RPGCardsAndDragons.doencas
         public void AplicarEfeito(OInimigo alvo, Batalha batalha)
         {
             foreach (var efeito in Efeitos)
-                efeito.Aplicar(alvo, this.NivelAtual);
+                efeito.Aplicar(batalha, alvo, this.NivelAtual);
 
             int chance = NivelAtual * 5;
 
-            var alvosValidos = batalha.Inimigos
-                .Where(i => i != alvo && !i.Condicoes.Any(c => c is ICondicaoContagiosa d && c.Nome == this.Nome))
-                .ToList();
-
-            // CLONA a doença ANTES
             var cloneParaTransmitir = new Doenca(this);
 
-            if (!cloneParaTransmitir.TentarTransmitir(alvosValidos, chance, this))
+            if (!cloneParaTransmitir.TentarTransmitir(batalha, chance, this))
             {
                 // Aumenta o nível SOMENTE da original
                 NivelAtual += EAgrassiva ? 1 : 0;
@@ -71,9 +66,9 @@ namespace RPGCardsAndDragons.doencas
         }
 
 
-        public bool TentarTransmitir(List<OInimigo> alvos, int chance, Doenca clone)
+        public bool TentarTransmitir(Batalha batalha, int chance, Doenca clone)
         {
-            return Transmissao.TentarTransmitir(clone, alvos, chance);
+            return Transmissao.TentarTransmitir(clone, batalha, chance);
         }
 
         public bool Expirou()
@@ -86,11 +81,37 @@ namespace RPGCardsAndDragons.doencas
             return $"{this.Nome} - Nivel: {this.NivelAtual} | Vigor: {this.Duracao}";
         }
 
-
         public void Atualizar()
         {
-            
+            // Define a chance base de redução (por exemplo, 50%)
+            int chanceBase = 50;
+
+            // Reduz a chance com base no NivelAtual da doença
+            int chanceDeReduzir = Math.Max(5, chanceBase - (NivelAtual * 5));
+            // A chance mínima é 5% para evitar que fique impossível reduzir
+
+            // Gera um número aleatório entre 1 e 100
+            Random random = new Random();
+            int numeroAleatorio = random.Next(1, 101);
+
+            // Verifica se a duração será reduzida
+            if (numeroAleatorio <= chanceDeReduzir)
+            {
+                Duracao--;
+                Console.WriteLine($"{Nome}: A duração foi reduzida! Turnos restantes: {Duracao}");
+            }
+            else
+            {
+                Console.WriteLine($"{Nome}: A duração não foi reduzida neste turno.");
+            }
+
+            // Garante que a duração não fique negativa
+            if (Duracao < 0)
+            {
+                Duracao = 0;
+            }
         }
+
 
 
         public void AplicarEfeito(Personagem jogador)

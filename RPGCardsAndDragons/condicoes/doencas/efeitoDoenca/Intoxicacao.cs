@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Condicoes;
 using CardsAndDragons.Controllers;
+using CardsAndDragonsJogo;
 using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
@@ -18,9 +20,10 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Intoxicacao(TipoDoenca tipo) { }
 
-        public void Aplicar(ICriaturaCombatente alvo, int nivel)
+        public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
-            CondicaoController.AplicarOuAtualizarCondicao(new Veneno(nivel, 1), alvo.Condicoes);
+            batalha.Aplicadores.Add(new AplicadorDeCondicao(new Veneno(nivel, 3), alvo));
+
             TextoController.CentralizarTexto($"{alvo.Nome} sofre de intoxicação");
         }
     }

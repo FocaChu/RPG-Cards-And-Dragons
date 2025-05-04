@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.doencas
 
         List<IEfeitoDoenca> Efeitos { get; set; }
 
-        bool TentarTransmitir(List<OInimigo> alvos, int chance, Doenca clone);
+        bool TentarTransmitir(Batalha batalha, int chance, Doenca clone);
     }
 
 }

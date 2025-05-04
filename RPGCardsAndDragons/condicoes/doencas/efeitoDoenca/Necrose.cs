@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
+using CardsAndDragonsJogo;
 using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
@@ -16,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Necrose(TipoDoenca tipo){ }
 
-        public void Aplicar(ICriaturaCombatente alvo, int nivel)
+        public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
             int porcentagem = nivel * 10;
             double dano = alvo.VidaAtual * (porcentagem / 100.0);

@@ -7,6 +7,7 @@ using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
+using RPGCardsAndDragons.condicoes;
 
 namespace CardsAndDragonsJogo
 {
@@ -17,6 +18,8 @@ namespace CardsAndDragonsJogo
         public List<OInimigo> Inimigos { get; set; }
 
         public List<OInimigo> InimigosDerrotados { get; set; }
+
+        public List<AplicadorDeCondicao> Aplicadores { get; set; }
 
         public List<ICriaturaCombatente> Aliados { get; set; }
 
@@ -30,6 +33,8 @@ namespace CardsAndDragonsJogo
             
             InimigosDerrotados = new List<OInimigo>();
             Aliados = new List<ICriaturaCombatente>();
+
+            Aplicadores = new List<AplicadorDeCondicao>();
 
             AliadoController.AcidionarRobosABatalha(this);
         }

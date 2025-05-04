@@ -15,10 +15,10 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
         public string Nome => "Transmissão pelo Ar";
         public string Descricao => "Pode transmitir para qualquer inimigo no campo de batalha";
 
-        public bool TentarTransmitir(Doenca doenca, List<OInimigo> alvos, int chance)
+        public bool TentarTransmitir(Doenca doenca, Batalha batalha, int chance)
         {
             // Verifica se há alvos disponíveis para transmitir
-            var alvosViaveis = alvos.Where(alvo =>
+            var alvosViaveis = batalha.Inimigos.Where(alvo =>
                 alvo.Condicoes.All(cond => !(cond is ICondicaoContagiosa contagiosa && cond.Nome == doenca.Nome))
             ).ToList();
 
@@ -29,14 +29,14 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
             }
 
             // Checa o RNG de infecção
-            int transmissao = BatalhaController.GerarRNG(chance);
+            int transmissao = BatalhaController.GerarRNG(100);
 
             if (transmissao == 0)
             {
                 var alvo = AlvoController.EscolherInimigoAleatorio(alvosViaveis);
 
                 // Aplica a infecção
-                CondicaoController.AplicarOuAtualizarCondicao(new Doenca(doenca), alvo.Condicoes);
+                batalha.Aplicadores.Add(new AplicadorDeCondicao(new Doenca(doenca), alvo));
 
                 Console.WriteLine();
                 TextoController.CentralizarLinha($"{alvo.Nome} foi infectado pelo patógeno {doenca.Nome}\n");
