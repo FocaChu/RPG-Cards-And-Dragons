@@ -70,8 +70,8 @@ namespace CardsAndDragons
         public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            var alvo = AliadoController.EscolherUmAlvo(batalha.Inimigos);
+                
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
             alvo.SofrerDano(DanoFinal, false);
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
@@ -81,7 +81,7 @@ namespace CardsAndDragons
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
 
-            var alvo = AliadoController.EscolherUmAlvo(batalha.Inimigos);
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
             TextoController.CentralizarTexto($"{this.Nome} mordeu e causou dano em {alvo.Nome}!");
             alvo.SofrerDano(DanoFinal, false);

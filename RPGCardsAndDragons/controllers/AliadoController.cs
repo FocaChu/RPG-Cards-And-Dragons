@@ -13,14 +13,6 @@ namespace CardsAndDragons.Controllers
     {
         private static Random rng = new Random();
 
-        public static OInimigo EscolherUmAlvo(List<OInimigo> inimigos)
-        {
-            if (inimigos == null || inimigos.Count == 0)
-                return null;
-
-            int index = rng.Next(inimigos.Count);
-            return inimigos[index];
-        }
 
         public static void ReviverInimigo(Batalha batalha, OInimigo inimigoEscolhido)
         {

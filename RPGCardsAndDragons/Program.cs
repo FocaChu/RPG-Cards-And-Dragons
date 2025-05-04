@@ -197,61 +197,17 @@ namespace CardsAndDragons
         //codigo que faz nosso personagem
         static void CriarPersonagem()
         {
-            bool acabar = false;
-            bool resetar = false;
-            while (!acabar)
+            Personagem jogador = PersonagemController.CriarUmPersonagem();
+
+            if(jogador != null)
             {
-                //Chama o controler do personagem pra definir a especie
-                EspecieRPG especieEscolhida = PersonagemController.SelecionarEspecie();
-
-                //Caso o jogador cancele a ação de selecionar a especie, ela retorna null e o codigo volta pro menu
-                if (especieEscolhida == null)
-                {
-                    estadoAtual = EstadoDoJogo.MenuInicial;
-                    break;
-
-                }
-
-                //Chama o controler do personagem pra definir a classe
-                ClasseRPG classeEscolhida = PersonagemController.EscolherClasse();
-
-                //Caso o jogador cancele a ação de selecionar a especie, ela retorna null e o codigo volta pra seleção de especie
-                if (classeEscolhida == null)
-                {
-                    resetar = true;
-                    break;
-
-                }
-
-                //Aqui o jogador confirma o personagem dele
-                string[] opcoesConfirmacao = { "Sim", "Não" };
-                int option = TextoController.MostrarMenuSelecao(false, "Confirmação de Personagem", opcoesConfirmacao);
-
-                Console.Clear();
-
-                Console.ForegroundColor = ConsoleColor.White;
-                if (option == 0)
-                {
-                    //Cria o persongaem do jogador
-                    var jogador = PersonagemController.CriarPersonagem(especieEscolhida, classeEscolhida);
-                    oJogador.Add(jogador);
-
-                    Console.Clear();
-
-                    //exibe o personagem pro jogador
-                    PersonagemController.ExibirJogador(jogador, false);
-
-                    estadoAtual = EstadoDoJogo.Jogo;
-                    acabar = true;
-                }
-                else
-                {
-                    estadoAtual = EstadoDoJogo.MenuInicial;
-                    acabar = true;
-                }
+                oJogador.Add(jogador);
+                estadoAtual = EstadoDoJogo.Jogo;
             }
-            //aqui ele chama a função de novo caso o jogador tenha retornado null em classe
-            if (resetar) CriarPersonagem();
+            else
+            {
+                estadoAtual = EstadoDoJogo.MenuInicial;
+            }
 
         }
 

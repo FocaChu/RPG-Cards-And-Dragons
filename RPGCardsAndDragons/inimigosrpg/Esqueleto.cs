@@ -70,7 +70,7 @@ namespace CardsAndDragons
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
 
-            var alvo = AliadoController.EscolherUmAlvo(batalha.Inimigos);
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
 
@@ -81,7 +81,7 @@ namespace CardsAndDragons
         {
             int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 
-            var alvo = AliadoController.EscolherUmAlvo(batalha.Inimigos);
+            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com dano critico!");
             alvo.SofrerDano(DanoFinal, false);

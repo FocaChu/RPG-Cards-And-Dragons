@@ -233,7 +233,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         return;
                     }
 
-                    var inimigoEscolhido = AliadoController.EscolherUmAlvo(batalha.InimigosDerrotados);
+                    var inimigoEscolhido = AlvoController.EscolherInimigoAleatorio(batalha.InimigosDerrotados);
                     AliadoController.ReviverInimigo(batalha, inimigoEscolhido);
                 }
             };
@@ -924,10 +924,7 @@ namespace CardsAndDragons.ClassesDasCartas
                 {
                     int danoFinal = 20 + batalha.Jogador.ModificadorDano;
 
-                    Random random = new Random();
-                    int indiceAleatorio = random.Next(batalha.Inimigos.Count);
-
-                    var alvo = batalha.Inimigos[indiceAleatorio];
+                    var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
                     alvo.SofrerDano(danoFinal, false);
                 }
             };

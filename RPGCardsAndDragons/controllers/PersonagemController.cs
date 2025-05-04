@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CardsAndDragons.Aliados;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragonsJogo;
@@ -13,6 +14,69 @@ namespace CardsAndDragons
     {
 
         #region Cria o Personagem
+
+        public static Personagem CriarUmPersonagem()
+        {
+            string[] opcoesConfirmacao = { "Sim", "Não" };
+            bool cancelouClasse = false;
+
+            while (true)
+            {
+                cancelouClasse = false;
+
+                // Escolha a especie e classe
+                EspecieRPG especie = SelecionarEspecie();
+
+                if (especie == null)
+                {
+                    return null;
+                }
+
+                ClasseRPG classe = EscolherClasse();
+
+                if (classe == null)
+                {
+                    cancelouClasse = true;
+                }
+
+                if (!cancelouClasse)
+                {
+                    //Aqui o jogador confirma o personagem dele
+                    int option = TextoController.MostrarMenuSelecao(false, "Confirmação de Personagem", opcoesConfirmacao);
+
+                    if (option == 0)
+                    {
+
+                        // Pede o nome do personagem
+                        string nome = "";
+                        Console.Clear();
+                        Console.WriteLine("\n\n");
+                        TextoController.CentralizarTexto("============================== CRIAÇÃO DE PERSONAGEM ==============================");
+                        while (nome == null || nome == string.Empty)
+                        {
+                            Console.WriteLine();
+                            TextoController.CentralizarTexto("Nomeie o seu personagem: ");
+                            TextoController.CentralizarLinha("");
+                            nome = Console.ReadLine();
+                        }
+
+                        // Garante que sempre cria uma nova instância separada
+                        return new Personagem(nome, especie, classe);
+
+                    }
+                    else if (option == 1)
+                    {
+                        int opcao = TextoController.MostrarMenuSelecao(false, "Deseja voltar ao Menu?", opcoesConfirmacao);
+                        if (opcao == 0)
+                        {
+                            return null;
+                        }
+                    }
+                }
+            }
+
+        }
+
         public static EspecieRPG SelecionarEspecie()
         {
             //mostra todas as especies
@@ -21,7 +85,6 @@ namespace CardsAndDragons
             //variaveis que fazem a seleção funcionar
             int opcaoSelecionada = 0;
             bool selecionado = false;
-            bool voltar = false;
 
             //tira o cursor da tela
             Console.CursorVisible = false;
@@ -83,34 +146,26 @@ namespace CardsAndDragons
 
                     case ConsoleKey.Escape:
                         selecionado = true;
-                        voltar = true;
-                        break;
+                        return null;
                         //Serve para encerrar o codigo, mas n deixar ele continuar e forçar ele a voltar.
                 }
             }
 
             //se vc cliclou enter vem pra ca normal e devolve a especie escolhida
-            if (voltar == false)
-            {
-                Console.Clear();
-                Console.WriteLine("\n\n\n\n\n");
-                TextoController.CentralizarTexto("============================================================================================================");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine();
-                TextoController.CentralizarTexto($"Você escolheu a Espécie: {especiesDisponiveis[opcaoSelecionada].NomeEspecie}");
-                Console.ResetColor();
-                Console.WriteLine();
-                TextoController.CentralizarTexto("============================================================================================================");
-                Console.ReadKey();
-                Console.Clear();
+            Console.Clear();
+            Console.WriteLine("\n\n\n\n\n");
+            TextoController.CentralizarTexto("============================================================================================================");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine();
+            TextoController.CentralizarTexto($"Você escolheu a Espécie: {especiesDisponiveis[opcaoSelecionada].NomeEspecie}");
+            Console.ResetColor();
+            Console.WriteLine();
+            TextoController.CentralizarTexto("============================================================================================================");
+            Console.ReadKey();
+            Console.Clear();
 
-                return especiesDisponiveis[opcaoSelecionada];
-            }
-            //se vc clicou Esc, ele vai devolver um valor nulo
-            else
-            {
-                return null;
-            }
+            return especiesDisponiveis[opcaoSelecionada];
+
         }
 
         public static ClasseRPG EscolherClasse()
@@ -121,7 +176,6 @@ namespace CardsAndDragons
             //variaveis que fazem a seleção funcionar
             int opcaoSelecionada = 0;
             bool selecionado = false;
-            bool voltar = false;
 
             //tira o cursor da tela
             Console.CursorVisible = false;
@@ -182,49 +236,25 @@ namespace CardsAndDragons
 
                     case ConsoleKey.Escape:
                         selecionado = true;
-                        voltar = true;
-                        break;
+                        return null;
                         //Serve para encerrar o codigo, mas n deixar ele continuar e forçar ele a voltar.
                 }
             }
 
             //se vc cliclou enter vem pra ca normal e devolve a especie escolhida
-            if (voltar == false)
-            {
-                Console.Clear();
-                Console.WriteLine("\n\n\n\n\n");
-                TextoController.CentralizarTexto("============================================================================================================");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine();
-                TextoController.CentralizarTexto($"Você escolheu a Classe: {classesDisponiveis[opcaoSelecionada].NomeClasse}");
-                Console.ResetColor();
-                Console.WriteLine();
-                TextoController.CentralizarTexto("============================================================================================================");
-                Console.ReadKey();
-                Console.Clear();
+            Console.Clear();
+            Console.WriteLine("\n\n\n\n\n");
+            TextoController.CentralizarTexto("============================================================================================================");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine();
+            TextoController.CentralizarTexto($"Você escolheu a Classe: {classesDisponiveis[opcaoSelecionada].NomeClasse}");
+            Console.ResetColor();
+            Console.WriteLine();
+            TextoController.CentralizarTexto("============================================================================================================");
+            Console.ReadKey();
+            Console.Clear();
 
-                return classesDisponiveis[opcaoSelecionada];
-            }
-            //se vc clicou Esc, ele vai devolver um valor nulo
-            else
-            {
-                return null;
-            }
-        }
-
-        public static Personagem CriarPersonagem(EspecieRPG especieEscolhida, ClasseRPG classeEscolhida)
-        {
-            string nome = "";
-            TextoController.CentralizarTexto("============================== CRIAÇÃO DE PERSONAGEM ==============================");
-            while (nome == null || nome == string.Empty)
-            {
-                Console.WriteLine();
-                TextoController.CentralizarTexto("Nomeie o seu personagem: ");
-                TextoController.CentralizarLinha("");
-                nome = Console.ReadLine();
-            }
-            Personagem jogador = new Personagem(nome, especieEscolhida, classeEscolhida);
-            return jogador;
+            return classesDisponiveis[opcaoSelecionada];
         }
 
         #endregion
@@ -565,7 +595,7 @@ namespace CardsAndDragons
                 }
             }
 
-            foreach(var carta in cartasCompradas)
+            foreach (var carta in cartasCompradas)
             {
                 jogador.Mao.Add(carta);
             }
@@ -573,7 +603,7 @@ namespace CardsAndDragons
             int index = 0;
             ConsoleKey tecla;
 
-            if(cartasCompradas.Count > 0)
+            if (cartasCompradas.Count > 0)
             {
                 do
                 {

@@ -560,12 +560,12 @@ namespace CardsAndDragons.Controllers
         }
 
         //mostra as condições especiais que o inimigo/aliado tem no momento(elas já vem formatas pelo ToString delas)
-        public static void ExibirCondicoes(OInimigo inimigo)
+        public static void ExibirCondicoes(ICriaturaCombatente criatura)
         {
-            if (inimigo.Condicoes.Count > 0)
-                for (int i = inimigo.Condicoes.Count - 1; i >= 0; i--)
+            if (criatura.Condicoes.Count > 0)
+                for (int i = criatura.Condicoes.Count - 1; i >= 0; i--)
                 {
-                    var condicao = inimigo.Condicoes[i];
+                    var condicao = criatura.Condicoes[i];
 
                     TextoController.DefinirCorDaCondicao(condicao.Nome);
 

@@ -305,11 +305,25 @@ namespace CardsAndDragons
 
         public static void AcaoExibir(Batalha batalha)
         {
-            int alvo = AlvoController.SelecionarAlvo(batalha.Inimigos);
-
-            if (alvo < batalha.Inimigos.Count)
+            if(batalha.Aliados.Count > 0)
             {
-                InimigoController.ExibirInimigo(batalha.Inimigos[alvo]);
+
+
+                var alvo = batalha.Aliados[AlvoController.SelecionarAlvo(batalha.Aliados)];
+
+                ExibirAlvo(alvo);
+                
+            }
+            else
+            {
+
+                int alvo = AlvoController.SelecionarAlvo(batalha.Inimigos);
+
+                if (alvo < batalha.Inimigos.Count)
+                {
+                    ExibirAlvo(batalha.Inimigos[alvo]);
+                }
+
             }
         }
 
@@ -334,6 +348,23 @@ namespace CardsAndDragons
 
             CondicaoController.Checape(batalha.Jogador);
 
+        }
+
+        public static void ExibirAlvo(ICriaturaCombatente critatura)
+        {
+            Console.Clear();
+
+            Console.WriteLine("\n\n\n");
+            TextoController.CentralizarTexto($"================================  < Analisando {critatura.Nome} > ================================\n\n");
+
+            TextoController.CentralizarTexto($"Vida: {critatura.VidaAtual}/{critatura.VidaMax}\n");
+
+            CondicaoController.ExibirCondicoes(critatura);
+
+            for (int linha = 0; linha < critatura.Modelo.Count; linha++)
+            {
+                TextoController.CentralizarTexto(critatura.Modelo[linha]);
+            }
         }
 
 
