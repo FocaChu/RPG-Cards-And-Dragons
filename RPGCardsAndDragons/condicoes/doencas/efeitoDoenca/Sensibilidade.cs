@@ -9,6 +9,7 @@ using CardsAndDragons;
 using RPGCardsAndDragons.doencas;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragonsJogo;
+using System.Diagnostics.Eventing.Reader;
 
 namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 {
@@ -19,6 +20,12 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
         public string Descricao { get; set; } = "O hóspedeiro fica mais frágil a ataques.";
 
         public Sensibilidade(TipoDoenca tipo) { }
+
+        public Sensibilidade(Sensibilidade original)
+        {
+            Nome = original.Nome;
+            Descricao = original.Descricao;
+        }
 
         public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Controllers;
 using CardsAndDragonsJogo;
 using RPGCardsAndDragons.condicoes.doencas;
 
@@ -46,7 +47,7 @@ namespace RPGCardsAndDragons.doencas
             this.EAgrassiva = doenca.EAgrassiva;
             this.Duracao = doenca.Duracao;
             this.Transmissao = (ITipoTransmissao)Activator.CreateInstance(doenca.Transmissao.GetType());
-            this.Efeitos = Tipo.CriarEfeitos(); // recria os efeitos corretamente
+            this.Efeitos = doenca.Efeitos.Select(efeito => (IEfeitoDoenca)Activator.CreateInstance(efeito.GetType(), efeito)).ToList();
         }
 
         public void AplicarEfeito(OInimigo alvo, Batalha batalha)
@@ -98,11 +99,11 @@ namespace RPGCardsAndDragons.doencas
             if (numeroAleatorio <= chanceDeReduzir)
             {
                 Duracao--;
-                Console.WriteLine($"{Nome}: A duração foi reduzida! Turnos restantes: {Duracao}");
+               TextoController.CentralizarTexto($"{Nome}: A duração foi reduzida! Turnos restantes: {Duracao}");
             }
             else
             {
-                Console.WriteLine($"{Nome}: A duração não foi reduzida neste turno.");
+                TextoController.CentralizarTexto($"{Nome}: A duração não foi reduzida neste turno.");
             }
 
             // Garante que a duração não fique negativa

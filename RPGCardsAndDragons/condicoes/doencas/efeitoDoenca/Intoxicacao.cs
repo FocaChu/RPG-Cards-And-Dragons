@@ -20,6 +20,12 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Intoxicacao(TipoDoenca tipo) { }
 
+        public Intoxicacao(Intoxicacao original)
+        {
+            Nome = original.Nome;
+            Descricao = original.Descricao;
+        }
+
         public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
             batalha.Aplicadores.Add(new AplicadorDeCondicao(new Veneno(nivel, 3), alvo));

@@ -60,7 +60,7 @@ namespace RPGCardsAndDragons.cartas
             }
 
 
-            // Clona o robô para não ser ponteiro
+            // Clona a doença para não ser ponteiro
             var doencaClone = new Doenca(doenca);
 
             var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];

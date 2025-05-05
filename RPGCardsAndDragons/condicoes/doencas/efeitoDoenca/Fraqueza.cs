@@ -19,6 +19,12 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Fraqueza(TipoDoenca tipo) { }
 
+        public Fraqueza(Fraqueza original)
+        {
+            Nome = original.Nome;
+            Descricao = original.Descricao;
+        }
+
         public  void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
             batalha.Aplicadores.Add(new AplicadorDeCondicao(new ModificacaoDano(nivel * -1, 3), alvo));

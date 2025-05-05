@@ -17,6 +17,12 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public Necrose(TipoDoenca tipo){ }
 
+        public Necrose(Necrose original)
+        {
+            Nome = original.Nome;
+            Descricao = original.Descricao;
+        }
+
         public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
         {
             int porcentagem = nivel * 10;

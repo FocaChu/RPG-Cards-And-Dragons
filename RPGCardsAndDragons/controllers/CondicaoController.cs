@@ -143,7 +143,7 @@ namespace CardsAndDragons.Controllers
 
             Console.CursorVisible = false;
 
-            while (continuar)
+            while (continuar && efeitosDisponiveis.Count > 0)
             {
                 while (!selecionado && efeitosDisponiveis.Count > 0)
                 {
@@ -195,12 +195,6 @@ namespace CardsAndDragons.Controllers
                             selecionado = true;
                             efeitos.Add(efeitosDisponiveis[opcaoSelecionada]);
                             efeitosDisponiveis.RemoveAt(opcaoSelecionada);
-
-                            // Ajusta o índice para evitar acesso inválido
-                            if (opcaoSelecionada >= efeitosDisponiveis.Count)
-                            {
-                                opcaoSelecionada = efeitosDisponiveis.Count - 1;
-                            }
                             break;
                     }
                 }
@@ -243,6 +237,7 @@ namespace CardsAndDragons.Controllers
 
             return efeitos;
         }
+
 
 
         //Escolhe o tipo de transmissão da doença
