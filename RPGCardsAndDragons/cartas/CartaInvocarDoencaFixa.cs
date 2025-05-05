@@ -55,6 +55,8 @@ namespace RPGCardsAndDragons.cartas
 
                 CustoNovo += doenca.Tipo.ObterCustoTransmissao(doenca.Transmissao);
 
+                CustoNovo += doenca.EAgrassiva ? 20 : 0;
+
                 this.CustoMana = CustoNovo;
                 this.CustoOuro = (CustoNovo / 10);
             }

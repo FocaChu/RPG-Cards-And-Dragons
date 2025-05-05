@@ -215,7 +215,7 @@ namespace CardsAndDragons
 
         static void JogarPartida()
         {
-            faseAtual = 3;
+            faseAtual = 1;
 
             acabarJogo = false;
             acabarBatalha = false;
