@@ -52,7 +52,7 @@ namespace CardsAndDragons.Controllers
 
             List<IEfeitoDoenca> efeitos = EscolherEfeitosDoenca(tipoDoenca);
 
-            string nome = EscolherNome();
+            string nome = EscolherNome(tipoDoenca);
 
             return new Doenca(tipoDoenca, nivel, Eagrassiva, duracao, transmissao, efeitos, nome);
         }
@@ -353,14 +353,20 @@ namespace CardsAndDragons.Controllers
             return Eagrassiva;
         }
 
-        public static string EscolherNome()
+        public static string EscolherNome(TipoDoenca tipoDoenca)
         {
+            string nome = "";
+
             Console.Clear();
             Console.WriteLine("\n\n\n");
             TextoController.CentralizarTexto("====================================== INCUBANDO DOENÇA ==================================");
-            TextoController.CentralizarTexto($"Escolha o nome da doença: ");
-            TextoController.CentralizarLinha("- ");
-            string nome = Console.ReadLine();
+            while (nome == null || nome == string.Empty)
+            {
+                Console.WriteLine();
+                TextoController.CentralizarTexto($"Nomeie sue {tipoDoenca.Nome}");
+                TextoController.CentralizarLinha("");
+                nome = Console.ReadLine();
+            }
             return nome;
         }
 

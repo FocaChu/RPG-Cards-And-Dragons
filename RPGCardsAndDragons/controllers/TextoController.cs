@@ -205,6 +205,8 @@ namespace CardsAndDragons.Controllers
         //Codigo usada pra deixar os textos coloridos com base na condição especial dele!
         public static void DefinirCorDaCondicao(string nomeCondicao)
         {
+            Console.ResetColor(); // Reseta a cor antes de definir uma nova
+
             switch (nomeCondicao)
             {
                 case "Veneno":
@@ -234,20 +236,20 @@ namespace CardsAndDragons.Controllers
         //Codigo usado para deixar as cores das cartas coloridas com base na raridade
         public static void DefinirCorDaCarta(Raridade raridade)
         {
-            int raridadeInt = ((int)raridade);
+            Console.ResetColor(); // Reseta a cor antes de definir uma nova
 
-            switch (raridadeInt)
+            switch (raridade)
             {
-                case 1:
+                case Raridade.Comum:
                     Console.ForegroundColor = ConsoleColor.White;
                     break;
-                case 2:
+                case Raridade.Rara:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     break;
-                case 3:
+                case Raridade.Lendaria:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     break;
-                case 4:
+                case Raridade.Profana:
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     break;
                 default:

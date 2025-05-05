@@ -132,6 +132,7 @@ namespace CardsAndDragons.Controllers
                 FabricaDeCartas.CriarPocaoVenenosa(),
                 FabricaDeCartas.CriarExplosaoImprudente(),
                 FabricaDeCartas.CriarBombardeio(),
+                FabricaDeCartas.CriarMaldicaoDaLua(),
                 FabricaDeCartas.CriarAtacarFerida(),
                 FabricaDeCartas.CriarEscudo(),
                 FabricaDeCartas.CriarPocaoDeCura(),

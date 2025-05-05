@@ -14,6 +14,7 @@ using RPGCardsAndDragons.doencas;
 using RPGCardsAndDragons.condicoes.doencas.tipoDoenca;
 using RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca;
 using RPGCardsAndDragons.cartas;
+using System.Runtime.CompilerServices;
 
 namespace CardsAndDragons.ClassesDasCartas
 {
@@ -196,25 +197,6 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
-        public static ICartaUsavel CriarMimico()
-        {
-            return new CartaGenerica
-            {
-                Nome = "Mimico",
-                Descricao = "Copia o efeito de outra carta.",
-                RaridadeCarta = Raridade.Comum,
-                Preco = GerarPreco(Raridade.Rara),
-                CustoMana = 20,
-                Modelo = GerarModeloCarta("M", 1),
-                Efeito = batalha =>
-                {
-                    var carta = batalha.Jogador.Mao[PersonagemController.SelecionarCarta(batalha.Jogador, 0)];
-
-                    carta.Usar(batalha);
-                }
-            };
-        }
-
         public static ICartaUsavel CriarRessureicao()
         {
             return new CartaGenerica
@@ -223,7 +205,7 @@ namespace CardsAndDragons.ClassesDasCartas
                 Descricao = "Reviva um inimigo morto aleatório como seu aliado.",
                 RaridadeCarta = Raridade.Rara,
                 Preco = GerarPreco(Raridade.Rara),
-                CustoMana = 40,
+                CustoMana = 80,
                 Modelo = GerarModeloCarta("9", 1),
                 Efeito = batalha =>
                 {
@@ -405,11 +387,11 @@ namespace CardsAndDragons.ClassesDasCartas
                     string descricaoUm = "Projétil de Gelo: Causa 15 de dano a um inimigo e atordoa ele.";
                     descricoes.Add(descricaoUm);
 
-                    string descricaoDois = "Parede de Vinha: Causa 10 de dano a um inimigo. Ele e inimigos adjacentes sofreram de veneno por 3 turnos. O alvo principal ira sofrer 5 e os demais 3.";
+                    string descricaoDois = "Parede de Vinha: Causa 10 de dano a um inimigo. Ele e inimigos adjacentes sofreram de veneno.";
                     descricoes.Add(descricaoDois);
 
 
-                    string descricaoTres = "Rastro de Fogo: Causa 10 de dano base e aplica 3 de queimadura por 3 turnos em todos os inimigos.";
+                    string descricaoTres = "Rastro de Fogo: Causa 10 de dano base e aplica queimadura em todos os inimigos.";
                     descricoes.Add(descricaoTres);
 
                     int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
@@ -807,6 +789,40 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarMimico()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Mimico",
+                Descricao = "Copia o efeito de outra carta.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoMana = 20,
+                Modelo = GerarModeloCarta("M", 1),
+                Efeito = batalha =>
+                {
+                    var jogador = batalha.Jogador;
+                    List<ICartaUsavel> cartasViaveis = new List<ICartaUsavel>();
+
+                    foreach (var cartaDisponivel in batalha.Jogador.Mao)
+                    {
+                        if (cartaDisponivel.CustoVida < jogador.VidaAtual
+                        && cartaDisponivel.CustoMana < jogador.ManaAtual
+                        && cartaDisponivel.CustoStamina < jogador.StaminaAtual
+                        && cartaDisponivel.CustoOuro < jogador.Ouro
+                        && cartaDisponivel.Nome != "Mimico")
+                        {
+                            cartasViaveis.Add(cartaDisponivel);
+                        }
+                    }
+
+                    var carta = batalha.Jogador.Mao[PersonagemController.SelecionarCarta(batalha.Jogador, cartasViaveis, 0)];
+
+                    carta.Usar(batalha);
+                }
+            };
+        }
+
         public static ICartaUsavel CriarPurificacao()
         {
             return new CartaGenerica
@@ -1002,13 +1018,64 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarMaldicaoDaLua()
+        {
+            return new CartaEvolutiva
+            {
+                Nome = "Maldição da Lua",
+                NomeEvolucao = "Maldição da Lua Vermelha",
+                Descricao = "Aplica 10 de maldição em um inimigo.",
+                DescricaoEvolucao = "Causa 10 de dano base e aplica 10 de maldição em todos os inimigos.",
+                RaridadeCarta = Raridade.Comum,
+                RaridadeEvolucao = Raridade.Profana,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoMana = 30,
+                CustoVidaEvolucao = 10,
+                Modelo = GerarModeloCarta("L", 1),
+                ModeloEvolucao = GerarModeloCarta("L", 3),
+                Evoluiu = false,
+                usosAteEvoluir = 100,
+                EfeitoEvolucao = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    Console.WriteLine();
+                    foreach (var inimigo in batalha.Inimigos)
+                    {
+                        inimigo.SofrerDano(danoFinal, false);
+                        CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(10), inimigo.Condicoes);
+
+                        TextoController.CentralizarTexto($"{inimigo.Nome} foi amaldiçoado!\n");
+                    }
+
+                },
+                EfeitoPadrao = batalha =>
+                {
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(50), alvo.Condicoes);
+
+                    TextoController.CentralizarTexto($"{alvo.Nome} foi amaldiçoado!\n");
+
+                    foreach (var condicao in alvo.Condicoes)
+                    {
+                        if (condicao is Maldicao && condicao.Nivel >= 50)
+                        {
+                            TextoController.CentralizarTexto($"A carta Maldição da Lua Evoluiu para Maldição da Lua Vermelha!\n");
+                            batalha.Evoluidores.Add(new EvoluidorDeCartas("Maldição da Lua"));
+                            break;
+                        }
+                    }
+                }
+            };
+        }
 
         public static ICartaUsavel CriarFogoMagico()
         {
             return new CartaGenerica
             {
                 Nome = "Fogo Mágico",
-                Descricao = "Causa 10 de dano base a um inimigo mais o nível de queimadura atual dele. Aplica 2 de queimadura por 2 rodadas.",
+                Descricao = "Causa 10 de dano base a um inimigo mais o nível de queimadura atual dele. Aplica queimadura.",
                 RaridadeCarta = Raridade.Comum,
                 Preco = GerarPreco(Raridade.Comum),
                 CustoStamina = 40,
@@ -1229,6 +1296,65 @@ namespace CardsAndDragons.ClassesDasCartas
                 Efeito = batalha =>
                 {
                     int danoFinal = 15 + batalha.Jogador.ModificadorDano;
+
+                    int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
+
+                    var alvo = batalha.Inimigos[option];
+                    alvo.SofrerDano(danoFinal, false);
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarBisturi()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Bisturi",
+                Descricao = "Corta um inimigo cusando 15 de dano. Chance de aplicar sangramento leve",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoMana = 15,
+                Modelo = GerarModeloCarta("A", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 15 + batalha.Jogador.ModificadorDano;
+
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    int chance = BatalhaController.GerarRNG(20);
+
+                    if(chance == 0)
+                    {
+                        CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
+                    }
+                    alvo.SofrerDano(danoFinal, false);
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarChoque()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Choque",
+                Descricao = "Causa dano base de 10 a um alvo. 15 se tiver um aliado robô ativo",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoMana = 10,
+                CustoStamina = 10,
+                Modelo = GerarModeloCarta("A", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    foreach (var aliado in batalha.Aliados)
+                    {
+                        if (aliado.Tipo == TipoCriatura.Robo)
+                        {
+                            danoFinal += 5;
+                            break;
+                        }
+                    }
 
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 

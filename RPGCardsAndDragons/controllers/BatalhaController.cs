@@ -22,7 +22,7 @@ namespace CardsAndDragons
 
             Console.CursorVisible = false;
 
-            string[] opcoesCombate = { "Usar Carta", "Analisar", "Ver Inventário","Passar Turno" };
+            string[] opcoesCombate = { "Usar Carta", "Analisar", "Ver Inventário", "Passar Turno" };
 
             while (!selecionado)
             {
@@ -267,32 +267,32 @@ namespace CardsAndDragons
                     inimigosDaFase.Add(new OInimigo(novoInimigo));
                 }
             }
-                // Define o multiplicador de dificuldade
-                double multiplicador = 1.0;
+            // Define o multiplicador de dificuldade
+            double multiplicador = 1.0;
 
-                if (dificuldadeJogo == 1) multiplicador = 1.25;    // Médio
-                else if (dificuldadeJogo == 2) multiplicador = 1.5; // Difícil
+            if (dificuldadeJogo == 1) multiplicador = 1.25;    // Médio
+            else if (dificuldadeJogo == 2) multiplicador = 1.5; // Difícil
 
-                for (int i = 0; i < inimigosDaFase.Count; i++)
-                {
-                    var inimigo = inimigosDaFase[i];
+            for (int i = 0; i < inimigosDaFase.Count; i++)
+            {
+                var inimigo = inimigosDaFase[i];
 
-                    // Aplica o modificador de dificuldade
-                    inimigo.VidaMax = (int)(inimigo.VidaMax * multiplicador);
-                    inimigo.VidaAtual = inimigo.VidaMax;
+                // Aplica o modificador de dificuldade
+                inimigo.VidaMax = (int)(inimigo.VidaMax * multiplicador);
+                inimigo.VidaAtual = inimigo.VidaMax;
 
-                    inimigo.DanoBase = (int)(inimigo.DanoBase * multiplicador);
-                }
-            
-                return inimigosDaFase;
-            
+                inimigo.DanoBase = (int)(inimigo.DanoBase * multiplicador);
+            }
+
+            return inimigosDaFase;
+
         }
 
 
         public static void AcaoUsarCarta(Batalha batalha)
         {
             // Primeiro, escolher a carta
-            int escolhaCarta = PersonagemController.SelecionarCarta(batalha.Jogador, 0);
+            int escolhaCarta = PersonagemController.SelecionarCarta(batalha.Jogador, batalha.Jogador.Mao, 0);
 
             if (escolhaCarta < 0) return; // cancelou
 
@@ -305,24 +305,35 @@ namespace CardsAndDragons
 
         public static void AcaoExibir(Batalha batalha)
         {
-            if(batalha.Aliados.Count > 0)
+            if (batalha.Aliados.Count > 0)
             {
+                string[] opcoesConfirmacao = { "Aliado", "Inimigo" };
+                int opcao = TextoController.MostrarMenuSelecao(false, "Deseja Analisar Um Aliado Ou Um Inimigo?", opcoesConfirmacao);
+
+                if (opcao == 0)
+                {
+                    var alvo = batalha.Aliados[AlvoController.SelecionarAlvo(batalha.Aliados)];
+
+                    ExibirAlvo(alvo);
+
+                }
+                else
+                {
+                    int alvo = AlvoController.SelecionarAlvo(batalha.Inimigos);
+
+                    ExibirAlvo(batalha.Inimigos[alvo]);
+
+                }
 
 
-                var alvo = batalha.Aliados[AlvoController.SelecionarAlvo(batalha.Aliados)];
-
-                ExibirAlvo(alvo);
-                
             }
             else
             {
 
                 int alvo = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
-                if (alvo < batalha.Inimigos.Count)
-                {
-                    ExibirAlvo(batalha.Inimigos[alvo]);
-                }
+                ExibirAlvo(batalha.Inimigos[alvo]);
+
 
             }
         }
@@ -403,20 +414,20 @@ namespace CardsAndDragons
                 batalha.Inimigos.Remove(morto);
             }
 
-            if(batalha.Aliados.Count > 0)
+            if (batalha.Aliados.Count > 0)
             {
                 foreach (var aliado in batalha.Aliados)
                 {
 
-                if (aliado.VidaAtual <= 0)
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    TextoController.CentralizarTexto($"{aliado.Nome} foi derrotado!");
-                    Console.ResetColor();
+                    if (aliado.VidaAtual <= 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        TextoController.CentralizarTexto($"{aliado.Nome} foi derrotado!");
+                        Console.ResetColor();
 
-                    //passa o aliado que morreu pra uma lista temporaria. A remoção direta causa erro
-                    aliadosMortos.Add(aliado);
-                }
+                        //passa o aliado que morreu pra uma lista temporaria. A remoção direta causa erro
+                        aliadosMortos.Add(aliado);
+                    }
                 }
                 foreach (var aliado in aliadosMortos)
                 {
@@ -429,6 +440,17 @@ namespace CardsAndDragons
 
         public static int VerificarResultadoTurno(Batalha batalha)
         {
+            if (batalha.Evoluidores.Count > 0)
+            {
+                foreach (var evoluidor in batalha.Evoluidores)
+                {
+                    evoluidor.Evoluir(batalha.Jogador.BaralhoCompleto);
+                }
+
+                batalha.Evoluidores.Clear();
+            }
+
+
             if (batalha.Jogador.VidaAtual == 0)
             {
                 return 1;

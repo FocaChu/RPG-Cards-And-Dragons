@@ -29,7 +29,8 @@ namespace CardsAndDragons.ClassesClasses
         FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(),
         FabricaDeCartas.CriarPocaoDeCura(), 
         FabricaDeCartas.CriarFogoMagico(), FabricaDeCartas.CriarFogoMagico(),
-        FabricaDeCartas.CriarFeiticoDeGelo(),FabricaDeCartas.CriarLivroDeFeiços(),
+        FabricaDeCartas.CriarFeiticoDeGelo(),
+        FabricaDeCartas.CriarLivroDeFeiços(),
     };
         }
     }

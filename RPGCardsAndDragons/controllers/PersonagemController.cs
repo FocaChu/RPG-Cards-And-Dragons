@@ -396,28 +396,28 @@ namespace CardsAndDragons
 
 
         //Mostra todas aws cartas que o jogador tem na mão
-        public static void MostrarCartasNaMao(Personagem jogador, int opcao)
+        public static void MostrarCartasNaMao(Personagem jogador, List<ICartaUsavel> cartas, int opcao)
         {
             Console.Clear();
             Console.WriteLine("\n\n\n");
             TextoController.CentralizarTexto($"=============== Cartas de {jogador.Nome} ===============\n");
 
-            if (jogador.Mao.Count == 0)
+            if (cartas.Count == 0)
             {
                 TextoController.CentralizarTexto("Sua mão está vazia.");
                 return;
             }
 
-            int larguraModelo = jogador.Mao.First().Modelo[0].Length;
+            int larguraModelo = cartas.First().Modelo[0].Length;
             int espacoEntre = 2;
 
-            int larguraTotal = jogador.Mao.Count * larguraModelo + (jogador.Mao.Count - 1) * espacoEntre;
+            int larguraTotal = cartas.Count * larguraModelo + (cartas.Count - 1) * espacoEntre;
             int margemEsquerda = (Console.WindowWidth - larguraTotal) / 2;
 
             TextoController.CentralizarTexto($"Recursos Disponíveis\n");
             TextoController.CentralizarTexto($"Vida: {jogador.VidaAtual} | Ouro: {jogador.Ouro} | Mana: {jogador.ManaAtual} | Stamina: {jogador.StaminaAtual}\n\n");
 
-            CartaController.MostrarCartas(jogador.Mao, opcao);
+            CartaController.MostrarCartas(cartas, opcao);
         }
 
         #endregion
@@ -432,7 +432,7 @@ namespace CardsAndDragons
             int option = 0;
 
             //seleciona uma carta para usar(ou voltac om um valor negativo)
-            int escolha = SelecionarCarta(batalha.Jogador, option);
+            int escolha = SelecionarCarta(batalha.Jogador, batalha.Jogador.Mao, option);
 
             //se o valor for posiivo ele usa a carta
             if (escolha >= 0)
@@ -448,10 +448,10 @@ namespace CardsAndDragons
             }
         }
 
-        public static int SelecionarCarta(Personagem jogador, int option)
+        public static int SelecionarCarta(Personagem jogador, List<ICartaUsavel> cartas, int option)
         {
             bool selecionado = false;
-            int totalOpcoes = jogador.Mao.Count;
+            int totalOpcoes = cartas.Count;
             bool voltar = false;
 
             while (!selecionado)
@@ -460,7 +460,7 @@ namespace CardsAndDragons
 
                 TextoController.CentralizarTexto("==========================   !COMBATE!   ==========================");
 
-                MostrarCartasNaMao(jogador, option);
+                MostrarCartasNaMao(jogador, cartas, option);
 
                 Console.ResetColor();
                 Console.WriteLine("\n");
@@ -483,9 +483,9 @@ namespace CardsAndDragons
                     case ConsoleKey.Enter:
                         Console.ForegroundColor = ConsoleColor.Yellow;
 
-                        if (jogador.Mao.Count > 0)
+                        if (cartas.Count > 0)
                         {
-                            TextoController.CentralizarTexto($"Você selecionou o carta {jogador.Mao[option].Nome}.");
+                            TextoController.CentralizarTexto($"Você selecionou o carta {cartas[option].Nome}.");
 
                             Console.WriteLine("\n");
                             TextoController.CentralizarTexto("Aperte ENTER para confirmar, qualquer outra tecla para voltar.\n");

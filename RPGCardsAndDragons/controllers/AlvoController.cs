@@ -19,7 +19,6 @@ namespace CardsAndDragons.Controllers
             while (!selecionado)
             {
                 Console.Clear();
-                TextoController.CentralizarTexto("Escolha o inimigo para atacar:");
                 BatalhaController.MostrarInimigos(inimigos, option);
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -48,7 +47,11 @@ namespace CardsAndDragons.Controllers
             while (!selecionado)
             {
                 Console.Clear();
-                TextoController.CentralizarTexto("Escolha um aliado:");
+
+                Console.ResetColor();
+                Console.WriteLine("\n\n\n\n");
+                TextoController.CentralizarTexto(@"=========================================   ~ ALIADOS ~   =======================================" + "\n\n");
+
                 BatalhaController.MostrarCriaturas(aliados, option, ConsoleColor.Green, ConsoleColor.Yellow);
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -56,11 +59,11 @@ namespace CardsAndDragons.Controllers
                 {
                     case ConsoleKey.LeftArrow:
                         if (option > 0) option--;
-                        else option = aliados.Count - 1; // <- Corrigido: agora circula só nos inimigos
+                        else option = aliados.Count - 1;
                         break;
                     case ConsoleKey.RightArrow:
                         if (option < aliados.Count - 1) option++;
-                        else option = 0; // <- Corrigido também
+                        else option = 0;
                         break;
                     case ConsoleKey.Enter:
                         return option;

@@ -215,7 +215,7 @@ namespace CardsAndDragons
 
         static void JogarPartida()
         {
-            faseAtual = 1;
+            faseAtual = 3;
 
             acabarJogo = false;
             acabarBatalha = false;
@@ -260,16 +260,12 @@ namespace CardsAndDragons
 
                     TextoController.TituloBossFight();
 
-
                     Console.ReadKey();
 
                     Console.Clear();
                 }
 
-                if (faseAtual % 5 == 0)
-                {
 
-                }
                 //começa uma batalha
                 while (!acabarBatalha)
                 {

@@ -52,7 +52,9 @@
     <Compile Include="cartas\CartaGenerica.cs" />
     <Compile Include="cartas\CartaInvocarDoencaFixa.cs" />
     <Compile Include="cartas\CartaInvocarRoboFixa.cs" />
+    <Compile Include="cartas\CartaEvolutiva.cs" />
     <Compile Include="cartas\CartaRecarregavel.cs" />
+    <Compile Include="cartas\EvoluidorDeCartas.cs" />
     <Compile Include="cartas\FabricaDeCartas.cs" />
     <Compile Include="cartas\ICartaUsavel.cs" />
     <Compile Include="classesrpg\Arqueiro.cs" />

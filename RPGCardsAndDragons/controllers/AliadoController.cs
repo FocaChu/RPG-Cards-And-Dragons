@@ -32,10 +32,16 @@ namespace CardsAndDragons.Controllers
             TipoSoftware software = ProgramarRobo();    // ex: Cura, Ataque...
             TipoHardware hardware = MontarRobo();       // ex: Eficiência, Resistência...
 
+            string nome = "";
+
             // Pede o nome do robô
-            TextoController.CentralizarTexto("Qual será o nome do seu robô?");
-            TextoController.CentralizarLinha("");
-            string nome = Console.ReadLine();
+            while (nome == null || nome == string.Empty)
+            {
+                Console.WriteLine();
+                TextoController.CentralizarTexto("Nomeie o seu robô: ");
+                TextoController.CentralizarLinha("");
+                nome = Console.ReadLine();
+            }
 
             // Garante que sempre cria uma nova instância separada
             return new RoboAliado(software, hardware, nome);

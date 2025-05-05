@@ -22,6 +22,7 @@ namespace CardsAndDragonsJogo
         Robo = 1,
         Recarregavel = 2,
         Doenca = 3,
+        Evolutiva = 4,
     }
 
     //Interface que define todas as cartas do jogo. Desde de genericas até futuras cartas mais especiais
