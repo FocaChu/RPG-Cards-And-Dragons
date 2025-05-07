@@ -30,9 +30,9 @@ namespace CardsAndDragons.Inimigos
 
         public abstract bool PodeUsarHabilidade(int rodadaAtual);
 
-        public abstract void Atacar(Batalha batalha, OInimigo self);
+        public abstract void Atacar(Batalha batalha, OInimigo self, int nivelParanoia);
 
-        public abstract void UsarHabilidade(Batalha batalha, OInimigo self);
+        public abstract void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia);
 
         public abstract void AtacarComoAliado(Batalha batalha, InimigoRevivido self);
 

@@ -19,6 +19,7 @@ namespace CardsAndDragons.ClassesEspecies
             return new List<ICartaUsavel>
     {
         FabricaDeCartas.CriarMimico(), FabricaDeCartas.CriarMimico(),
+        FabricaDeCartas.CriarSilenciar(), FabricaDeCartas.CriarInseguranca(),
     };
         }
     }

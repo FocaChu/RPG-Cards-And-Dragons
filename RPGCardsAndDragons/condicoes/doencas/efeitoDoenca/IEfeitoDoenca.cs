@@ -17,6 +17,6 @@ namespace RPGCardsAndDragons.doencas
 
         string Descricao { get; set; }
 
-        void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel);
+        void Aplicar(Batalha batalha, OInimigo alvo, int nivel);
     }
 }

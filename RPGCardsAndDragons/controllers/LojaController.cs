@@ -159,6 +159,8 @@ namespace CardsAndDragons.Controllers
 
                 case "Doutor":
                     cartas.Add(FabricaDeCartas.CriarInvocarDoencaFixa());
+                    cartas.Add(FabricaDeCartas.CriarPraga());
+                    cartas.Add(FabricaDeCartas.CriarCuidadosPosMortem());
                     cartas.Add(FabricaDeCartas.CriarSacrificarServo());
 
                     cartas.Add(FabricaDeCartas.CriarSortearDestino());

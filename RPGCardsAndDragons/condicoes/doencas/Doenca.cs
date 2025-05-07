@@ -47,7 +47,7 @@ namespace RPGCardsAndDragons.doencas
             this.EAgrassiva = doenca.EAgrassiva;
             this.Duracao = doenca.Duracao;
             this.Transmissao = (ITipoTransmissao)Activator.CreateInstance(doenca.Transmissao.GetType());
-            this.Efeitos = doenca.Efeitos.Select(efeito => (IEfeitoDoenca)Activator.CreateInstance(efeito.GetType(), efeito)).ToList();
+            this.Efeitos = doenca.Efeitos;
         }
 
         public void AplicarEfeito(OInimigo alvo, Batalha batalha)

@@ -10,6 +10,7 @@ using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
 using CardsAndDragonsJogo;
 using CardsAndDragonsJogo.ClassesCartas;
+using RPGCardsAndDragons.fases;
 
 namespace CardsAndDragons
 {
@@ -36,8 +37,8 @@ namespace CardsAndDragons
         //Guarda nosso jogador
         static List<Personagem> oJogador = new List<Personagem>();
 
-        //Guarda os inimigos de cada batalha
-        static List<OInimigo> inimigosDaFase = new List<OInimigo> { };
+        //Guarda o bioma atual
+        static BiomaJogo biomaAtual = new BiomaFloresta();
 
         //forma mais intuitva de chamar o jogador que estamos usando
         static int jogadorAtual = 0;
@@ -46,6 +47,8 @@ namespace CardsAndDragons
         public static Bioma BiomaAtual = Bioma.Floresta;
 
         public static int faseAtual = 1;
+
+        public static int capituloAtual = 1;
 
         static int dificuladeDoJogo = 1;
 
@@ -225,21 +228,17 @@ namespace CardsAndDragons
             //começa a run
 
             Console.WriteLine("\n\n\n\n");
-            TextoController.CentralizarTexto("================================================== * CPAITÚLO 1 * ==================================================\n\n");
+            TextoController.CentralizarTexto("================================================== * CAPITÚLO 1 * ==================================================\n\n");
 
-            TextoController.CentralizarTexto($"{oJogador[jogadorAtual].Nome} adentra a floresta antiga. Suas árvores e mata escondem perigos sinuoso pela a jornada até o dragão...");
+            TextoController.CentralizarTexto($"{oJogador[jogadorAtual].Nome} sai da segurança das muralhas antigas da Fortaleza de Tyltim. Determinado em sua grande caçada até o rei dragão...");
 
             Console.ReadKey();
 
+            TextoController.MostrarNovoBioma(biomaAtual, capituloAtual, oJogador[jogadorAtual]);
+
             while (!acabarJogo)
             {
-                inimigosDaFase.Clear();
-
-                //define os inimigos da batalha com base na dificuldade atual
-                inimigosDaFase = BatalhaController.GerarOsInimigos(dificuladeDoJogo, faseAtual, BiomaAtual);
-
-                //faz a classe batalha recebendo os inimigos e o jogador
-                Batalha batalha = new Batalha(oJogador[jogadorAtual], inimigosDaFase);
+                Batalha batalha = new Batalha(oJogador[jogadorAtual], dificuladeDoJogo, biomaAtual, faseAtual);
 
                 //permite que outra batalha começe
                 acabarBatalha = false;
@@ -271,6 +270,26 @@ namespace CardsAndDragons
                 {
                     
                     IniciarBatalha(batalha);
+
+                }
+
+                if (faseAtual % 10 == 0)
+                {
+                    Console.Clear();
+
+                    biomaAtual = BatalhaController.DefinirBioma(biomaAtual);
+
+                    capituloAtual++;
+
+                    Console.WriteLine("\n\n\n\n");
+                    TextoController.CentralizarTexto($"========================================   - CAPITÚLO  {capituloAtual} -   =======================================" + "\n\n");
+
+                    TextoController.CentralizarTexto($"Após derrotar o dragão, {oJogador[jogadorAtual].Nome} se prepara para a próxima jornada rumo a um novo destino...\n\n");
+
+                    Console.ReadKey();
+
+
+                    TextoController.MostrarNovoBioma(biomaAtual, capituloAtual, oJogador[jogadorAtual]);
 
                 }
 
@@ -307,6 +326,7 @@ namespace CardsAndDragons
             {
                 case 0:
                     BatalhaController.AcaoUsarCarta(batalha);
+                    BatalhaController.VerificarEvoluidores(batalha);
                     break;
 
                 case 1:

@@ -21,10 +21,10 @@ namespace CardsAndDragons.ClassesCondicoes
 
         public int Duracao { get; set; }
 
-        public Silencio()
+        public Silencio(int nivel, int duracao)
         {
-            Nivel = 1;
-            Duracao = 2;
+            Nivel = nivel;
+            Duracao = duracao;
         }
 
         public override string ToString()
@@ -38,7 +38,7 @@ namespace CardsAndDragons.ClassesCondicoes
 
         public void AplicarEfeito(ICriaturaCombatente criatura)
         {
-            TextoController.CentralizarTexto($"{criatura.Nome} foi silênciado!");
+            TextoController.CentralizarTexto($"...");
         }
 
         public void Atualizar() => Duracao--;

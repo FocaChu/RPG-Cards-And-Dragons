@@ -8,11 +8,28 @@ using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
 using CardsAndDragonsJogo;
 using CardsAndDragonsJogo.ClassesCartas;
+using RPGCardsAndDragons.Aplicadores;
+using RPGCardsAndDragons.cartas;
+using RPGCardsAndDragons.condicoes;
+using RPGCardsAndDragons.controllers;
+using RPGCardsAndDragons.fases;
 
 namespace CardsAndDragons
 {
     public static class BatalhaController
     {
+        static Random rng = new Random();
+
+        public static BiomaJogo DefinirBioma(BiomaJogo biomaAtual)
+        {
+            List<BiomaJogo> biomasDisponiveis = BuscaController.ObterTodosOsBiomasDisponiveis()
+             .Where(fase => fase.Dificuldade == biomaAtual.Dificuldade + 1)
+            .ToList();
+
+            BiomaJogo faseEscolhida = biomasDisponiveis[rng.Next(biomasDisponiveis.Count)];
+
+            return faseEscolhida;
+        }
 
         public static int MenuBatalha(Batalha batalha)
         {
@@ -202,90 +219,54 @@ namespace CardsAndDragons
         }
 
         //COdigo vita! Ele é quem gera os inimigos da fase
-        public static List<OInimigo> GerarOsInimigos(int dificuldadeJogo, int faseAtual, Bioma biomaAtual)
+        public static List<OInimigo> GerarOsInimigos(int dificuldadeJogo, BiomaJogo biomaAtual, int faseAtual)
         {
             List<OInimigo> inimigosDaFase = new List<OInimigo>();
 
-            Random rng = new Random();
+            bool ehChefe = faseAtual % 10 == 0 ? true : false; // Verifica se é um boss (a cada 10 fases)
 
-            if (faseAtual % 10 == 0)
+            var listaOrigem = ehChefe ? biomaAtual.DefinirChefes() : biomaAtual.DefinirInimigos();
+
+            int qtdInimigos = ehChefe ? 1 : (BatalhaController.GerarRNG(60) == 0 ? 3 : 4);
+
+            for (int i = 0; i < qtdInimigos; i++)
             {
+                if (listaOrigem.Count == 0) break;
 
-                //Usa o ajudante para ganhar a lista com os inimigos do jogo
-                var tiposDeInimigos = InimigoRPGAjudante.ObterTiposDeInimigosDisponiveis();
+                int indice = rng.Next(listaOrigem.Count);
+                Type tipo = listaOrigem[indice].GetType();
 
-                // Filtrar inimigos com base na dificuldade
-                var inimigosValidos = tiposDeInimigos
-                    .Select(t => (InimigoRPG)Activator.CreateInstance(t))
-                    .Where(inimigo => inimigo.BiomaDeOrigem == biomaAtual && inimigo.EBoss == true)
-                    .ToList();
+                InimigoRPG inimigoGerado = (InimigoRPG)Activator.CreateInstance(tipo);
 
-                //faz o rng de inimigos aqui
-                int quantidadeInimigosNaFase = 1;
-
-                for (int i = 0; i < quantidadeInimigosNaFase; i++)
-                {
-                    if (inimigosValidos.Count == 0) break;
-
-                    int indice = rng.Next(inimigosValidos.Count);
-
-                    // cria inimigos aqui
-                    Type tipo = inimigosValidos[indice].GetType();
-                    InimigoRPG novoInimigo = (InimigoRPG)Activator.CreateInstance(tipo);
-
-                    inimigosDaFase.Add(new OInimigo(novoInimigo));
-                }
+                inimigosDaFase.Add(new OInimigo(inimigoGerado));
             }
-            else
+
+
+
+            // Multiplicador de dificuldade
+            double multiplicador = 0;
+
+            switch (dificuldadeJogo)
             {
-
-                //Usa o ajudante para ganhar a lista com os inimigos do jogo
-                var tiposDeInimigos = InimigoRPGAjudante.ObterTiposDeInimigosDisponiveis();
-
-                // Filtrar inimigos com base na dificuldade
-                var inimigosValidos = tiposDeInimigos
-                    .Select(t => (InimigoRPG)Activator.CreateInstance(t))
-                    .Where(inimigo => inimigo.BiomaDeOrigem == Program.BiomaAtual && inimigo.EBoss == false)
-                    .ToList();
-
-                //faz o rng dos inimigos aqui
-                int porcentagem = 60;
-                int resultado = BatalhaController.GerarRNG(porcentagem);
-
-                int qtdInimigosNaFase = resultado == 0 ? 3 : 4;
-
-                for (int i = 0; i < qtdInimigosNaFase; i++)
-                {
-                    if (inimigosValidos.Count == 0) break;
-
-                    int indice = rng.Next(inimigosValidos.Count);
-
-                    // cria inimigos aqui
-                    Type tipo = inimigosValidos[indice].GetType();
-                    InimigoRPG novoInimigo = (InimigoRPG)Activator.CreateInstance(tipo);
-
-                    inimigosDaFase.Add(new OInimigo(novoInimigo));
-                }
+                case 1:
+                    multiplicador = 1.25;
+                    break;
+                case 2:
+                    multiplicador = 1.5;
+                    break;
+                default:
+                    multiplicador = 1.0;
+                    break;
             }
-            // Define o multiplicador de dificuldade
-            double multiplicador = 1.0;
 
-            if (dificuldadeJogo == 1) multiplicador = 1.25;    // Médio
-            else if (dificuldadeJogo == 2) multiplicador = 1.5; // Difícil
-
-            for (int i = 0; i < inimigosDaFase.Count; i++)
+            foreach (var inimigo in inimigosDaFase)
             {
-                var inimigo = inimigosDaFase[i];
-
-                // Aplica o modificador de dificuldade
                 inimigo.VidaMax = (int)(inimigo.VidaMax * multiplicador);
                 inimigo.VidaAtual = inimigo.VidaMax;
-
                 inimigo.DanoBase = (int)(inimigo.DanoBase * multiplicador);
             }
 
             return inimigosDaFase;
-
         }
 
 
@@ -440,16 +421,6 @@ namespace CardsAndDragons
 
         public static int VerificarResultadoTurno(Batalha batalha)
         {
-            if (batalha.Evoluidores.Count > 0)
-            {
-                foreach (var evoluidor in batalha.Evoluidores)
-                {
-                    evoluidor.Evoluir(batalha.Jogador.BaralhoCompleto);
-                }
-
-                batalha.Evoluidores.Clear();
-            }
-
 
             if (batalha.Jogador.VidaAtual == 0)
             {
@@ -466,8 +437,63 @@ namespace CardsAndDragons
             }
         }
 
+        public static void VerificarRessucitadores(Batalha batalha)
+        {
+            if (batalha.Aplicadores.Count > 0)
+            {
+                // Cria uma cópia da lista para evitar problemas de modificação durante a iteração
+                var aplicadoresAtuais = new List<IAplicador>(batalha.Aplicadores);
+
+                foreach (var aplicador in aplicadoresAtuais)
+                {
+                    if (aplicador is AplicadorRessuireicao ressucitador)
+                    {
+                        if(ressucitador.Aplicar(batalha)) batalha.Aplicadores.Remove(ressucitador); // Remove o aplicador imediatamente após a execução
+                    }
+                }
+            }
+        }
+
+        public static void VerificarContaminadores(Batalha batalha)
+        {
+            if (batalha.Aplicadores.Count > 0)
+            {
+                // Cria uma cópia da lista para evitar problemas de modificação durante a iteração
+                var aplicadoresAtuais = new List<IAplicador>(batalha.Aplicadores);
+
+                foreach (var aplicador in aplicadoresAtuais)
+                {
+                    if (aplicador is AplicadorCondicao contaminador)
+                    {
+                        contaminador.Aplicar(batalha);
+                        batalha.Aplicadores.Remove(contaminador); // Remove o aplicador imediatamente após a execução
+                    }
+                }
+            }
+        }
+
+        public static void VerificarEvoluidores(Batalha batalha)
+        {
+            if (batalha.Aplicadores.Count > 0)
+            {
+                // Cria uma cópia da lista para evitar problemas de modificação durante a iteração
+                var aplicadoresAtuais = new List<IAplicador>(batalha.Aplicadores);
+
+                foreach (var aplicador in aplicadoresAtuais)
+                {
+                    if(aplicador is AplicadorEvolucao evoluidor)
+                    {
+                        evoluidor.Aplicar(batalha);
+                        batalha.Aplicadores.Remove(evoluidor); // Remove o aplicador imediatamente após a execução
+                    }
+                }
+            }
+        }
+
         public static void NovaRodada(Batalha batalha)
         {
+            BatalhaController.VerificarRessucitadores(batalha);
+
             if (batalha.Jogador.BaralhoCompra.Count == 0)
             {
                 PersonagemController.RecarregarBaralho(batalha.Jogador);

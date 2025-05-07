@@ -36,7 +36,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.transmissaoDoenca
                 var alvo = AlvoController.EscolherInimigoAleatorio(alvosViaveis);
 
                 // Aplica a infecção
-                batalha.Aplicadores.Add(new AplicadorDeCondicao(new Doenca(doenca), alvo));
+                batalha.Aplicadores.Add(new AplicadorCondicao(new Doenca(doenca), alvo));
 
                 Console.WriteLine();
                 TextoController.CentralizarLinha($"{alvo.Nome} foi infectado pelo patógeno {doenca.Nome}\n");

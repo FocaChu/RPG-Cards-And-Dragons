@@ -5,20 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.Cartas;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.Aplicadores;
 
 namespace RPGCardsAndDragons.cartas
 {
-    public class EvoluidorDeCartas
+    public class AplicadorEvolucao : IAplicador
     {
         public string Nomecarta { get; set; }
 
-        public EvoluidorDeCartas(string nomecarta)
+        public AplicadorEvolucao(string nomecarta)
         {
             this.Nomecarta = nomecarta;
         }
 
-        public void Evoluir(List<ICartaUsavel> cartas)
+        public bool Aplicar(Batalha batalha)
         {
+           var cartas = batalha.Jogador.BaralhoCompleto;
+
             foreach (var carta in cartas)
             {
                 if (carta is CartaEvolutiva cartaEvoluida && cartaEvoluida.Nome == this.Nomecarta)
@@ -26,6 +29,8 @@ namespace RPGCardsAndDragons.cartas
                     cartaEvoluida.Evoluir();
                 }
             }
+
+            return true;
         }
     }
 }

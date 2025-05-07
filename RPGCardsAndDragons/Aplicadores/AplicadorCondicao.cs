@@ -5,28 +5,31 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragonsJogo;
+using RPGCardsAndDragons.Aplicadores;
 
 namespace RPGCardsAndDragons.condicoes
 {
-    public class AplicadorDeCondicao
+    public class AplicadorCondicao : IAplicador
     {
 
         public ICondicaoTemporaria Condicao { get; set; }
 
         public ICriaturaCombatente Criatura { get; set; }
 
-        public AplicadorDeCondicao(ICondicaoTemporaria condicao, ICriaturaCombatente criatura)
+        public AplicadorCondicao(ICondicaoTemporaria condicao, ICriaturaCombatente criatura)
         {
             this.Condicao = condicao;
             this.Criatura = criatura;
         }
 
-        public void AplicarCondicao()
+        public bool Aplicar(Batalha batalha)
         {
             if(Criatura.VidaAtual > 0)
             {
                 Criatura.Condicoes.Add(Condicao);
             }
+            return true;
         }
 
     }

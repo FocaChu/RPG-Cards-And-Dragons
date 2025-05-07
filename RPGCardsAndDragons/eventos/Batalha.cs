@@ -7,8 +7,10 @@ using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
+using RPGCardsAndDragons.Aplicadores;
 using RPGCardsAndDragons.cartas;
 using RPGCardsAndDragons.condicoes;
+using RPGCardsAndDragons.fases;
 
 namespace CardsAndDragonsJogo
 {
@@ -16,29 +18,34 @@ namespace CardsAndDragonsJogo
     {
         public Personagem Jogador { get; set; }
 
+        public BiomaJogo BiomaAtual { get; set; }
+
+        public int DificuldadeJogo { get; set; }
+
         public List<OInimigo> Inimigos { get; set; }
 
         public List<OInimigo> InimigosDerrotados { get; set; }
 
-        public List<AplicadorDeCondicao> Aplicadores { get; set; }
-
-        public List<EvoluidorDeCartas> Evoluidores { get; set; }
+        public List<IAplicador> Aplicadores { get; set; }
 
         public List<ICriaturaCombatente> Aliados { get; set; }
 
 
         public int rodadaAtual = 1;
 
-        public Batalha(Personagem jogadorAtual, List<OInimigo> inimigosDaFase)
+        public Batalha(Personagem jogadorAtual, int dificuldadeJogo, BiomaJogo biomaAtual, int faseAtual)
         {
             Jogador = jogadorAtual;
-            Inimigos = inimigosDaFase;
+            this.BiomaAtual = biomaAtual;
 
-            InimigosDerrotados = new List<OInimigo>();
-            Aliados = new List<ICriaturaCombatente>();
+            this.DificuldadeJogo = dificuldadeJogo;
 
-            Aplicadores = new List<AplicadorDeCondicao>();
-            Evoluidores = new List<EvoluidorDeCartas>();
+            this.Inimigos = BatalhaController.GerarOsInimigos(DificuldadeJogo, BiomaAtual, faseAtual);
+
+            this.InimigosDerrotados = new List<OInimigo>();
+            this.Aliados = new List<ICriaturaCombatente>();
+
+            this.Aplicadores = new List<IAplicador>();
 
             AliadoController.AcidionarRobosABatalha(this);
         }
@@ -77,7 +84,7 @@ namespace CardsAndDragonsJogo
                         if (condicao is Atordoamento atordoamento)
                         {
                             atordoamento.Duracao--;
-                            if (atordoamento.Duracao <= 0)
+                            if (atordoamento.Duracao <= 1)
                             {
                                 condicoes.Add(condicao);
                                 TextoController.CentralizarTexto($"{aliado.Nome} se libertou do atordoamento!");
@@ -105,16 +112,7 @@ namespace CardsAndDragonsJogo
                 Console.WriteLine();
                 System.Threading.Thread.Sleep(200); // Delayzinho dramático
 
-                if (!CondicaoController.VerificarCondicao<Atordoamento>(inimigo.Condicoes))
-                {
-                    inimigo.RealizarTurno(this);
-
-                    Console.WriteLine();
-                    System.Threading.Thread.Sleep(800); // Tempo pra ler o ataque
-
-                    CondicaoController.SangrarFerida(inimigo);
-                }
-                else
+                if (CondicaoController.VerificarCondicao<Atordoamento>(inimigo.Condicoes))
                 {
                     TextoController.CentralizarTexto($"{inimigo.Nome} está atordoado e não pode agir...\n");
                     List<ICondicaoTemporaria> condicoes = new List<ICondicaoTemporaria>();
@@ -131,6 +129,30 @@ namespace CardsAndDragonsJogo
                         }
                     }
                     inimigo.Condicoes.RemoveAll(c => condicoes.Contains(c));
+                }
+                else if (CondicaoController.VerificarCondicao<Paranoia>(inimigo.Condicoes))
+                {
+                    int nivel = 1;
+
+                    foreach(var condicao in inimigo.Condicoes)
+                    {
+                        if (condicao is Paranoia paranoia)
+                        {
+                            nivel = paranoia.Nivel;
+                            break;
+                        }
+                    }
+
+                    inimigo.RealizarTurno(this, nivel);
+                }
+                else
+                {
+                    inimigo.RealizarTurno(this);
+
+                    Console.WriteLine();
+                    System.Threading.Thread.Sleep(800); // Tempo pra ler o ataque
+
+                    CondicaoController.SangrarFerida(inimigo);
                 }
             }
             rodadaAtual++;

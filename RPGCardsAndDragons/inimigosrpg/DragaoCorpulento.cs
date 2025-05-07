@@ -68,7 +68,7 @@ namespace CardsAndDragons
         public override int CooldownHabilidade => 4; // a cada 2 rodadas usa habilidada
 
 
-        public override void Atacar(Batalha batalha, OInimigo self)
+        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
         {
             int danoFinal = this.DanoBase + self.ModificadorDano;
 
@@ -83,7 +83,7 @@ namespace CardsAndDragons
             return rodadaAtual % CooldownHabilidade == 0;
         }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self)
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
         {
             Random rng = new Random();
 

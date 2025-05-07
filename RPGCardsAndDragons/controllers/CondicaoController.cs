@@ -5,7 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.Aplicadores;
+using RPGCardsAndDragons.cartas;
+using RPGCardsAndDragons.condicoes;
 using RPGCardsAndDragons.condicoes.doencas;
+using RPGCardsAndDragons.controllers;
 using RPGCardsAndDragons.doencas;
 
 namespace CardsAndDragons.Controllers
@@ -61,7 +65,7 @@ namespace CardsAndDragons.Controllers
         public static TipoDoenca EscolherTipoDoenca()
         {
             //variaveis que fazem a seleção funcionar
-            List<TipoDoenca> tiposDoencaDisponivel = TipoDoencaAjudante.ObterTodasOsTipoDoencaDisponiveis();
+            List<TipoDoenca> tiposDoencaDisponivel = BuscaController.ObterTodasOsTipoDoencaDisponiveis();
 
             int opcaoSelecionada = 0;
             bool selecionado = false;
@@ -428,12 +432,10 @@ namespace CardsAndDragons.Controllers
                 Console.ResetColor();
             }
 
-            foreach (var aplicador in batalha.Aplicadores)
+            if (batalha.Aplicadores.Count > 0)
             {
-                aplicador.AplicarCondicao();
-            }
-
-            batalha.Aplicadores.Clear();
+                BatalhaController.VerificarContaminadores(batalha);
+            } 
 
             if (batalha.Aliados.Count > 0)
             {

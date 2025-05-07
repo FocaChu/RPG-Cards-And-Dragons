@@ -23,7 +23,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
             Descricao = original.Descricao;
         }
 
-        public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
+        public void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
         {
             int porcentagem = nivel * 10;
             double dano = alvo.VidaAtual * (porcentagem / 100.0);

@@ -7,6 +7,7 @@ using CardsAndDragons.Aliados;
 using CardsAndDragons.ClassesCondicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.controllers;
 
 namespace CardsAndDragons
 {
@@ -80,7 +81,7 @@ namespace CardsAndDragons
         public static EspecieRPG SelecionarEspecie()
         {
             //mostra todas as especies
-            var especiesDisponiveis = EspecieRPGAjudante.ObterTodasAsEspeciesDisponiveis();
+            var especiesDisponiveis = BuscaController.ObterTodasAsEspeciesDisponiveis();
 
             //variaveis que fazem a seleção funcionar
             int opcaoSelecionada = 0;
@@ -171,7 +172,7 @@ namespace CardsAndDragons
         public static ClasseRPG EscolherClasse()
         {
             //Mostra todas as classes
-            var classesDisponiveis = ClasseRPGAjudante.ObterTodasAsClassesDisponiveis();
+            var classesDisponiveis = BuscaController.ObterTodasAsClassesDisponiveis();
 
             //variaveis que fazem a seleção funcionar
             int opcaoSelecionada = 0;

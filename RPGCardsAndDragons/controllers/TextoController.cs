@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragonsJogo;
+using RPGCardsAndDragons.fases;
 
 namespace CardsAndDragons.Controllers
 {
@@ -47,6 +48,28 @@ namespace CardsAndDragons.Controllers
                                                                                                           
             
             */
+        }
+
+        public static void MostrarNovoBioma(BiomaJogo biomaAtual, int capituloAtual, Personagem jogador)
+        {
+            Console.Clear();
+            Console.WriteLine("\n\n\n\n");
+            TextoController.CentralizarTexto($"========================================   - {biomaAtual.Nome} -   =======================================" + "\n\n");
+
+            TextoController.CentralizarTexto($"{jogador.Nome} adentra um novo território {biomaAtual.Nome}.\n");
+            TextoController.CentralizarTexto($"{biomaAtual.Descricao}.\n");
+
+            List<string> modeloBioma = biomaAtual.DefinirModelo();
+
+            for (int i = 0; i < modeloBioma.Count; i++)
+            {
+                TextoController.CentralizarTexto(modeloBioma[i]);
+            }
+
+            Console.WriteLine("\n\n");
+            TextoController.CentralizarTexto("Pressione qualquer tecla para continuar...");
+
+            Console.ReadKey();
         }
 
         public static void TituloBossFight()

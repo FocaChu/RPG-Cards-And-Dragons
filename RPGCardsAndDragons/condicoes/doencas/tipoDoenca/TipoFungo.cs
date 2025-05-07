@@ -25,6 +25,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             if (efeito is Necrose) return 30;
             if (efeito is Sensibilidade) return 40;
+            if (efeito is Zumbificacao) return 40;
             return 0;
         }
 
@@ -40,7 +41,8 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
             return new List<IEfeitoDoenca>
         {
             new Necrose(this),
-            new Sensibilidade(this)
+            new Sensibilidade(this),
+            new Zumbificacao(this)
         };
         }
 

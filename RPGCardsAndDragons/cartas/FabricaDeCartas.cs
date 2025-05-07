@@ -51,7 +51,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[option];
 
-                    CondicaoController.AplicarOuAtualizarCondicao(new Silencio(), alvo.Condicoes);
+                    CondicaoController.AplicarOuAtualizarCondicao(new Silencio(1, 2), alvo.Condicoes);
                     Console.WriteLine();
                     TextoController.CentralizarTexto($"{alvo.Nome} foi silênciado...");
                 }
@@ -92,7 +92,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(4), batalha.Jogador.Condicoes);
 
                         CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(44), inimigo.Condicoes);
-                        CondicaoController.AplicarOuAtualizarCondicao(new Silencio(), inimigo.Condicoes);
+                        CondicaoController.AplicarOuAtualizarCondicao(new Silencio(1, 2), inimigo.Condicoes);
                     }
                 }
             };
@@ -908,7 +908,7 @@ namespace CardsAndDragons.ClassesDasCartas
         {
             return new CartaGenerica
             {
-                Nome = "Põção Venenosa",
+                Nome = "Poção Venenosa",
                 Descricao = "Aplica veneno nível 5 em um inimigo por 5 turnos.",
                 RaridadeCarta = Raridade.Comum,
                 Preco = GerarPreco(Raridade.Comum),
@@ -916,12 +916,30 @@ namespace CardsAndDragons.ClassesDasCartas
                 Modelo = GerarModeloCarta("p", 1),
                 Efeito = batalha =>
                 {
-                    int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
-
-                    var alvo = batalha.Inimigos[option];
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
                     CondicaoController.AplicarOuAtualizarCondicao(new Veneno(5, 5), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi envenenado!\n");
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarInseguranca()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Insegurança",
+                Descricao = "Observa fixamente um alvo pelas sombras. O deixando paranoico.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoMana = 25,
+                Modelo = GerarModeloCarta(".", 1),
+                Efeito = batalha =>
+                {
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    CondicaoController.AplicarOuAtualizarCondicao(new Paranoia(3, 2), alvo.Condicoes);
+                    TextoController.CentralizarTexto($"{alvo.Nome} se sente observado e entra em estado de panico!\n");
                 }
             };
         }
@@ -1062,7 +1080,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         if (condicao is Maldicao && condicao.Nivel >= 50)
                         {
                             TextoController.CentralizarTexto($"A carta Maldição da Lua Evoluiu para Maldição da Lua Vermelha!\n");
-                            batalha.Evoluidores.Add(new EvoluidorDeCartas("Maldição da Lua"));
+                            batalha.Aplicadores.Add(new AplicadorEvolucao("Maldição da Lua"));
                             break;
                         }
                     }

@@ -27,9 +27,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
             Descricao = original.Descricao;
         }
 
-        public void Aplicar(Batalha batalha, ICriaturaCombatente alvo, int nivel)
+        public void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
         {
-            batalha.Aplicadores.Add(new AplicadorDeCondicao(new ModificacaoDefesa(nivel * -1, 3), alvo));
+            batalha.Aplicadores.Add(new AplicadorCondicao(new ModificacaoDefesa(nivel * -1, 3), alvo));
 
             TextoController.CentralizarTexto($"{alvo.Nome} sofre de sintomas de sensibilidade");
         }

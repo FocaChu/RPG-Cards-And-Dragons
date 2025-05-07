@@ -12,6 +12,7 @@ namespace CardsAndDragonsJogo
 {
     public class OInimigo : ICriaturaCombatente
     {
+        public int ID { get; set; }
         public InimigoRPG InimigoBase { get; set; }
         public TipoCriatura Tipo { get; set; } = TipoCriatura.Inimigo;
 
@@ -57,8 +58,12 @@ namespace CardsAndDragonsJogo
 
         public int ModificadorDano { get; set; }
 
+        public static int id = 0;
+
         public OInimigo(InimigoRPG baseInimigo)
         {
+            id++;
+            this.ID = id; // Atribui um ID único a cada instância de OInimigo
             InimigoBase = baseInimigo;
 
             VidaMax = baseInimigo.VidaMax;
@@ -75,18 +80,43 @@ namespace CardsAndDragonsJogo
             {
                 if (PodeUsarHabilidade(rodada) && !CondicaoController.VerificarCondicao<Silencio>(Condicoes))
                 {
-                    InimigoBase.UsarHabilidade(batalha, this);
+                    InimigoBase.UsarHabilidade(batalha, this, 0);
                 }
                 else
                 {
                     if (PodeUsarHabilidade(rodada) && CondicaoController.VerificarCondicao<Silencio>(Condicoes))
                     {
                         Console.WriteLine($"{this.Nome} foi silenciado e não pode usar sua habilidade...");
-                        InimigoBase.Atacar(batalha, this);
+                        InimigoBase.Atacar(batalha, this, 0);
                     }
                     else
                     {
-                        InimigoBase.Atacar(batalha, this);
+                        InimigoBase.Atacar(batalha, this, 0);
+                    }
+                }
+            }
+        }
+
+        public void RealizarTurno(Batalha batalha, int nivelParanoia)
+        {
+            int rodada = batalha.rodadaAtual;
+
+            if (vidaAtual >= 0)
+            {
+                if (PodeUsarHabilidade(rodada) && !CondicaoController.VerificarCondicao<Silencio>(Condicoes))
+                {
+                    InimigoBase.UsarHabilidade(batalha, this, nivelParanoia);
+                }
+                else
+                {
+                    if (PodeUsarHabilidade(rodada) && CondicaoController.VerificarCondicao<Silencio>(Condicoes))
+                    {
+                        Console.WriteLine($"{this.Nome} foi silenciado e não pode usar sua habilidade...");
+                        InimigoBase.Atacar(batalha, this, nivelParanoia);
+                    }
+                    else
+                    {
+                        InimigoBase.Atacar(batalha, this, nivelParanoia);
                     }
                 }
             }

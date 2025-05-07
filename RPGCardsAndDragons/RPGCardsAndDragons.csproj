@@ -43,18 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ajudantes\TipoDoencaAjudante.cs" />
-    <Compile Include="ajudantes\ClasseRPGAjudante.cs" />
-    <Compile Include="ajudantes\EspecieRPGAjudante.cs" />
-    <Compile Include="ajudantes\InimigoRPGAjudante.cs" />
     <Compile Include="aliados\InimigoRevivido.cs" />
     <Compile Include="aliados\RoboAliado.cs" />
+    <Compile Include="Aplicadores\AplicadorRessuireicao.cs" />
+    <Compile Include="Aplicadores\IAplicador.cs" />
     <Compile Include="cartas\CartaGenerica.cs" />
     <Compile Include="cartas\CartaInvocarDoencaFixa.cs" />
     <Compile Include="cartas\CartaInvocarRoboFixa.cs" />
     <Compile Include="cartas\CartaEvolutiva.cs" />
     <Compile Include="cartas\CartaRecarregavel.cs" />
-    <Compile Include="cartas\EvoluidorDeCartas.cs" />
+    <Compile Include="Aplicadores\AplicadorEvolucao.cs" />
     <Compile Include="cartas\FabricaDeCartas.cs" />
     <Compile Include="cartas\ICartaUsavel.cs" />
     <Compile Include="classesrpg\Arqueiro.cs" />
@@ -64,13 +62,19 @@
     <Compile Include="classesrpg\Guerreiro.cs" />
     <Compile Include="classesrpg\Mago.cs" />
     <Compile Include="classesrpg\Necromante.cs" />
-    <Compile Include="condicoes\AplicadorDeCondicao.cs" />
+    <Compile Include="Aplicadores\AplicadorCondicao.cs" />
+    <Compile Include="condicoes\condicoesTemporarias\Paranoia.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Atordoamento.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Queimadura.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\DorDeGarganta.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Hemorragia.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Intoxicacao.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Necrose.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Fraqueza.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\PeleEscaldada.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Sensibilidade.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\ConfusaoMental.cs" />
+    <Compile Include="condicoes\doencas\efeitoDoenca\Zumbificacao.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoParasita.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoFungo.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoDoenca.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="controllers\AliadoController.cs" />
     <Compile Include="controllers\AlvoController.cs" />
     <Compile Include="controllers\BatalhaController.cs" />
+    <Compile Include="controllers\BuscaController.cs" />
     <Compile Include="controllers\CartaController.cs" />
     <Compile Include="controllers\CondicaoController.cs" />
     <Compile Include="controllers\InimigoController.cs" />
@@ -106,6 +111,9 @@
     <Compile Include="especiesrpg\Vampiro.cs" />
     <Compile Include="eventos\Batalha.cs" />
     <Compile Include="eventos\Loja.cs" />
+    <Compile Include="biomas\BiomaCaverna.cs" />
+    <Compile Include="biomas\BiomaFloresta.cs" />
+    <Compile Include="biomas\BiomaJogo.cs" />
     <Compile Include="ICriaturaCombatente.cs" />
     <Compile Include="inimigosrpg\Caracol.cs" />
     <Compile Include="inimigosrpg\CoelhoRaivoso.cs" />
@@ -123,5 +131,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

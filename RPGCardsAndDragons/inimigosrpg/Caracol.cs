@@ -52,11 +52,30 @@ namespace CardsAndDragons
 
         public override int CooldownHabilidade => 3; // a cada 3 rodadas usa habilidade
 
-        public override void Atacar(Batalha batalha, OInimigo self)
+        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
 
-            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+            ICriaturaCombatente alvo;
+
+            if (nivelParanoia > 0)
+            {
+                int chance = nivelParanoia * 10;
+
+                int opcao = BatalhaController.GerarRNG(chance);
+
+                if (opcao == 0)
+                {
+                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confuso!");
+                }
+                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+            }
+            else
+            {
+                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+
+            }
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
             alvo.SofrerDano(DanoFinal, false);
@@ -67,11 +86,30 @@ namespace CardsAndDragons
             return rodadaAtual % CooldownHabilidade == 0;
         }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self)
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
         {
             int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 
-            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+            ICriaturaCombatente alvo;
+
+            if (nivelParanoia > 0)
+            {
+                int chance = nivelParanoia * 10;
+
+                int opcao = BatalhaController.GerarRNG(chance);
+
+                if (opcao == 0)
+                {
+                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confudiu {alvo.Nome} com uma ameaça!");
+                }
+                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+            }
+            else
+            {
+                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+
+            }
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano toxico!");
             alvo.SofrerDano(DanoFinal, false);
