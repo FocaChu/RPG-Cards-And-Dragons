@@ -372,6 +372,12 @@ namespace CardsAndDragons
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     TextoController.CentralizarTexto($"{inimigo.Nome} foi derrotado!");
+
+                    inimigo.AoMorrer(batalha, batalha.Jogador);
+
+                    Console.ReadKey();
+                    Console.Clear();
+
                     Console.ResetColor();
 
                     int ouroGanho = (batalha.Jogador.Especie.NomeEspecie == "Anão") ? (15 * inimigo.Dificuldade) : (10 * inimigo.Dificuldade);
