@@ -27,7 +27,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public  void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
         {
-            batalha.Aplicadores.Add(new AplicadorCondicao(new ModificacaoDano(nivel * -1, 3), alvo));
+            batalha.Aplicadores.Add(new AplicadorCondicao(new ModificacaoDano(nivel * -1, 1), alvo));
 
             TextoController.CentralizarTexto($"{alvo.Nome} sofre de sintomas de fraqueza");
         }

@@ -125,7 +125,7 @@ namespace CardsAndDragons.Controllers
 
             TextoController.CentralizarTexto($"Carta - {carta.Nome}");
 
-            if(carta.TipoCarta == TipoCarta.Recarregavel)
+            if (carta.TipoCarta == TipoCarta.Recarregavel)
             {
                 TextoController.CentralizarTexto($"Efeito - {carta.Descricao}");
             }
@@ -153,7 +153,7 @@ namespace CardsAndDragons.Controllers
             TextoController.CentralizarTexto($"Carta - {carta.Nome}\n");
 
             TextoController.CentralizarTexto($"Cargas - {carta.CargasAtuais}/{carta.CargasMaximas}");
-            TextoController.CentralizarTexto($"Efeito - {carta.Descricao}"); 
+            TextoController.CentralizarTexto($"Efeito - {carta.Descricao}");
 
             TextoController.CentralizarTexto($"Efeito - {carta.Descricao}");
 

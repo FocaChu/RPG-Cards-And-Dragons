@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons;
 using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Controllers;
 using CardsAndDragonsJogo;
 using RPGCardsAndDragons.Aplicadores;
 
@@ -27,7 +28,7 @@ namespace RPGCardsAndDragons.condicoes
         {
             if(Criatura.VidaAtual > 0)
             {
-                Criatura.Condicoes.Add(Condicao);
+                CondicaoController.AplicarOuAtualizarCondicao(Condicao, Criatura.Condicoes);
             }
             return true;
         }

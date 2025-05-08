@@ -28,7 +28,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
         {
-            batalha.Aplicadores.Add(new AplicadorCondicao(new Veneno(nivel, 3), alvo));
+            batalha.Aplicadores.Add(new AplicadorCondicao(new Veneno(nivel, 1), alvo));
 
             TextoController.CentralizarTexto($"{alvo.Nome} sofre de intoxicação");
         }

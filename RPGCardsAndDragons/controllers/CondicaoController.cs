@@ -450,7 +450,7 @@ namespace CardsAndDragons.Controllers
             if (batalha.Aplicadores.Count > 0)
             {
                 BatalhaController.VerificarContaminadores(batalha);
-            } 
+            }
 
             if (batalha.Aliados.Count > 0)
             {

@@ -124,9 +124,9 @@ namespace CardsAndDragons.Controllers
                     case ConsoleKey.Enter:
                         selecionado = true;
                         break;
-                    //Ao clicar em enter ele para o codigo e pega a especie correspondente ao valor escolhido(que é definido por opcaoSelecionada)
+                        //Ao clicar em enter ele para o codigo e pega a especie correspondente ao valor escolhido(que é definido por opcaoSelecionada)
 
-                } 
+                }
             }
 
             TipoSoftware software = (TipoSoftware)opcaoSelecionada;
@@ -225,7 +225,7 @@ namespace CardsAndDragons.Controllers
 
         public static void AcidionarRobosABatalha(Batalha batalha)
         {
-            if(batalha.Jogador.Robos.Count > 0)
+            if (batalha.Jogador.Robos.Count > 0)
             {
                 while (batalha.Jogador.Robos.Count != 0)
                 {
@@ -243,9 +243,9 @@ namespace CardsAndDragons.Controllers
         {
             var robos = new List<ICriaturaCombatente>();
 
-            foreach(var aliado in batalha.Aliados)
+            foreach (var aliado in batalha.Aliados)
             {
-                if (aliado.Tipo == TipoCriatura.Robo) robos.Add(aliado); 
+                if (aliado.Tipo == TipoCriatura.Robo) robos.Add(aliado);
             }
 
             foreach (var robo in robos)

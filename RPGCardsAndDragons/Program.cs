@@ -63,7 +63,7 @@ namespace CardsAndDragons
             Console.WindowWidth = Console.LargestWindowWidth;
             Console.WindowHeight = Console.LargestWindowHeight;
 
-             //Mantem o jogo rodando, chamando as funções com base no estadoa atual do jogo
+            //Mantem o jogo rodando, chamando as funções com base no estadoa atual do jogo
             while (estadoAtual != EstadoDoJogo.Encerrar)
             {
                 switch (estadoAtual)
@@ -201,7 +201,7 @@ namespace CardsAndDragons
         {
             Personagem jogador = PersonagemController.CriarUmPersonagem();
 
-            if(jogador != null)
+            if (jogador != null)
             {
                 oJogador.Add(jogador);
                 estadoAtual = EstadoDoJogo.Jogo;
@@ -267,7 +267,7 @@ namespace CardsAndDragons
                 //começa uma batalha
                 while (!acabarBatalha)
                 {
-                    
+
                     IniciarBatalha(batalha);
 
                 }
@@ -359,14 +359,14 @@ namespace CardsAndDragons
                 case 2:
                     AliadoController.RetornarRobosSobreviventes(batalha);
                     acabarBatalha = true;
-                    if(faseAtual == 10) 
+                    if (faseAtual == 10)
                     {
                         estadoAtual = EstadoDoJogo.Vitoria;
                         acabarJogo = true;
                     }
-                    else 
-                    { 
-                        faseAtual++; 
+                    else
+                    {
+                        faseAtual++;
                         TextoController.MostrarVenceuBatalha(batalha);
                     }
                     break;

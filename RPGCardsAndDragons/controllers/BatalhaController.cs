@@ -373,11 +373,6 @@ namespace CardsAndDragons
                     Console.ForegroundColor = ConsoleColor.Green;
                     TextoController.CentralizarTexto($"{inimigo.Nome} foi derrotado!");
 
-                    inimigo.AoMorrer(batalha, batalha.Jogador);
-
-                    Console.ReadKey();
-                    Console.Clear();
-
                     Console.ResetColor();
 
                     int ouroGanho = (batalha.Jogador.Especie.NomeEspecie == "Anão") ? (15 * inimigo.Dificuldade) : (10 * inimigo.Dificuldade);
@@ -389,6 +384,11 @@ namespace CardsAndDragons
                     TextoController.CentralizarTexto($"Você ganhou {ouroGanho} ouros. Total: {batalha.Jogador.Ouros}");
 
                     batalha.Jogador.ContabilizarXp(inimigo);
+
+                    inimigo.AoMorrer(batalha, batalha.Jogador);
+
+                    Console.ReadKey();
+                    Console.Clear();
 
                     //passa o inimigo que morreu pra uma lista temporaria. A remoção direta causa erro
                     inimigosMortos.Add(inimigo);
@@ -454,7 +454,7 @@ namespace CardsAndDragons
                 {
                     if (aplicador is AplicadorRessuireicao ressucitador)
                     {
-                        if(ressucitador.Aplicar(batalha)) batalha.Aplicadores.Remove(ressucitador); // Remove o aplicador imediatamente após a execução
+                        if (ressucitador.Aplicar(batalha)) batalha.Aplicadores.Remove(ressucitador); // Remove o aplicador imediatamente após a execução
                     }
                 }
             }
@@ -487,7 +487,7 @@ namespace CardsAndDragons
 
                 foreach (var aplicador in aplicadoresAtuais)
                 {
-                    if(aplicador is AplicadorEvolucao evoluidor)
+                    if (aplicador is AplicadorEvolucao evoluidor)
                     {
                         evoluidor.Aplicar(batalha);
                         batalha.Aplicadores.Remove(evoluidor); // Remove o aplicador imediatamente após a execução

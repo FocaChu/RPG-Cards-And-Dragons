@@ -12,9 +12,9 @@ namespace CardsAndDragons.Controllers
     {
         public static void ComprarCartas(Loja loja)
         {
-            while(true) 
+            while (true)
             {
-                
+
                 int escolhaCompra = LojaController.SelecionarItemEstoque(loja, 0);
 
                 if (escolhaCompra < 0) break; // cancelou
@@ -31,12 +31,12 @@ namespace CardsAndDragons.Controllers
                 }
             }
         }
-         
+
         public static void ComprarCura(Loja loja)
         {
-            if(loja.CuraDisponivel)
+            if (loja.CuraDisponivel)
             {
-                while(true)
+                while (true)
                 {
                     string[] opcoesConfirmacao = { "Sim (Pagar 50 ouros)", "Não" };
                     int opcao = TextoController.MostrarMenuSelecao(false, "Comprar Cura", opcoesConfirmacao);
@@ -382,7 +382,7 @@ namespace CardsAndDragons.Controllers
             Console.WriteLine();
             TextoController.CentralizarTexto($"Você comprou a carta {carta.Nome} com sucesso!");
             loja.Jogador.Ouros -= carta.Preco;
-            
+
             PersonagemController.AdicionarCartaAoBaralho(loja.Jogador, carta);
 
             loja.CartasAVenda.Remove(carta);
