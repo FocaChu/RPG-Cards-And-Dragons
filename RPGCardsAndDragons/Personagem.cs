@@ -209,6 +209,7 @@ namespace CardsAndDragons
                 {
                     if (condicao is Queimadura queimadura)
                     {
+                        queimadura.Duracao--; // Diminui a duração da queimadura
                         quantidade -= queimadura.Nivel; // Reduz a cura com base no nível da queimadura
                         quantidade = Math.Max(quantidade, 0); // Garante que a cura nunca seja negativa
                     }

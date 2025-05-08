@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.Aliados;
 using CardsAndDragons.ClassesCondicoes;
+using CardsAndDragons.Condicoes;
 using CardsAndDragons.Controllers;
 using CardsAndDragons.Inimigos;
 using CardsAndDragonsJogo;
@@ -14,7 +15,7 @@ namespace CardsAndDragons
 {
     public class Caracol : InimigoRPG
     {
-        public override int VidaMax => 60;
+        public override int VidaMax => 55;
 
         public override int DanoBase => 10;
 
@@ -50,7 +51,7 @@ namespace CardsAndDragons
         
         */
 
-        public override int RecargaHabilidade => 3; // a cada 3 rodadas usa habilidade
+        public override int RecargaHabilidade => 4; // a cada 4 rodadas usa habilidade
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
@@ -62,11 +63,12 @@ namespace CardsAndDragons
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano;
+           TextoController.CentralizarTexto($"{this.Nome} se escondeu eu sua concha para se proteger!");
+            self.Escudo += 5;
+            self.ModificadorDefesa += 1;
 
-            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano toxico!");
-            alvo.SofrerDano(DanoFinal, false);
-            CondicaoController.AplicarOuAtualizarCondicao(new Veneno(4, 2), alvo.Condicoes);
+            CondicaoController.AplicarOuAtualizarCondicao(new ModificacaoEscudo(5, 1), self.Condicoes);
+            CondicaoController.AplicarOuAtualizarCondicao(new ModificacaoDefesa(1, 1), self.Condicoes);
         }
     }
 }
