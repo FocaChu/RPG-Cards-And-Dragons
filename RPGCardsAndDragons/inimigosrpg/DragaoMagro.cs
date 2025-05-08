@@ -20,7 +20,6 @@ namespace CardsAndDragons
 
         public override int DanoBase => 25;
 
-        public override Bioma BiomaDeOrigem => Bioma.Floresta;
 
         public override bool EBoss => true;
 
@@ -63,32 +62,24 @@ namespace CardsAndDragons
         
         */
 
-        public override int CooldownHabilidade => 5; // a cada 2 rodadas usa habilidada
+        public override int RecargaHabilidade => 5; // a cada 2 rodadas usa habilidada
 
 
-        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int danoFinal = this.DanoBase + self.ModificadorDano;
 
-            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
 
 
             TextoController.CentralizarTexto($"{this.Nome} investiu contra {alvo.Nome} causando dano!");
             alvo.SofrerDano(danoFinal, false);
         }
 
-        public override bool PodeUsarHabilidade(int rodadaAtual)
-        {
-            return rodadaAtual % CooldownHabilidade == 0;
-        }
-
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             //faz o rng do golpe do boss
             int chance = 50;
 
-
-            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
 
             int opcaoGolpe = BatalhaController.GerarRNG(chance);
 
@@ -117,16 +108,6 @@ namespace CardsAndDragons
                 CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvo.Condicoes);
             }
 
-        }
-
-        public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            throw new NotImplementedException();
         }
     }
 }

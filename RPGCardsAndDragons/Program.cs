@@ -44,7 +44,6 @@ namespace CardsAndDragons
         static int jogadorAtual = 0;
 
         //define a dificuldade das lutas
-        public static Bioma BiomaAtual = Bioma.Floresta;
 
         public static int faseAtual = 1;
 

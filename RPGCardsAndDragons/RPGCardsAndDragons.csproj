@@ -63,6 +63,7 @@
     <Compile Include="classesrpg\Mago.cs" />
     <Compile Include="classesrpg\Necromante.cs" />
     <Compile Include="Aplicadores\AplicadorCondicao.cs" />
+    <Compile Include="condicoes\condicoesTemporarias\Atracao.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Paranoia.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Atordoamento.cs" />
     <Compile Include="condicoes\condicoesTemporarias\Queimadura.cs" />

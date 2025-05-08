@@ -112,48 +112,17 @@ namespace CardsAndDragonsJogo
                 Console.WriteLine();
                 System.Threading.Thread.Sleep(200); // Delayzinho dramático
 
-                if (CondicaoController.VerificarCondicao<Atordoamento>(inimigo.Condicoes))
-                {
-                    TextoController.CentralizarTexto($"{inimigo.Nome} está atordoado e não pode agir...\n");
-                    List<ICondicaoTemporaria> condicoes = new List<ICondicaoTemporaria>();
-                    foreach (var condicao in inimigo.Condicoes)
-                    {
-                        if (condicao is Atordoamento atordoamento)
-                        {
-                            atordoamento.Duracao--;
-                            if (atordoamento.Duracao <= 0)
-                            {
-                                condicoes.Add(condicao);
-                                TextoController.CentralizarTexto($"{inimigo.Nome} se libertou do atordoamento!");
-                            }
-                        }
-                    }
-                    inimigo.Condicoes.RemoveAll(c => condicoes.Contains(c));
-                }
-                else if (CondicaoController.VerificarCondicao<Paranoia>(inimigo.Condicoes))
-                {
-                    int nivel = 1;
 
-                    foreach(var condicao in inimigo.Condicoes)
-                    {
-                        if (condicao is Paranoia paranoia)
-                        {
-                            nivel = paranoia.Nivel;
-                            break;
-                        }
-                    }
+                inimigo.RealizarTurno(this);
 
-                    inimigo.RealizarTurno(this, nivel);
-                }
-                else
-                {
-                    inimigo.RealizarTurno(this);
+                Console.WriteLine();
+                System.Threading.Thread.Sleep(800); // Tempo pra ler o ataque
 
-                    Console.WriteLine();
-                    System.Threading.Thread.Sleep(800); // Tempo pra ler o ataque
+                CondicaoController.SangrarFerida(inimigo);
 
-                    CondicaoController.SangrarFerida(inimigo);
-                }
+                Console.WriteLine();
+                TextoController.CentralizarTexto("---~~~==================================~~~~---");
+
             }
             rodadaAtual++;
         }

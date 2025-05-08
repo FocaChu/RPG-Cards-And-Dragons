@@ -19,8 +19,6 @@ namespace CardsAndDragons
 
         public override int DanoBase => 10;
 
-        public override Bioma BiomaDeOrigem => Bioma.Floresta;
-
         public override bool EBoss => false;
 
         public override string Nome => "Morcego";
@@ -41,90 +39,25 @@ namespace CardsAndDragons
 
         // preencher 10 linhas no total
         };
-        public override int CooldownHabilidade => 4; // a cada 4 rodadas usa habilidade
+        public override int RecargaHabilidade => 4; // a cada 4 rodadas usa habilidade
 
-        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            ICriaturaCombatente alvo;
-
-            if (nivelParanoia > 0)
-            {
-                int chance = nivelParanoia * 10;
-
-                int opcao = BatalhaController.GerarRNG(chance);
-
-                if (opcao == 0)
-                {
-                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confuso!");
-                }
-                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-            }
-            else
-            {
-                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-
-            }
+            
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando {DanoFinal} de dano!");
             alvo.SofrerDano(DanoFinal, false);
         }
-        public override bool PodeUsarHabilidade(int rodadaAtual)
-        {
-            return rodadaAtual % CooldownHabilidade == 0;
-        }
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
+       
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            ICriaturaCombatente alvo;
-
-            if (nivelParanoia > 0)
-            {
-                int chance = nivelParanoia * 10;
-
-                int opcao = BatalhaController.GerarRNG(chance);
-
-                if (opcao == 0)
-                {
-                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confudiu {alvo.Nome} com uma ameaça!");
-                }
-                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-            }
-            else
-            {
-                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-
-            }
-
+            
             TextoController.CentralizarTexto($"{this.Nome} mordeu e causou {DanoFinal} de dano em {alvo.Nome}!");
             alvo.SofrerDano(DanoFinal, false);
             CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
         }
 
-        public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
-                
-            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-
-            alvo.SofrerDano(DanoFinal, false);
-            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
-        }
-
-        public override void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-
-            TextoController.CentralizarTexto($"{this.Nome} mordeu e causou dano em {alvo.Nome}!");
-            alvo.SofrerDano(DanoFinal, false);
-
-            CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
-        }
     }
 }

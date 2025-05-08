@@ -4,12 +4,6 @@ using CardsAndDragonsJogo;
 
 namespace CardsAndDragons.Inimigos
 {
-    public enum Bioma
-    {
-        Floresta = 1,
-        Caverna = 2,
-    }
-
     public abstract class InimigoRPG
     {
         public abstract int VidaMax { get; }
@@ -18,25 +12,17 @@ namespace CardsAndDragons.Inimigos
 
         public abstract string Nome { get; }
 
-        public abstract Bioma BiomaDeOrigem { get; }
-
         public abstract bool EBoss { get; }
 
         public abstract List<string> Modelo { get; }
 
-        public abstract int CooldownHabilidade { get; }
+        public abstract int RecargaHabilidade { get; }
 
         //Mecanicas para combate
 
-        public abstract bool PodeUsarHabilidade(int rodadaAtual);
+        public abstract void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo);
 
-        public abstract void Atacar(Batalha batalha, OInimigo self, int nivelParanoia);
-
-        public abstract void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia);
-
-        public abstract void AtacarComoAliado(Batalha batalha, InimigoRevivido self);
-
-        public abstract void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self);
+        public abstract void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo);
 
     }
 }

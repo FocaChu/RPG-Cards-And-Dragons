@@ -23,6 +23,20 @@ namespace CardsAndDragons.Controllers
         //CODIGO PRINCIPAL PARA APLICAR E ATUALIZAR AS CONDIÇÕES ESPECIAIS DO JOGO 
         public static void AplicarOuAtualizarCondicao(ICondicaoTemporaria nova, List<ICondicaoTemporaria> condicoes)
         {
+            if(nova is Doenca doenca)
+            {
+                foreach(var condicao in condicoes)
+                {
+                    if (condicao is Doenca doencaExistente && doencaExistente.Nome == nova.Nome)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        condicoes.Add(nova);
+                        return;
+                    }
+                }
             //cria uma condição
             var existente = condicoes.FirstOrDefault(c => c.GetType() == nova.GetType());
 

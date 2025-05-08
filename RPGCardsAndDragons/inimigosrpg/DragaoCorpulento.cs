@@ -21,8 +21,6 @@ namespace CardsAndDragons
 
         public override int DanoBase => 20;
 
-        public override Bioma BiomaDeOrigem => Bioma.Floresta;
-
         public override bool EBoss => true;
 
         public override string Nome => "Dragão Corpulento";
@@ -65,25 +63,19 @@ namespace CardsAndDragons
         
         */
 
-        public override int CooldownHabilidade => 4; // a cada 2 rodadas usa habilidada
+        public override int RecargaHabilidade => 4; // a cada 2 rodadas usa habilidada
 
 
-        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int danoFinal = this.DanoBase + self.ModificadorDano;
 
-            var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
 
             TextoController.CentralizarTexto($"{this.Nome} investiu contra {alvo.Nome} causando dano!");
             alvo.SofrerDano(danoFinal, false);
         }
 
-        public override bool PodeUsarHabilidade(int rodadaAtual)
-        {
-            return rodadaAtual % CooldownHabilidade == 0;
-        }
-
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             Random rng = new Random();
 
@@ -112,8 +104,6 @@ namespace CardsAndDragons
             }
             else
             {
-                var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-
                 TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} mordendo com suas presas");
 
                 int chanceSucesso = rng.Next(100);
@@ -125,16 +115,6 @@ namespace CardsAndDragons
                 alvo.SofrerDano(danoFinal, false);
             }
 
-        }
-
-        public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            throw new NotImplementedException();
         }
     }
 }

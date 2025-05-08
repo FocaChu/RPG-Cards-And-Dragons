@@ -13,15 +13,15 @@ namespace CardsAndDragons.ClassesCondicoes
     //Resumo: Não faz nada diretamente, não acumula, n tem como passar parametros. Pq? Dentro do turno dos inimigos, existe um codigo de CondicaoController chamado VerificarCondicao
     //Esse codigo ve se o inimigo ta com uma condicao(nesse caso atordoamento), se sim ele não ataca. Ou seja, ela em si n faz nada, mas a presença dela sim.
 
-    public class Paranoia : ICondicaoEmpilhavel
+    public class Atracao : ICondicaoEmpilhavel
     {
-        public string Nome => "Paranoia";
+        public string Nome => "Atração";
 
         public int Nivel { get; set; }
 
         public int Duracao { get; set; }
 
-        public Paranoia(int nivel, int duracao)
+        public Atracao(int nivel, int duracao)
         {
             Nivel = nivel;
             Duracao = duracao;
@@ -42,11 +42,12 @@ namespace CardsAndDragons.ClassesCondicoes
 
         public void Fundir(ICondicaoTemporaria nova)
         {
-            var novaParanoia = nova as Paranoia;
-            if (novaParanoia == null) return;
+            var novaAtracao = nova as Atracao;
+            if (novaAtracao == null) return;
 
-            this.Nivel += novaParanoia.Nivel;
+            this.Nivel += novaAtracao.Nivel;
         }
+
         public void Atualizar() => Duracao--;
 
         public bool Expirou() => Duracao <= 0;

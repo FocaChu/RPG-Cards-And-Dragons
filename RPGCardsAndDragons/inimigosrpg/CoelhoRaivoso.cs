@@ -20,8 +20,6 @@ namespace CardsAndDragons
 
         public override int DanoBase => 5;
 
-        public override Bioma BiomaDeOrigem => Bioma.Floresta;
-
         public override bool EBoss => false;
 
         public override string Nome => "Coelho Raivoso";
@@ -42,68 +40,22 @@ namespace CardsAndDragons
              // preencher 10 linhas no total
         };
 
-        public override int CooldownHabilidade => 2; // a cada 2 rodadas usa habilidade
+        public override int RecargaHabilidade => 2; // a cada 2 rodadas usa habilidade
 
         public int DanoRaivoso;
 
-        public override void Atacar(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            ICriaturaCombatente alvo;
-
-            if (nivelParanoia > 0)
-            {
-                int chance = nivelParanoia * 10;
-
-                int opcao = BatalhaController.GerarRNG(chance);
-
-                if (opcao == 0)
-                {
-                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confuso!");
-                }
-                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-            }
-            else
-            {
-                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-
-            }
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
             alvo.SofrerDano(DanoFinal, false);
         }
 
-        public override bool PodeUsarHabilidade(int rodadaAtual)
-        {
-            return rodadaAtual % CooldownHabilidade == 0;
-        }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, int nivelParanoia)
+        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
         {
             int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano + this.DanoRaivoso;
-
-            ICriaturaCombatente alvo;
-
-            if (nivelParanoia > 0)
-            {
-                int chance = nivelParanoia * 10;
-
-                int opcao = BatalhaController.GerarRNG(chance);
-
-                if (opcao == 0)
-                {
-                    alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-                    TextoController.CentralizarTexto($"{this.Nome} está em panico e confudiu {alvo.Nome} com uma ameaça!");
-                }
-                else alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-            }
-            else
-            {
-                alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
-
-            }
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com raiva!");
             alvo.SofrerDano(DanoFinal, false);
@@ -112,39 +64,6 @@ namespace CardsAndDragons
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine();
                 TextoController.CentralizarTexto($"Coelho Assassino está com sede de sangue!");
-                CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 1), alvo.Condicoes);
-                Console.ResetColor();
-
-            }
-            this.DanoRaivoso++;
-        }
-
-        public override void AtacarComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
-
-            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-
-            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
-
-            alvo.SofrerDano(DanoFinal, false);
-        }
-
-        public override void UsarHabilidadeComoAliado(Batalha batalha, InimigoRevivido self)
-        {
-            int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano + this.DanoRaivoso;
-
-            var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-
-            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com raiva!\n");
-
-            alvo.SofrerDano(DanoFinal, false);
-
-            if (this.DanoRaivoso > 5)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine();
-                TextoController.CentralizarTexto($"Coelho Assassino está com sede de sangue!\n");
                 CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 1), alvo.Condicoes);
                 Console.ResetColor();
 
