@@ -38,7 +38,7 @@ namespace RPGCardsAndDragons.fases
 		    "  .-=++=++*****#%%%%%%%%%%%%%%%%***+==+++++++++++-. ", //14
 		    " .===++=+++****#%%%%%%%%%%%%%%%%#**+==++++**+===+=. ", //15
 		    " .===+++=++****#%%%%%%%%%%%%%%%%%#**++==+=+++===++: ", //16
-		    " ====++==++*****#%%%%%%%%%%%%%...-+==++++==+++==++++ ", //17
+		    " ====++==++*****#%%%%%%%%%%%%#*..-+==++++==+++==++++ ", //17
 		    " ..==+==++=+#+==++.             :++===++++++==-.... ", //18
 		    "     :==++++=====+=.             .-----:-==....     ", //19
 		    "     -===:---==++-::.              ....             "  //20
@@ -49,7 +49,8 @@ namespace RPGCardsAndDragons.fases
         {
             return new List<InimigoRPG>
             {
-             new Morcego()
+             new ToupeiraGrande(),
+             new CachorroCavernoso()
             };
 
         }
@@ -58,7 +59,8 @@ namespace RPGCardsAndDragons.fases
         {
             return new List<InimigoRPG>
             {
-                new Morcego()
+                new DragaoLagarto(),
+                new DragaoMorcego()
             };
         }
 

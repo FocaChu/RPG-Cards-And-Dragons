@@ -316,7 +316,7 @@ namespace CardsAndDragons.Aliados
 
             var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
 
-            alvo.SofrerDano(danoTotal, false);
+            alvo.SofrerDano(this, danoTotal, false, true);
 
         }
 
@@ -397,7 +397,7 @@ namespace CardsAndDragons.Aliados
             TextoController.CentralizarTexto($"{this.Nome} recebeu {quantidade} de cura\n");
         }
 
-        public void SofrerDano(int quantidade, bool foiCondicao)
+        public void SofrerDano(ICriaturaCombatente agressor, int quantidade, bool foiCondicao, bool aoSofrerDano)
         {
             if (!foiCondicao)
             {
@@ -422,7 +422,10 @@ namespace CardsAndDragons.Aliados
                     Console.WriteLine();
                     TextoController.CentralizarTexto($"{this.Nome} recebeu {danoFinal} de dano!");
 
-                    CondicaoController.SangrarFerida(this);
+                    if (aoSofrerDano)
+                    {
+                        AoSofrerDano(agressor, danoFinal);
+                    }
                 }
                 else
                 {
@@ -434,6 +437,15 @@ namespace CardsAndDragons.Aliados
             {
                 TextoController.CentralizarTexto($"{this.Nome} é imune a essa condição\n");
             }
+        }
+        public void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public void AoMorrer(Batalha batalha, ICriaturaCombatente agressor)
+        {
+            return;
         }
     }
 }

@@ -42,22 +42,33 @@ namespace CardsAndDragons
 
         public override int RecargaHabilidade => 4; // a cada 4 rodadas usa habilidade
 
+
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
             TextoController.CentralizarTexto($"{self.Nome} atacou {alvo.Nome} causando dano!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com gosma toxica!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
             CondicaoController.AplicarOuAtualizarCondicao(new Veneno(5, 2), alvo.Condicoes);
         }
 
+
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
+        }
     }
 }

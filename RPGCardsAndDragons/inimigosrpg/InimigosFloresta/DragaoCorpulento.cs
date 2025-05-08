@@ -65,7 +65,7 @@ namespace CardsAndDragons
         
         */
 
-        public override int RecargaHabilidade => 4; // a cada 2 rodadas usa habilidada
+        public override int RecargaHabilidade => 4; // a cada 4 rodadas usa habilidada
 
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
@@ -74,7 +74,7 @@ namespace CardsAndDragons
 
 
             TextoController.CentralizarTexto($"{this.Nome} investiu contra {alvo.Nome} causando dano!");
-            alvo.SofrerDano(danoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
@@ -91,7 +91,7 @@ namespace CardsAndDragons
             {
                 int danoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 
-                if(alvo is Personagem jogador)
+                if (alvo is Personagem jogador)
                 {
                     TextoController.CentralizarTexto($"{this.Nome} atacou {batalha.Jogador.Nome} com sua calda!\n");
 
@@ -104,14 +104,14 @@ namespace CardsAndDragons
 
                     TextoController.CentralizarTexto($"{batalha.Jogador.Nome} perdeu a carta {carta.Nome} de sua mão!");
 
-                    batalha.Jogador.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(self, danoFinal, false, true);
                 }
                 else
                 {
                     TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com sua calda!\n");
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(self, danoFinal, false, true);
                 }
-                
+
             }
             else
             {
@@ -123,9 +123,20 @@ namespace CardsAndDragons
 
                 danoFinal += self.ModificadorDano;
 
-                alvo.SofrerDano(danoFinal, false);
+                alvo.SofrerDano(self, danoFinal, false, true);
             }
+        }
 
+
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
         }
     }
+
 }

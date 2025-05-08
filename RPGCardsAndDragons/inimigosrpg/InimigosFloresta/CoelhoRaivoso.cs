@@ -48,19 +48,19 @@ namespace CardsAndDragons
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano + this.DanoRaivoso;
+            int danoFinal = (this.DanoBase * 2) + self.ModificadorDano + this.DanoRaivoso;
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com raiva!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
             if (this.DanoRaivoso > 5)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -71,6 +71,16 @@ namespace CardsAndDragons
 
             }
             this.DanoRaivoso++;
+        }
+
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
         }
     }
 }

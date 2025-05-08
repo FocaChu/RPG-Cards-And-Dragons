@@ -26,5 +26,9 @@ namespace CardsAndDragons.Inimigos
 
         public abstract void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo);
 
+        public abstract void AoSofrerDano(ICriaturaCombatente agressor, int quantidade);
+
+        public abstract void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo);
+
     }
 }

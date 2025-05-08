@@ -119,7 +119,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         {
                             if (condicao.Nome == "Maldição")
                             {
-                                inimigo.SofrerDano(condicao.Nivel, false);
+                                inimigo.SofrerDano(batalha.Jogador, condicao.Nivel, false, true);
                             }
                         }
                     }
@@ -146,7 +146,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                         if (inimigo.VidaAtual <= 0) recompensa++;
                     }
 
@@ -296,7 +296,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                 }
             };
@@ -322,7 +322,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                     TextoController.CentralizarTexto("Todos os inimigos foram atingidos!");
                 },
@@ -353,7 +353,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                 }
             };
@@ -405,7 +405,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         var alvo = batalha.Inimigos[option];
 
-                        alvo.SofrerDano(danoFinal, false);
+                        alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                         CondicaoController.AplicarOuAtualizarCondicao(new Atordoamento(), alvo.Condicoes);
                         TextoController.CentralizarTexto($"{alvo.Nome} foi atingido por Projétil de Gelo!\n");
                     }
@@ -416,7 +416,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                         var alvo = batalha.Inimigos[option];
-                        alvo.SofrerDano(danoFinal, false);
+                        alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                         CondicaoController.AplicarOuAtualizarCondicao(new Veneno(5, 3), alvo.Condicoes);
 
                         if (option > 0)
@@ -436,7 +436,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         foreach (var inimigo in batalha.Inimigos)
                         {
-                            inimigo.SofrerDano(danoFinal, false);
+                            inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                             CondicaoController.AplicarOuAtualizarCondicao(new Queimadura(3, 3), inimigo.Condicoes);
                         }
                     }
@@ -462,17 +462,17 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     if (option > 0)
                     {
                         var alvoEsquerda = batalha.Inimigos[option - 1];
-                        alvoEsquerda.SofrerDano(danoFInalAdjacente, false);
+                        alvoEsquerda.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                     if (option < batalha.Inimigos.Count - 1)
                     {
                         var alvoDireita = batalha.Inimigos[option + 1];
-                        alvoDireita.SofrerDano(danoFInalAdjacente, false);
+                        alvoDireita.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                 }
             };
@@ -518,9 +518,9 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         var alvoDois = batalha.Inimigos.Last();
 
-                        alvoUm.SofrerDano(danoFinal, false);
+                        alvoUm.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
-                        alvoDois.SofrerDano(danoFinal, false);
+                        alvoDois.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     }
                     else if (opcao == 1)
@@ -531,9 +531,9 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         var alvoDois = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
-                        alvoUm.SofrerDano(danoFinal, false);
+                        alvoUm.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
-                        alvoDois.SofrerDano(danoFinal, false);
+                        alvoDois.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     }
                 }
@@ -563,7 +563,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     while (alvoAtual < batalha.Inimigos.Count)
                     {
                         var inimigo = batalha.Inimigos[alvoAtual];
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                         Console.WriteLine();
                         TextoController.CentralizarTexto($"{inimigo.Nome} foi atingido por Disparo Perfurante!\n");
@@ -597,7 +597,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[option];
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);  
                 }
 
             };
@@ -622,7 +622,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -648,7 +648,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     int vidaInicial = alvo.VidaAtual;
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     int vidaFinal = vidaInicial - alvo.VidaAtual;
 
@@ -674,7 +674,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     batalha.Jogador.ModificadorDano += 5;
                 }
@@ -720,7 +720,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         var alvo = batalha.Inimigos[option];
 
-                        alvo.SofrerDano(danoFinal, false);
+                        alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
                     else if (opcao == 1)
                     {
@@ -748,7 +748,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -960,10 +960,10 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     }
 
-                    batalha.Jogador.SofrerDano(10, false);
+                    batalha.Jogador.SofrerDano(batalha.Jogador, 10, false, false);
                 }
             };
         }
@@ -1012,7 +1012,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         {
                             if (alvo.VidaAtual > 0)
                             {
-                                alvo.SofrerDano(danoFinal, false);
+                                alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                                 Console.WriteLine();
                             }
                         }
@@ -1028,7 +1028,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                         foreach (var inimigo in batalha.Inimigos)
                         {
-                            inimigo.SofrerDano(danoFinal, false);
+                            inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                         }
 
                     }
@@ -1060,7 +1060,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     Console.WriteLine();
                     foreach (var inimigo in batalha.Inimigos)
                     {
-                        inimigo.SofrerDano(danoFinal, false);
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                         CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(10), inimigo.Condicoes);
 
                         TextoController.CentralizarTexto($"{inimigo.Nome} foi amaldiçoado!\n");
@@ -1112,7 +1112,7 @@ namespace CardsAndDragons.ClassesDasCartas
                         }
                     }
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     CondicaoController.AplicarOuAtualizarCondicao(new Queimadura(2, 2), alvo.Condicoes);
                 }
 
@@ -1138,7 +1138,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     danoFinal += alvo.VidaAtual <= alvo.VidaMax / 2 ? 10 : 0;
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -1158,7 +1158,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int danoFinal = 20 + batalha.Jogador.ModificadorDano;
 
                     var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -1181,7 +1181,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[option];
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     CondicaoController.AplicarOuAtualizarCondicao(new Maldicao(5), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi amaldiçoado!\n");
                 }
@@ -1207,7 +1207,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                     CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi cortado e está sangrando!");
@@ -1238,7 +1238,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                     CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvo.Condicoes);
                     TextoController.CentralizarTexto($"{alvo.Nome} foi envenenado!");
                 },
@@ -1268,7 +1268,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
 
                 },
                 EfeitoSemCarga = batalha =>
@@ -1296,7 +1296,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[option];
 
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -1318,7 +1318,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -1345,7 +1345,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     {
                         CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
                     }
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }
@@ -1377,7 +1377,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
                     var alvo = batalha.Inimigos[option];
-                    alvo.SofrerDano(danoFinal, false);
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
             };
         }

@@ -73,7 +73,7 @@ namespace CardsAndDragons
 
 
             TextoController.CentralizarTexto($"{this.Nome} investiu contra {alvo.Nome} causando dano!");
-            alvo.SofrerDano(danoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
@@ -94,7 +94,7 @@ namespace CardsAndDragons
 
                 alvo.ModificadorDefesa = alvo.ModificadorDefesa / 2;
 
-                alvo.SofrerDano(danoFinal, false);
+                alvo.SofrerDano(self, danoFinal, false, true);
                 CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(3, 3), alvo.Condicoes);
             }
             else
@@ -105,10 +105,21 @@ namespace CardsAndDragons
 
                 this.VidaAtual += 10;
 
-                alvo.SofrerDano(danoFinal, false);
+                alvo.SofrerDano(self, danoFinal, false, true);
                 CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvo.Condicoes);
             }
+        }
 
+
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
         }
     }
 }
+

@@ -47,7 +47,7 @@ namespace CardsAndDragons.ClassesCondicoes
         {
             if (criatura.VidaAtual <= Nivel)
             {
-                criatura.SofrerDano(criatura.VidaAtual, true);
+                criatura.SofrerDano(criatura, Nivel, true, false);
                 TextoController.CentralizarTexto($"{criatura.Nome} foi consumido pela Maldição!");
             }
         }

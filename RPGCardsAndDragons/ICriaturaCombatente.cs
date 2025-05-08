@@ -37,7 +37,11 @@ namespace CardsAndDragons
 
         List<ICondicaoTemporaria> Condicoes { get; }
 
-        void SofrerDano(int quantidade, bool foiCondicao);
+        void SofrerDano(ICriaturaCombatente agressor, int quantidade, bool foiCondicao, bool aoSofrerDano);
+
+        void AoSofrerDano(ICriaturaCombatente agressor, int quantidade);
+
+        void AoMorrer(Batalha batalha, ICriaturaCombatente agressor);
 
         void Curar(int quantidade);
 

@@ -170,7 +170,7 @@ namespace CardsAndDragonsJogo
             }
         }
 
-        public void SofrerDano(int quantidade, bool foiCondicao)
+        public void SofrerDano(ICriaturaCombatente agressor, int quantidade, bool foiCondicao, bool aoSofrerDano)
         {
             if (!foiCondicao)
             {
@@ -196,6 +196,8 @@ namespace CardsAndDragonsJogo
                     TextoController.CentralizarTexto($"{this.Nome} recebeu {danoFinal} de dano!");
 
                     CondicaoController.SangrarFerida(this);
+
+                    if(aoSofrerDano) AoSofrerDano(agressor, danoFinal);
                 }
                 else
                 {
@@ -208,6 +210,16 @@ namespace CardsAndDragonsJogo
                 this.VidaAtual -= quantidade;
                 TextoController.CentralizarTexto($"{this.Nome} recebeu {quantidade} de dano!");
             }
+        }
+
+        public void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            InimigoBase.AoSofrerDano(agressor, quantidade);
+        }
+
+        public void AoMorrer(Batalha batalha, ICriaturaCombatente agressor)
+        {
+            InimigoBase.AoMorrer(batalha, this, agressor);
         }
 
         public void Curar(int quantidade)

@@ -73,9 +73,9 @@ namespace CardsAndDragons
         public int Nivel { get; set; }
 
         // Bônus temporários de combate
-        public int Escudo { get; set; } 
-        public int ModificadorDefesa { get; set; } 
-        public int ModificadorDano { get; set; } 
+        public int Escudo { get; set; }
+        public int ModificadorDefesa { get; set; }
+        public int ModificadorDano { get; set; }
 
         //Status "atuais" usados no codigo
         private int vidaAtual;
@@ -227,35 +227,55 @@ namespace CardsAndDragons
         }
 
 
-        public void SofrerDano(int dano , bool foiCondicao)
+        public void SofrerDano(ICriaturaCombatente agressor, int dano, bool foiCondicao, bool aoSofrerDano)
         {
-            if(dano > 0)
+            if (foiCondicao)
+            {
+                vidaAtual -= dano;
+                return;
+            }
+            if (dano > 0)
             {
                 int danoFinal = dano - this.ModificadorDefesa;
 
-            if (Escudo > 0)
-            {
-                int danoAbsorvido = Math.Min(danoFinal, Escudo);
-                danoFinal -= danoAbsorvido;
-                Escudo -= danoAbsorvido;
+                if (Escudo > 0)
+                {
+                    int danoAbsorvido = Math.Min(danoFinal, Escudo);
+                    danoFinal -= danoAbsorvido;
+                    Escudo -= danoAbsorvido;
+                    Console.WriteLine();
+                    TextoController.CentralizarTexto($"{Nome} absorveu {danoAbsorvido} de dano com o escudo!");
+                }
+
+                danoFinal = Math.Max(danoFinal, 0);
+
+                this.VidaAtual -= danoFinal;
+
                 Console.WriteLine();
-                TextoController.CentralizarTexto($"{Nome} absorveu {danoAbsorvido} de dano com o escudo!");
-            }
-
-            danoFinal = Math.Max(danoFinal, 0);
-           
-            this.VidaAtual -= danoFinal;
-
-            Console.WriteLine();
-            TextoController.CentralizarTexto($"{this.Nome} recebeu {danoFinal} de dano!");
+                TextoController.CentralizarTexto($"{this.Nome} recebeu {danoFinal} de dano!");
 
                 CondicaoController.SangrarFerida(this);
+
+                if (aoSofrerDano)
+                {
+                    AoSofrerDano(agressor, danoFinal);
+                }
             }
             else
             {
                 Console.WriteLine();
-               TextoController.CentralizarTexto($"O golpe foi muito fraco para ferir {this.Nome}...");
+                TextoController.CentralizarTexto($"O golpe foi muito fraco para ferir {this.Nome}...");
             }
+        }
+
+        public void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public void AoMorrer(Batalha batalha, ICriaturaCombatente agressor)
+        {
+            return;
         }
 
         //lógica do XP

@@ -57,7 +57,7 @@ namespace CardsAndDragons.ClassesCondicoes
             }
             else if(Nivel > 0 && Duracao > 0)
             {
-                criatura.SofrerDano(Nivel, true);
+                criatura.SofrerDano(criatura, Nivel, true, false);
                 TextoController.CentralizarTexto($"{criatura.Nome} sofre {Nivel} de dano por Sangramento!");
             }
         }

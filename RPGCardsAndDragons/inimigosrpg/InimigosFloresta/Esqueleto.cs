@@ -37,27 +37,36 @@ namespace CardsAndDragons
             @"          || ||          ", //9
             @"         ==' '==         ", //10
              // preencher 10 linhas no total
-        }; 
+        };
 
         public override int RecargaHabilidade => 3; // a cada 3 rodadas usa habilidade
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano;
+            int danoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano critico!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
+        }
     }
 }

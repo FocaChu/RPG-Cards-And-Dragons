@@ -27,7 +27,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
         {
             int porcentagem = nivel * 10;
             double dano = alvo.VidaAtual * (porcentagem / 100.0);
-            alvo.SofrerDano((int)dano, true);
+            alvo.SofrerDano(alvo, nivel, true, false);
         }
     }
 }

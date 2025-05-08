@@ -55,20 +55,30 @@ namespace CardsAndDragons
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
             TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando dano!");
-            alvo.SofrerDano(DanoFinal, false);
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
 
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-           TextoController.CentralizarTexto($"{this.Nome} se escondeu eu sua concha para se proteger!");
+            TextoController.CentralizarTexto($"{this.Nome} se escondeu eu sua concha para se proteger!");
             self.Escudo += 5;
             self.ModificadorDefesa += 1;
 
             CondicaoController.AplicarOuAtualizarCondicao(new ModificacaoEscudo(5, 1), self.Condicoes);
             CondicaoController.AplicarOuAtualizarCondicao(new ModificacaoDefesa(1, 1), self.Condicoes);
+        }
+
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
         }
     }
 }

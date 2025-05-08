@@ -27,7 +27,7 @@ namespace CardsAndDragons
 
         public override List<string> Modelo => new List<string>()
         {
-            
+
             @"                         ", //1 
             @"      /\         /\      ", //2
             @"     /  \ (\_/) /  \     ", //3
@@ -45,21 +45,30 @@ namespace CardsAndDragons
 
         public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
-            
+            int danoFinal = this.DanoBase + self.ModificadorDano;
 
-            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando {DanoFinal} de dano!");
-            alvo.SofrerDano(DanoFinal, false);
+
+            TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} causando de dano!");
+            alvo.SofrerDano(self, danoFinal, false, true);
         }
-       
+
         public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
-            int DanoFinal = this.DanoBase + self.ModificadorDano;
-            
-            TextoController.CentralizarTexto($"{this.Nome} mordeu e causou {DanoFinal} de dano em {alvo.Nome}!");
-            alvo.SofrerDano(DanoFinal, false);
+            int danoFinal = this.DanoBase + self.ModificadorDano;
+
+            TextoController.CentralizarTexto($"{this.Nome} mordeu causando dano em {alvo.Nome}!");
+            alvo.SofrerDano(self, danoFinal, false, true);
             CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
         }
 
+        public override void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
+        {
+            return;
+        }
+
+        public override void AoMorrer(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
+        {
+            return;
+        }
     }
 }
