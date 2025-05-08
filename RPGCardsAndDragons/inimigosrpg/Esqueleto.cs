@@ -19,6 +19,8 @@ namespace CardsAndDragons
 
         public override bool EBoss => false;
 
+        public override int Dificuldade => 1;
+
         public override string Nome => "Esqueleto";
 
         public override List<string> Modelo => new List<string>()
@@ -39,7 +41,7 @@ namespace CardsAndDragons
 
         public override int RecargaHabilidade => 3; // a cada 3 rodadas usa habilidade
 
-        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
 
@@ -48,7 +50,7 @@ namespace CardsAndDragons
             alvo.SofrerDano(DanoFinal, false);
         }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 

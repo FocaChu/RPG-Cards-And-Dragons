@@ -374,9 +374,9 @@ namespace CardsAndDragons
                     TextoController.CentralizarTexto($"{inimigo.Nome} foi derrotado!");
                     Console.ResetColor();
 
-                    int ouroGanho = (batalha.Jogador.Especie.NomeEspecie == "Anão") ? (15 * (int)inimigo.BiomaDeOrigem) : (10 * (int)inimigo.BiomaDeOrigem);
+                    int ouroGanho = (batalha.Jogador.Especie.NomeEspecie == "Anão") ? (15 * inimigo.Dificuldade) : (10 * inimigo.Dificuldade);
 
-                    ouroGanho += (inimigo.EBoss) ? (25 * (int)inimigo.BiomaDeOrigem) : 0;
+                    ouroGanho += (inimigo.EBoss) ? (25 * inimigo.Dificuldade) : 0;
 
                     batalha.Jogador.Ouros += ouroGanho;
 

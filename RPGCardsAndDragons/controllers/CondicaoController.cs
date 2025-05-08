@@ -23,9 +23,9 @@ namespace CardsAndDragons.Controllers
         //CODIGO PRINCIPAL PARA APLICAR E ATUALIZAR AS CONDIÇÕES ESPECIAIS DO JOGO 
         public static void AplicarOuAtualizarCondicao(ICondicaoTemporaria nova, List<ICondicaoTemporaria> condicoes)
         {
-            if(nova is Doenca doenca)
+            if (nova is Doenca doenca)
             {
-                foreach(var condicao in condicoes)
+                foreach (var condicao in condicoes)
                 {
                     if (condicao is Doenca doencaExistente && doencaExistente.Nome == nova.Nome)
                     {
@@ -37,18 +37,19 @@ namespace CardsAndDragons.Controllers
                         return;
                     }
                 }
-            //cria uma condição
-            var existente = condicoes.FirstOrDefault(c => c.GetType() == nova.GetType());
+                //cria uma condição
+                var existente = condicoes.FirstOrDefault(c => c.GetType() == nova.GetType());
 
-            //verifica se essa condição já existe. Não? Aplica ela. Sim? E é empilhavel? Funde as duas.
-            //Mas e se ela já existir e não foi empilhavel? Nada acontece, a condição não é duplicada
-            if (existente == null)
-            {
-                condicoes.Add(nova);
-            }
-            else if (existente is ICondicaoEmpilhavel empilhavel)
-            {
-                empilhavel.Fundir(nova);
+                //verifica se essa condição já existe. Não? Aplica ela. Sim? E é empilhavel? Funde as duas.
+                //Mas e se ela já existir e não foi empilhavel? Nada acontece, a condição não é duplicada
+                if (existente == null)
+                {
+                    condicoes.Add(nova);
+                }
+                else if (existente is ICondicaoEmpilhavel empilhavel)
+                {
+                    empilhavel.Fundir(nova);
+                }
             }
         }
 

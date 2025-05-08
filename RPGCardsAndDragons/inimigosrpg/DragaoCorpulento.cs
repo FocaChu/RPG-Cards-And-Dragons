@@ -23,6 +23,8 @@ namespace CardsAndDragons
 
         public override bool EBoss => true;
 
+        public override int Dificuldade => 2;
+
         public override string Nome => "Dragão Corpulento";
 
         public override List<string> Modelo => new List<string>()
@@ -66,7 +68,7 @@ namespace CardsAndDragons
         public override int RecargaHabilidade => 4; // a cada 2 rodadas usa habilidada
 
 
-        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int danoFinal = this.DanoBase + self.ModificadorDano;
 
@@ -75,7 +77,7 @@ namespace CardsAndDragons
             alvo.SofrerDano(danoFinal, false);
         }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             Random rng = new Random();
 
@@ -89,18 +91,27 @@ namespace CardsAndDragons
             {
                 int danoFinal = (this.DanoBase * 2) + self.ModificadorDano;
 
-                TextoController.CentralizarTexto($"{this.Nome} atacou {batalha.Jogador.Nome} com sua calda!\n");
+                if(alvo is Personagem jogador)
+                {
+                    TextoController.CentralizarTexto($"{this.Nome} atacou {batalha.Jogador.Nome} com sua calda!\n");
 
-                int indice = rng.Next(batalha.Jogador.Mao.Count);
+                    int indice = rng.Next(batalha.Jogador.Mao.Count);
 
-                var carta = batalha.Jogador.Mao[indice];
+                    var carta = batalha.Jogador.Mao[indice];
 
-                batalha.Jogador.BaralhoDescarte.Add(carta);
-                batalha.Jogador.Mao.RemoveAt(indice);
+                    batalha.Jogador.BaralhoDescarte.Add(carta);
+                    batalha.Jogador.Mao.RemoveAt(indice);
 
-                TextoController.CentralizarTexto($"{batalha.Jogador.Nome} perdeu a carta {carta.Nome} de sua mão!");
+                    TextoController.CentralizarTexto($"{batalha.Jogador.Nome} perdeu a carta {carta.Nome} de sua mão!");
 
-                batalha.Jogador.SofrerDano(danoFinal, false);
+                    batalha.Jogador.SofrerDano(danoFinal, false);
+                }
+                else
+                {
+                    TextoController.CentralizarTexto($"{this.Nome} atacou {alvo.Nome} com sua calda!\n");
+                    alvo.SofrerDano(danoFinal, false);
+                }
+                
             }
             else
             {

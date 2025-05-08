@@ -31,6 +31,8 @@ namespace CardsAndDragonsJogo
 
         public bool EBoss => InimigoBase.EBoss;
 
+        public int Dificuldade => InimigoBase.Dificuldade;
+
         public int RecargaHabilidade { get; set; }
 
         public List<string> Modelo => InimigoBase.Modelo;

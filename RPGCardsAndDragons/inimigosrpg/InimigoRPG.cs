@@ -14,15 +14,17 @@ namespace CardsAndDragons.Inimigos
 
         public abstract bool EBoss { get; }
 
+        public abstract int Dificuldade { get; }
+
         public abstract List<string> Modelo { get; }
 
         public abstract int RecargaHabilidade { get; }
 
         //Mecanicas para combate
 
-        public abstract void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo);
+        public abstract void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo);
 
-        public abstract void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo);
+        public abstract void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo);
 
     }
 }

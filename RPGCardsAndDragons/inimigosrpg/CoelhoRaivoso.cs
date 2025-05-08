@@ -22,6 +22,8 @@ namespace CardsAndDragons
 
         public override bool EBoss => false;
 
+        public override int Dificuldade => 1;
+
         public override string Nome => "Coelho Raivoso";
 
         public override List<string> Modelo => new List<string>()
@@ -44,7 +46,7 @@ namespace CardsAndDragons
 
         public int DanoRaivoso;
 
-        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int DanoFinal = this.DanoBase + self.ModificadorDano;
 
@@ -53,7 +55,7 @@ namespace CardsAndDragons
         }
 
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int DanoFinal = (this.DanoBase * 2) + self.ModificadorDano + this.DanoRaivoso;
 

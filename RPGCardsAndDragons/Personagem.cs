@@ -263,9 +263,9 @@ namespace CardsAndDragons
         {
             //double ganhoXp = (50 + (inimigo.Dificuldade * 2));
 
-            double ganhoXp = (this.Especie.NomeEspecie == "Humano") ? ganhoXp = ((60 + (Nivel * 5)) + ((int)inimigo.BiomaDeOrigem * 2.5)) : ganhoXp = ((50 + (Nivel * 5)) + ((int)inimigo.BiomaDeOrigem * 2));
+            double ganhoXp = (this.Especie.NomeEspecie == "Humano") ? ganhoXp = ((60 + (Nivel * 5)) + (inimigo.Dificuldade * 2.5)) : ganhoXp = ((50 + (Nivel * 5)) + (inimigo.Dificuldade * 2));
 
-            ganhoXp += (inimigo.EBoss) ? ((int)inimigo.BiomaDeOrigem * 50) : 0;
+            ganhoXp += (inimigo.EBoss) ? (inimigo.Dificuldade * 50) : 0;
 
             XpAtual += ganhoXp;
 

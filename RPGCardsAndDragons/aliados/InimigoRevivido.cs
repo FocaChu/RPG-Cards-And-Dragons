@@ -26,6 +26,8 @@ namespace CardsAndDragons.Aliados
 
         public List<string> Modelo => InimigoBase.Modelo;
 
+        public int RecargaHabilidade { get; set; }
+
         public int Escudo { get; set; }
 
         public int ModificadorDefesa { get; set; }
@@ -61,33 +63,75 @@ namespace CardsAndDragons.Aliados
 
             this.VidaMax = inimigoBase.VidaMax - (inimigoBase.VidaMax / 4);
             this.VidaAtual = VidaMax;
+            this.RecargaHabilidade = InimigoBase.RecargaHabilidade;
         }
 
         public void RealizarTurno(Batalha batalha)
         {
             int rodada = batalha.rodadaAtual;
 
-            if (PodeUsarHabilidade(rodada) && !CondicaoController.VerificarCondicao<Silencio>(Condicoes))
+            if (CondicaoController.VerificarCondicao<Atordoamento>(Condicoes))
             {
-                InimigoBase.UsarHabilidadeComoAliado(batalha, this);
+                TextoController.CentralizarTexto($"{this.Nome} está atordoado e não pode agir nesta rodada!");
+                return;
             }
+
+            else if (CondicaoController.VerificarCondicao<Paranoia>(Condicoes))
+            {
+                int nivelParanoia = 0;
+                foreach (var condicao in Condicoes)
+                {
+                    if (condicao is Paranoia paranoia)
+                    {
+                        nivelParanoia = paranoia.Nivel;
+                        break;
+                    }
+                }
+
+                int chance = nivelParanoia * 10;
+                BatalhaController.GerarRNG(chance);
+
+                if (chance == 0)
+                {
+                    TextoController.CentralizarTexto($"{this.Nome} está confuso e em panico!");
+                    var alvo = AlvoController.EscolherAlvoAleatorioDosAliados(batalha);
+
+                    Atacar(batalha, alvo);
+                    return;
+                }
+
+            }
+
             else
             {
-                if (PodeUsarHabilidade(rodada) && CondicaoController.VerificarCondicao<Silencio>(Condicoes))
-                {
-                    Console.WriteLine($"{this.Nome} foi silenciado e não pode usar sua habilidade...");
-                    InimigoBase.AtacarComoAliado(batalha, this);
-                }
-                else
-                {
-                    InimigoBase.AtacarComoAliado(batalha, this);
-                }
+                var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+                Atacar(batalha, alvo);
             }
         }
 
-        public bool PodeUsarHabilidade(int rodada)
+        public void Atacar(Batalha batalha, ICriaturaCombatente alvo)
         {
-            return InimigoBase.PodeUsarHabilidade(rodada);
+            if (vidaAtual >= 0)
+            {
+                if (batalha.rodadaAtual % RecargaHabilidade == 0)
+                {
+                    if (CondicaoController.VerificarCondicao<Silencio>(Condicoes))
+                    {
+                        Console.WriteLine($"{this.Nome} foi silenciado e não pode usar sua habilidade...");
+
+                        InimigoBase.Atacar(batalha, this, alvo);
+                    }
+                    else
+                    {
+                        InimigoBase.UsarHabilidade(batalha, this, alvo);
+                    }
+
+                }
+                else
+                {
+                    InimigoBase.Atacar(batalha, this, alvo);
+                }
+            }
         }
 
         public void SofrerDano(int quantidade, bool foiCondicao)

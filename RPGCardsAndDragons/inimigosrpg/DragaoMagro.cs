@@ -20,8 +20,9 @@ namespace CardsAndDragons
 
         public override int DanoBase => 25;
 
-
         public override bool EBoss => true;
+
+        public override int Dificuldade => 2;
 
         public override string Nome => "Dragão Lagarto";
 
@@ -65,7 +66,7 @@ namespace CardsAndDragons
         public override int RecargaHabilidade => 5; // a cada 2 rodadas usa habilidada
 
 
-        public override void Atacar(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void Atacar(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             int danoFinal = this.DanoBase + self.ModificadorDano;
 
@@ -75,7 +76,7 @@ namespace CardsAndDragons
             alvo.SofrerDano(danoFinal, false);
         }
 
-        public override void UsarHabilidade(Batalha batalha, OInimigo self, ICriaturaCombatente alvo)
+        public override void UsarHabilidade(Batalha batalha, ICriaturaCombatente self, ICriaturaCombatente alvo)
         {
             //faz o rng do golpe do boss
             int chance = 50;
