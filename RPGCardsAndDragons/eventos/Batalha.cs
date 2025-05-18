@@ -102,14 +102,15 @@ namespace CardsAndDragonsJogo
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("\n\n");
-            TextoController.CentralizarTexto("============================== !TURNO DOS INIMIGOS! ==============================\n");
+            TextoController.CentralizarTexto("============================== !TURNO DOS INIMIGOS! ==============================\n\n");
             Console.ResetColor();
+
+            TextoController.CentralizarTexto("---~~~==================================~~~~---\n\n");
 
             foreach (var inimigo in Inimigos)
             {
                 Console.WriteLine();
-                TextoController.CentralizarTexto($"{inimigo.Nome} está se preparando para agir...");
-                Console.WriteLine();
+
                 System.Threading.Thread.Sleep(200); // Delayzinho dramático
 
 

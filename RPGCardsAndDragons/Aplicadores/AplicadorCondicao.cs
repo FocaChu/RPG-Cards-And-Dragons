@@ -26,7 +26,7 @@ namespace RPGCardsAndDragons.condicoes
 
         public bool Aplicar(Batalha batalha)
         {
-            if(Criatura.VidaAtual > 0)
+            if (Criatura.VidaAtual > 0)
             {
                 CondicaoController.AplicarOuAtualizarCondicao(Condicao, Criatura.Condicoes);
             }

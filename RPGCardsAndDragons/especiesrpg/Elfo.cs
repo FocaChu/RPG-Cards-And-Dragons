@@ -17,13 +17,11 @@ namespace CardsAndDragons.ClassesEspecies
         public override List<ICartaUsavel> DefinirCartasIniciais()
         {
             return new List<ICartaUsavel>
-    {
-        FabricaDeCartas.CriarFlechada(), FabricaDeCartas.CriarFlechada(), FabricaDeCartas.CriarFlechada(), FabricaDeCartas.CriarFlechada(),
-        FabricaDeCartas.CriarPocaoDeCura(), FabricaDeCartas.CriarPocaoDeCura(),
-        FabricaDeCartas.CriarBemMunido(), FabricaDeCartas.CriarBemMunido(),
-        FabricaDeCartas.CriarSaraivada(),
-        FabricaDeCartas.CriarDisparoPerfurante()
-    };
+            {
+                FabricaDeCartas.CriarChicotada(), FabricaDeCartas.CriarChicotada(), FabricaDeCartas.CriarChicotada(),
+                FabricaDeCartas.CriarMixDeErvas(),
+                FabricaDeCartas.CriarFrenesiImpetuoso(),
+            };
         }
     }
 }

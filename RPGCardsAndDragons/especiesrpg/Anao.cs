@@ -17,9 +17,11 @@ namespace CardsAndDragons.ClassesEspecies
         public override List<ICartaUsavel> DefinirCartasIniciais()
         {
             return new List<ICartaUsavel>
-    {
-        FabricaDeCartas.CriarEscudo()
-    };
+            {
+                FabricaDeCartas.CriarEconomiaLocal(), FabricaDeCartas.CriarEconomiaLocal(), FabricaDeCartas.CriarEconomiaLocal(),
+                FabricaDeCartas.CriarSubornoEstrategico(), 
+                FabricaDeCartas.CriarComprarSuprimentos()
+            }; 
         }
     }
 }

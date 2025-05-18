@@ -12,8 +12,9 @@ namespace CardsAndDragonsJogo
     {
         Comum = 0,
         Rara = 1,
-        Lendaria = 2,
-        Profana = 3,
+        Epica = 2,
+        Lendaria = 3,
+        Profana = 4,
     }
 
     public enum TipoCarta

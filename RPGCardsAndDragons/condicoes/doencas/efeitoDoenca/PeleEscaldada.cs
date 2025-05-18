@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospédeiro sofre de efeitos de queimadura.";
 
-        public PeleEscaldada(TipoDoenca tipo) { }
+        public PeleEscaldada() { }
 
         public PeleEscaldada(PeleEscaldada original)
         {

@@ -229,7 +229,7 @@ namespace CardsAndDragons
             Console.WriteLine("\n\n\n\n");
             TextoController.CentralizarTexto("================================================== * CAPITÚLO 1 * ==================================================\n\n");
 
-            TextoController.CentralizarTexto($"{oJogador[jogadorAtual].Nome} sai da segurança das muralhas antigas da Fortaleza de Tyltim. Determinado em sua grande caçada até o rei dragão...");
+            TextoController.CentralizarTexto($"{oJogador[jogadorAtual].Nome} sai da segurança das muralhas antigas da Fortaleza de Tyltim. Determinado em sua grande caçada até o rei dragão...\n");
 
             Console.ReadKey();
 
@@ -312,6 +312,7 @@ namespace CardsAndDragons
 
             if (primeiroRodada)
             {
+                batalha.Jogador.Regeneracao = batalha.Jogador.RegeneracaoPermanente;
                 batalha.Jogador.Condicoes.Clear();
                 BatalhaController.NovaRodada(batalha);
                 primeiroRodada = false;

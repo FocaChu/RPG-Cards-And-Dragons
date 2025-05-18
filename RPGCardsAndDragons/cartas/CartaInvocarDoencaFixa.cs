@@ -61,6 +61,7 @@ namespace RPGCardsAndDragons.cartas
                 this.CustoOuro = (CustoNovo / 10);
             }
 
+            CondicaoController.MutarDoenca(doenca);
 
             // Clona a doença para não ser ponteiro
             var doencaClone = new Doenca(doenca);

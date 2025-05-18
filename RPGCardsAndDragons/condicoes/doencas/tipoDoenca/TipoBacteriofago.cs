@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,28 +10,25 @@ using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
 {
-    public class TipoParasita : TipoDoenca
+    public class TipoBacteriofago : TipoDoenca
     {
-        public override string Nome
-        {
-            get { return "Parasita"; }
-        }
+        public override string Nome => "Bacteriófago";
 
-        public override string Descricao
-        {
-            get { return "Parasitas que invadem e danificam o hospedeiro."; }
-        }
+        public override string Descricao =>
+            "Um vírus extremamente agressivo e violento ao hospedeiro.";
 
         public override int ObterCustoEfeito(IEfeitoDoenca efeito)
         {
-            if (efeito is Necrose) return +30;
-            if (efeito is Fraqueza) return +20;
-            if (efeito is Sensibilidade) return +30;
+            if (efeito is Necrose) return 10;
+            if (efeito is Hemorragia) return 20;
+            if (efeito is PeleEscaldada) return 20;
+            if (efeito is ConfusaoMental) return 30;
             return 0;
         }
+
         public override int ObterCustoTransmissao(ITipoTransmissao transmissao)
         {
-            if (transmissao is TransmissaoTeleguiada) return 20;
+            if (transmissao is TransmissaoTeleguiada) return 25;
             return 0;
         }
 
@@ -39,8 +37,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
             return new List<IEfeitoDoenca>
         {
             new Necrose(),
-            new Fraqueza(),
-            new Sensibilidade()
+            new Hemorragia(),
+            new PeleEscaldada(),
+            new ConfusaoMental()
         };
         }
 
@@ -48,10 +47,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             return new List<ITipoTransmissao>
         {
-            new TransmissaoTeleguiada()
+            new TransmissaoTeleguiada(),
         };
         }
     }
-
 
 }

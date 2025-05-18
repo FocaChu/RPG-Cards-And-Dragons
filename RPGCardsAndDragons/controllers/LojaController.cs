@@ -111,14 +111,21 @@ namespace CardsAndDragons.Controllers
 
                 #endregion
 
+                #region Cartas Épicas
+
+                FabricaDeCartas.CriarFogoDaConflagracao(),
+                FabricaDeCartas.CriarColapsoDeMana(),
+                FabricaDeCartas.CriarAuraVerdejante(),
+
+                #endregion  
+
                 #region Cartas Raras
-                
+
                 FabricaDeCartas.CriarMimico(),
                 FabricaDeCartas.CriarSilenciar(),
                 FabricaDeCartas.CriarFeiticoDeGelo(),
                 FabricaDeCartas.CriarExplosaoDeEnergia(),
                 FabricaDeCartas.CriarGolpePesado(),
-                FabricaDeCartas.CriarSangueExplosivo(),
                 FabricaDeCartas.CriarGolpeEmpoderado(),
                 FabricaDeCartas.CriarEscudoDeEspinhos(),
                 FabricaDeCartas.CriarProtecao(),
@@ -144,6 +151,39 @@ namespace CardsAndDragons.Controllers
             };
 
             #region Cartas exclusivas
+
+            switch (loja.Jogador.Especie.NomeEspecie)
+            {
+                case "Humano":
+                    cartas.Add(FabricaDeCartas.CriarInvestida());
+                    cartas.Add(FabricaDeCartas.CriarCeia());
+                    cartas.Add(FabricaDeCartas.CriarCompraHabilidosa());
+                    break;
+
+                case "Elfo":
+                    cartas.Add(FabricaDeCartas.CriarFrenesiImpetuoso());
+                    cartas.Add(FabricaDeCartas.CriarChicotada());
+                    cartas.Add(FabricaDeCartas.CriarMixDeErvas());
+                    break;
+
+                case "Anão":
+                    cartas.Add(FabricaDeCartas.CriarEconomiaLocal());
+                    cartas.Add(FabricaDeCartas.CriarSubornoEstrategico());
+                    cartas.Add(FabricaDeCartas.CriarComprarSuprimentos());
+                    break;
+
+                case "Vampiro":
+                    cartas.Add(FabricaDeCartas.CriarSangueExplosivo());
+                    cartas.Add(FabricaDeCartas.CriarMordidaVampirica());
+                    cartas.Add(FabricaDeCartas.CriarDrenarSangue());
+                    break;
+
+                case "ShapeShifter":
+                    cartas.Add(FabricaDeCartas.CriarMimico());
+                    cartas.Add(FabricaDeCartas.CriarInseguranca());
+                    cartas.Add(FabricaDeCartas.CriarSilenciar());
+                    break;
+            };
 
             switch (loja.Jogador.Classe.NomeClasse)
             {

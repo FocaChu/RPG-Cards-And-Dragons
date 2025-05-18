@@ -11,7 +11,7 @@ namespace RPGCardsAndDragons.fases
     public class BiomaFloresta : BiomaJogo
     {
 
-        public override string Nome => "Floresta Verdejante";
+        public override string Nome => "A Floresta Verdejante";
 
         public override string Descricao => "Uma floresta de árvores altas e mata densa. Muitas criaturas se escondem entre os arbustos e sombras das árvores.";
 

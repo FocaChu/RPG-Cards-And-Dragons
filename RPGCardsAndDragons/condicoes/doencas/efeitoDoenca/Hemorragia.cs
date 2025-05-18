@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospédeiro sofre de efeitos de sangramento.";
 
-        public Hemorragia(TipoDoenca tipo) { }
+        public Hemorragia() { }
 
         public Hemorragia(Hemorragia original)
         {

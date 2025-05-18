@@ -19,7 +19,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hóspedeiro fica mais frágil a ataques.";
 
-        public Sensibilidade(TipoDoenca tipo) { }
+        public Sensibilidade() { }
 
         public Sensibilidade(Sensibilidade original)
         {

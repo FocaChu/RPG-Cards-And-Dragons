@@ -177,7 +177,7 @@ namespace CardsAndDragons.Aliados
 
         public void AoSofrerDano(ICriaturaCombatente agressor, int quantidade)
         {
-            InimigoBase.AoSofrerDano(agressor,quantidade);
+            InimigoBase.AoSofrerDano(agressor, quantidade);
         }
 
         public void AoMorrer(Batalha batalha, ICriaturaCombatente agressor)

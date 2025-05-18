@@ -58,6 +58,8 @@ namespace CardsAndDragons
 
         public int Regeneracao { get; set; }
 
+        public int RegeneracaoPermanente { get; set; }
+
         public int Ouro { get; set; }
 
         public int VidaMax { get; set; }
@@ -137,7 +139,7 @@ namespace CardsAndDragons
             this.Classe = classe;
 
             this.Ouros = (this.Especie.NomeEspecie == "Anão") ? 150 : 100;
-            this.Regeneracao = (this.Especie.NomeEspecie == "Vampiro") ? 5 : 0;
+            this.RegeneracaoPermanente = (this.Especie.NomeEspecie == "Vampiro") ? 5 : 0;
 
             this.Ouros += (this.Classe.NomeClasse == "Engenheiro") ? 25 : 0;
 

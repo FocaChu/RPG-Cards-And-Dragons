@@ -8,6 +8,8 @@ using CardsAndDragons;
 using CardsAndDragons.Inimigos;
 using CardsAndDragonsJogo;
 using RPGCardsAndDragons.condicoes.doencas;
+using RPGCardsAndDragons.condicoes.doencas.efeitoDoenca;
+using RPGCardsAndDragons.doencas;
 using RPGCardsAndDragons.fases;
 
 namespace RPGCardsAndDragons.controllers
@@ -67,6 +69,24 @@ namespace RPGCardsAndDragons.controllers
                 .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(BiomaJogo)))
                 .Select(t => (BiomaJogo)Activator.CreateInstance(t))
                 .ToList();
+        }
+
+        public static List<IEfeitoDoenca> ObterTodosOsEfeitoDoencaDisponiveis()
+        {
+
+            List<IEfeitoDoenca> efeitosDisponiveis = new List<IEfeitoDoenca>();
+
+            efeitosDisponiveis.Add(new ConfusaoMental());
+            efeitosDisponiveis.Add(new DorDeGarganta());
+            efeitosDisponiveis.Add(new Fraqueza());
+            efeitosDisponiveis.Add(new Hemorragia());
+            efeitosDisponiveis.Add(new Intoxicacao());
+            efeitosDisponiveis.Add(new Necrose());
+            efeitosDisponiveis.Add(new PeleEscaldada());
+            efeitosDisponiveis.Add(new Sensibilidade());
+            efeitosDisponiveis.Add(new Zumbificacao());
+
+            return efeitosDisponiveis;
         }
     }
 }

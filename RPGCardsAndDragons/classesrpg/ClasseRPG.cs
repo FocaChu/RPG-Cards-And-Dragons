@@ -8,7 +8,7 @@ using CardsAndDragonsJogo;
 namespace CardsAndDragons
 {
 
-   // Classe base para todas as ClassesRPG !!!
+    // Classe base para todas as ClassesRPG !!!
     public abstract class ClasseRPG
     {
         public abstract int VidaMax { get; }

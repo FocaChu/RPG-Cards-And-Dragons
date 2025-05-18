@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospédeiro sofre de efeitos de paranóia.";
 
-        public ConfusaoMental(TipoDoenca tipo) { }
+        public ConfusaoMental() { }
 
         public ConfusaoMental(ConfusaoMental original)
         {

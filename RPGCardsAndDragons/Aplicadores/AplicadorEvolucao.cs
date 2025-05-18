@@ -20,7 +20,7 @@ namespace RPGCardsAndDragons.cartas
 
         public bool Aplicar(Batalha batalha)
         {
-           var cartas = batalha.Jogador.BaralhoCompleto;
+            var cartas = batalha.Jogador.BaralhoCompleto;
 
             foreach (var carta in cartas)
             {

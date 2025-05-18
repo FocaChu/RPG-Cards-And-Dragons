@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using CardsAndDragons.ClassesCondicoes;
@@ -19,6 +20,7 @@ namespace CardsAndDragons.Controllers
 
     public static class CondicaoController
     {
+        static Random rng = new Random();
 
         //CODIGO PRINCIPAL PARA APLICAR E ATUALIZAR AS CONDIÇÕES ESPECIAIS DO JOGO 
         public static void AplicarOuAtualizarCondicao(ICondicaoTemporaria nova, List<ICondicaoTemporaria> condicoes)
@@ -59,13 +61,13 @@ namespace CardsAndDragons.Controllers
         {
             TipoDoenca tipoDoenca = EscolherTipoDoenca();
 
-            int nivel = 3;
+            int nivel = tipoDoenca.Nome == "Bacteriófago" ? 4 : 3; ;
 
 
             //verifica se o jogador quer uma doença agressiva ou não
             bool Eagrassiva = EscolherAgressividade();
 
-            int duracao = 10;
+            int duracao = tipoDoenca.Nome == "Parasita" ? 11 : 9;
 
             ITipoTransmissao transmissao = EscolherTipoTransmissao(tipoDoenca);
 
@@ -384,7 +386,69 @@ namespace CardsAndDragons.Controllers
             return nome;
         }
 
+
         #endregion
+
+        public static void MutarDoenca(Doenca doenca)
+        {
+            List<IEfeitoDoenca> efeitosDisponiveis = BuscaController.ObterTodosOsEfeitoDoencaDisponiveis();
+
+            foreach(IEfeitoDoenca efeito in doenca.Efeitos)
+            {
+                efeitosDisponiveis.Remove(efeito);
+            }
+
+            int chance = doenca.Nivel;
+
+            chance += doenca.Tipo.Nome == "Vírus" ? 2 : 1;
+
+            int mutou = BatalhaController.GerarRNG(chance);
+
+            if(mutou == 0)
+            {
+                doenca.Nivel++;
+                doenca.Duracao ++;
+
+                int tipoMutacao = rng.Next(2);
+
+                if(tipoMutacao == 0 && doenca.EAgrassiva == false)
+                {
+                    Console.ResetColor();
+                    Console.WriteLine("\n\n");
+                    TextoController.CentralizarTexto("============================================================================================================\n\n");
+
+                    TextoController.CentralizarTexto($"A doença {doenca.Nome} se tornou agressiva!\n\n");
+
+                    TextoController.CentralizarTexto("============================================================================================================");
+
+                    Console.ReadKey();
+
+                    Console.Clear();
+
+                    doenca.EAgrassiva = true;
+                }
+                else if (efeitosDisponiveis.Count > 0)
+                {
+
+                    int efeitoNovo = rng.Next(efeitosDisponiveis.Count);
+
+                    Console.ResetColor();
+                    Console.WriteLine("\n\n");
+                    TextoController.CentralizarTexto("============================================================================================================\n\n");
+
+                    TextoController.CentralizarTexto($"A doença {doenca.Nome} mutou e ganhou o sintoma {efeitosDisponiveis[efeitoNovo].Nome}!\n\n");
+
+                    TextoController.CentralizarTexto("============================================================================================================");
+
+                    Console.ReadKey();
+
+                    doenca.Efeitos.Add(efeitosDisponiveis[efeitoNovo]);
+
+                    Console.Clear();
+                }
+
+            }
+        }
 
         //Verifica as condições especiais dos inimigos e aliados
         public static void Checape(Batalha batalha)
@@ -414,6 +478,8 @@ namespace CardsAndDragons.Controllers
 
                     for (int i = inimigo.Condicoes.Count - 1; i >= 0; i--)
                     {
+                        Console.WriteLine();
+
                         var condicao = inimigo.Condicoes[i];
 
                         TextoController.DefinirCorDaCondicao(condicao.Nome);
@@ -446,6 +512,8 @@ namespace CardsAndDragons.Controllers
 
                 Console.ResetColor();
             }
+
+            Console.ReadKey();
 
             if (batalha.Aplicadores.Count > 0)
             {

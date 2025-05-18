@@ -9,28 +9,24 @@ using RPGCardsAndDragons.doencas;
 
 namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
 {
-    public class TipoParasita : TipoDoenca
+    public class TipoBacteria : TipoDoenca
     {
-        public override string Nome
-        {
-            get { return "Parasita"; }
-        }
+        public override string Nome => "Bactéria";
 
-        public override string Descricao
-        {
-            get { return "Parasitas que invadem e danificam o hospedeiro."; }
-        }
+        public override string Descricao =>
+            "Organismos versáteis que se adaptam e desgastam o corpo com múltiplas fraquezas.";
 
         public override int ObterCustoEfeito(IEfeitoDoenca efeito)
         {
-            if (efeito is Necrose) return +30;
-            if (efeito is Fraqueza) return +20;
-            if (efeito is Sensibilidade) return +30;
+            if (efeito is PeleEscaldada) return 20;
+            if (efeito is Fraqueza) return 25;
+            if (efeito is Hemorragia) return 20;
             return 0;
         }
+
         public override int ObterCustoTransmissao(ITipoTransmissao transmissao)
         {
-            if (transmissao is TransmissaoTeleguiada) return 20;
+            if (transmissao is TransmissaoAr) return 10;
             return 0;
         }
 
@@ -38,9 +34,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             return new List<IEfeitoDoenca>
         {
-            new Necrose(),
+            new PeleEscaldada(),
             new Fraqueza(),
-            new Sensibilidade()
+            new Hemorragia()
         };
         }
 
@@ -48,10 +44,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             return new List<ITipoTransmissao>
         {
-            new TransmissaoTeleguiada()
+            new TransmissaoAr()
         };
         }
     }
-
 
 }

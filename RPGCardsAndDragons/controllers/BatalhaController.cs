@@ -321,8 +321,6 @@ namespace CardsAndDragons
 
         public static void AcaoPassarTurno(Batalha batalha)
         {
-            CondicaoController.Checape(batalha);
-
             Console.ReadKey();
 
             if (batalha.Aliados.Count > 0)
@@ -337,6 +335,10 @@ namespace CardsAndDragons
             Console.ReadKey();
 
             VerificarMorte(batalha);
+
+            CondicaoController.Checape(batalha);
+
+            Console.ReadKey();
 
             CondicaoController.Checape(batalha.Jogador);
 
@@ -502,7 +504,7 @@ namespace CardsAndDragons
 
             if (batalha.Jogador.BaralhoCompra.Count == 0)
             {
-                PersonagemController.RecarregarBaralho(batalha.Jogador);
+                PersonagemController.EmbaralharCartas(batalha.Jogador.BaralhoDescarte);
             }
             PersonagemController.ComprarCartas(batalha.Jogador);
 

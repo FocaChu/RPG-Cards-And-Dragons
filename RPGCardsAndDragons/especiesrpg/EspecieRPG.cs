@@ -12,7 +12,7 @@ namespace CardsAndDragons
     {
         public abstract string NomeEspecie { get; }
 
-        public abstract string DescricaoEspecie { get;  }
+        public abstract string DescricaoEspecie { get; }
 
         public abstract List<ICartaUsavel> DefinirCartasIniciais();
 

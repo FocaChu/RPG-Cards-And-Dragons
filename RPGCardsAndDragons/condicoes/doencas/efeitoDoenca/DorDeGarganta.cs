@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospédeiro sofre de efeitos de silêncio.";
 
-        public DorDeGarganta(TipoDoenca tipo) { }
+        public DorDeGarganta() { }
 
         public DorDeGarganta(DorDeGarganta original)
         {

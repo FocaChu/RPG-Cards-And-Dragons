@@ -15,7 +15,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "A criatura sofre dano igual a parte de sua vida máxima a cada turno.";
 
-        public Necrose(TipoDoenca tipo){ }
+        public Necrose() { }
 
         public Necrose(Necrose original)
         {

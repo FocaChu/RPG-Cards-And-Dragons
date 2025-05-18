@@ -27,7 +27,7 @@ namespace CardsAndDragons.ClassesClasses
             return new List<ICartaUsavel>
     {
         FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(), FabricaDeCartas.CriarAtaqueMagico(),
-        FabricaDeCartas.CriarPocaoDeCura(), 
+        FabricaDeCartas.CriarPocaoDeCura(),
         FabricaDeCartas.CriarFogoMagico(), FabricaDeCartas.CriarFogoMagico(),
         FabricaDeCartas.CriarFeiticoDeGelo(),
         FabricaDeCartas.CriarLivroDeFeiços(),

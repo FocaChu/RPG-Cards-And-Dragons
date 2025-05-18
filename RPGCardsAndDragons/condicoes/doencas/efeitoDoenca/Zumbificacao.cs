@@ -20,7 +20,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public bool Zumbificado { get; set; } = false;
 
-        public Zumbificacao(TipoDoenca tipo) { }
+        public Zumbificacao() { }
 
         public Zumbificacao(Fraqueza original)
         {

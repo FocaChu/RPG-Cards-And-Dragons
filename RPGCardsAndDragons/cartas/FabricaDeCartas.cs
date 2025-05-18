@@ -158,8 +158,110 @@ namespace CardsAndDragons.ClassesDasCartas
 
         #endregion
 
+        #region Cartas Épicas
+
+        public static ICartaUsavel CriarFogoDaConflagracao()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Fogo da Conflagração",
+                Descricao = "Causa 35 de dano base a todos os inimigos. Aplica queimadura em todos os inimigos.",
+                RaridadeCarta = Raridade.Epica,
+                Preco = GerarPreco(Raridade.Epica),
+                CustoMana = 50,
+                Modelo = GerarModeloCarta("F", 3),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 35 + batalha.Jogador.ModificadorDano;
+                    foreach (var inimigo in batalha.Inimigos)
+                    {
+                        inimigo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+                        CondicaoController.AplicarOuAtualizarCondicao(new Queimadura(5, 5), inimigo.Condicoes);
+                    }
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarColapsoDeMana()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Colapso de Mana",
+                Descricao = "Gasta toda a mana para causa dano equivalente a um inimigo.",
+                RaridadeCarta = Raridade.Epica,
+                Preco = GerarPreco(Raridade.Epica),
+                CustoMana = 50,
+                Modelo = GerarModeloCarta("M", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = batalha.Jogador.ManaAtual + batalha.Jogador.ModificadorDano;
+                    
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+
+                    batalha.Jogador.ManaAtual = 0;
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarAuraVerdejante()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Aura Verdejante",
+                Descricao = "Cura vida 5 de vida para cada ponto de regenaração. Aumenta a regeneração em 3 pela batalha.",
+                RaridadeCarta = Raridade.Epica,
+                Preco = GerarPreco(Raridade.Epica),
+                CustoMana = 50,
+                CustoStamina = 25,
+                Modelo = GerarModeloCarta("V", 1),
+                Efeito = batalha =>
+                {
+                    int qtdCUra = 5 * batalha.Jogador.Regeneracao;
+
+                    batalha.Jogador.Curar(qtdCUra);
+
+                    batalha.Jogador.Regeneracao += 3;
+                }
+            };
+        }
+
+
+        #endregion
+
 
         #region Cartas Raras
+
+
+
+        public static ICartaUsavel CriarSubornoEstrategico()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Suborno Estratégico",
+                Descricao = "Paga 20 de ouro. Um inimigo aleatório pula sua próxima ação.",
+                RaridadeCarta = Raridade.Rara,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoOuro = 20,
+                Modelo = GerarModeloCarta("§", 2),
+                Efeito = batalha =>
+                {
+                    var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+
+                    if (alvo.EBoss)
+                    {
+                        TextoController.CentralizarTexto("Você não pode subornar um chefe!");
+                        batalha.Jogador.Ouro += 20;
+                        return;
+                    }
+
+                    CondicaoController.AplicarOuAtualizarCondicao(new Atordoamento(), alvo.Condicoes);
+
+                    TextoController.CentralizarTexto($"{alvo.Nome} foi subornado e perderá sua próxima ação!");
+                }
+            };
+        }
 
         public static ICartaUsavel CriarInvocarRoboFixo()
         {
@@ -430,7 +532,7 @@ namespace CardsAndDragons.ClassesDasCartas
                             CondicaoController.AplicarOuAtualizarCondicao(new Veneno(3, 3), alvoDireita.Condicoes);
                         }
                     }
-                    else if(opcao == 2)
+                    else if (opcao == 2)
                     {
                         int danoFinal = 10 + batalha.Jogador.ModificadorDano;
 
@@ -540,6 +642,32 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarFrenesiImpetuoso()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Frenesi Impetuoso",
+                Descricao = "Gasta toda a stamina do jogador. Causa 5 de dano a um inimigo para cada 15 de stamina gasta dessa forma",
+                RaridadeCarta = Raridade.Rara,
+                Preco = GerarPreco(Raridade.Rara),
+                Modelo = GerarModeloCarta("Z", 2),
+                Efeito = batalha =>
+                {
+                    int qtdAtaques = batalha.Jogador.StaminaAtual / 15;
+
+                    int danoFinal = 5 + batalha.Jogador.ModificadorDano;
+
+                    for (int i = 0; i < qtdAtaques; i++)
+                    {
+                        var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+                        alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+                    }
+
+                    batalha.Jogador.StaminaAtual = 0;
+                }
+            };
+        }
+
         public static ICartaUsavel CriarDisparoPerfurante()
         {
             return new CartaGenerica
@@ -597,7 +725,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[option];
 
-                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);  
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
                 }
 
             };
@@ -632,15 +760,15 @@ namespace CardsAndDragons.ClassesDasCartas
             return new CartaGenerica
             {
                 Nome = "Mordida Vampirica",
-                Descricao = "Causa 10 de dano base a um inimigo. Drena a vida de um inimigo igual ao dano causado.",
+                Descricao = "Causa 15 de dano base a um inimigo. Drena a vida de um inimigo igual ao dano causado.",
                 RaridadeCarta = Raridade.Rara,
                 Preco = GerarPreco(Raridade.Rara),
-                CustoStamina = 20,
+                CustoStamina = 25,
                 CustoMana = 20,
                 Modelo = GerarModeloCarta("¨", 1),
                 Efeito = batalha =>
                 {
-                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+                    int danoFinal = 15 + batalha.Jogador.ModificadorDano;
 
                     int option = AlvoController.SelecionarAlvo(batalha.Inimigos);
 
@@ -731,6 +859,52 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarMixDeErvas()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Mix de Ervas",
+                Descricao = "Aplica venene em um inimigo ou cura o jogador em 15.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 30,
+                CustoMana = 15,
+                Modelo = GerarModeloCarta("V", "C", 1),
+                Efeito = batalha =>
+                {
+                    List<List<string>> modelos = new List<List<string>>();
+                    List<string> descricoes = new List<string>();
+
+                    List<string> modeloUm = GerarModeloCarta("V", 1);
+                    modelos.Add(modeloUm);
+
+                    List<string> modeloDois = GerarModeloCarta("C", 1);
+                    modelos.Add(modeloDois);
+
+
+                    string descricaoUm = "Ervas Venenosas: Aplica veneno forte em um inimigo";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Ervas Medicinais: Cura 15 de vida";
+                    descricoes.Add(descricaoDois);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
+
+                    if (opcao < 0) return;
+                    else if (opcao == 0)
+                    {
+                        var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                        CondicaoController.AplicarOuAtualizarCondicao(new Veneno(5, 5), alvo.Condicoes);
+                    }
+                    else if (opcao == 1)
+                    {
+                        batalha.Jogador.Curar(15);
+                    }
+                }
+            }; 
+        }
+
         public static ICartaUsavel CriarEscudoDeEspinhos()
         {
             return new CartaGenerica
@@ -797,7 +971,7 @@ namespace CardsAndDragons.ClassesDasCartas
                 Descricao = "Copia o efeito de outra carta.",
                 RaridadeCarta = Raridade.Comum,
                 Preco = GerarPreco(Raridade.Rara),
-                CustoMana = 20,
+                CustoMana = 10,
                 Modelo = GerarModeloCarta("M", 1),
                 Efeito = batalha =>
                 {
@@ -867,7 +1041,7 @@ namespace CardsAndDragons.ClassesDasCartas
                 {
                     foreach (var aliado in batalha.Aliados)
                     {
-                        if(aliado.Tipo == TipoCriatura.Robo)
+                        if (aliado.Tipo == TipoCriatura.Robo)
                         {
                             aliado.Curar(10);
                         }
@@ -898,6 +1072,91 @@ namespace CardsAndDragons.ClassesDasCartas
                 }
             };
         }
+
+        public static ICartaUsavel CriarComprarSuprimentos()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Comprar Suprimentos",
+                Descricao = "Paga 20 de ouro para ganha 10 de Escudo e Dano extra nessa rodada",
+                RaridadeCarta = Raridade.Rara,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoOuro = 20,
+                Modelo = GerarModeloCarta("%", 1),
+                Efeito = batalha =>
+                {
+                    batalha.Jogador.Escudo += 10;
+                    batalha.Jogador.ModificadorDano += 10;
+
+                    TextoController.CentralizarTexto($"{batalha.Jogador.Nome} comprou suprimentos e ganhou 10 de escudo e dano extra!\n");
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarCeia()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Ceia",
+                Descricao = "Cura 20 de vida ou aumenta a defesa em 5.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 30,
+                CustoOuro = 5,
+                Modelo = GerarModeloCarta("6", "9", 1),
+                Efeito = batalha =>
+                {
+                    List<List<string>> modelos = new List<List<string>>();
+                    List<string> descricoes = new List<string>();
+
+                    List<string> modeloUm = GerarModeloCarta("6", 1);
+                    modelos.Add(modeloUm);
+
+                    List<string> modeloDois = GerarModeloCarta("9", 1);
+                    modelos.Add(modeloDois);
+
+
+                    string descricaoUm = "Sopa: Cura 20 de vida";
+                    descricoes.Add(descricaoUm);
+
+                    string descricaoDois = "Carne: Ganha 5 de defesa";
+                    descricoes.Add(descricaoDois);
+
+                    int opcao = CartaController.MostrarOpcoes(modelos, descricoes);
+
+                    if (opcao < 0) return;
+                    else if (opcao == 0)
+                    {
+                        batalha.Jogador.Curar(20);
+                    }
+                    else if (opcao == 1)
+                    {
+                        batalha.Jogador.ModificadorDefesa = +5;
+                        TextoController.CentralizarTexto($"{batalha.Jogador.Nome} ganhou 5 de defesa!");
+                    }
+                }
+            };
+        }
+   
+        public static ICartaUsavel CriarCompraHabilidosa()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Compra Habilidosa",
+                Descricao = "Compra uma carta garantidamente",
+                RaridadeCarta = Raridade.Rara,
+                Preco = GerarPreco(Raridade.Rara),
+                CustoMana = 20,
+                CustoStamina = 20,
+                Modelo = GerarModeloCarta("+", 1),
+                Efeito = batalha =>
+                {
+                    PersonagemController.EmbaralharCartas(batalha.Jogador.BaralhoDescarte);
+                    PersonagemController.ComprarCartasExtras(batalha.Jogador, 1);
+                }
+            };
+        }
+
 
         #endregion
 
@@ -1036,6 +1295,35 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarChicotada()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Chicotada",
+                Descricao = "Causa 10 de dano a um inimigo aleatório. Chance de critoco com base no nivel atual",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 25,
+                Modelo = GerarModeloCarta("S", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    var alvo = AlvoController.EscolherInimigoAleatorio(batalha.Inimigos);
+
+                    int chance = 10 + (batalha.Jogador.Nivel * 5);
+                    int critico = BatalhaController.GerarRNG(chance);
+
+                    danoFinal += critico == 0 ? danoFinal : 0;
+
+                    if (critico == 0) TextoController.CentralizarTexto("O golpe foi crítico!");
+
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+
+                }
+            };
+        }
+
         public static ICartaUsavel CriarMaldicaoDaLua()
         {
             return new CartaEvolutiva
@@ -1104,7 +1392,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
 
-                    foreach(var condicao in alvo.Condicoes)
+                    foreach (var condicao in alvo.Condicoes)
                     {
                         if (condicao is Queimadura queimadura)
                         {
@@ -1341,7 +1629,7 @@ namespace CardsAndDragons.ClassesDasCartas
 
                     int chance = BatalhaController.GerarRNG(20);
 
-                    if(chance == 0)
+                    if (chance == 0)
                     {
                         CondicaoController.AplicarOuAtualizarCondicao(new Sangramento(2, 2), alvo.Condicoes);
                     }
@@ -1382,6 +1670,58 @@ namespace CardsAndDragons.ClassesDasCartas
             };
         }
 
+        public static ICartaUsavel CriarInvestida()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Investida",
+                Descricao = "Causa 10 de dano base a um inimigo. Sofre 5 de dano ao jogador",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 15,
+                Modelo = GerarModeloCarta("P", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+                    batalha.Jogador.SofrerDano(batalha.Jogador, 5, false, true);
+
+                }
+            };
+        }
+
+        public static ICartaUsavel CriarDrenarSangue()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Drenar Sangue",
+                Descricao = "Causa 10 de dano base a um inimigo. Cura o jogador em 5 caso o inimigo seja finalizado",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 15,
+                CustoMana = 10,
+                Modelo = GerarModeloCarta("P", 1),
+                Efeito = batalha =>
+                {
+                    int danoFinal = 10 + batalha.Jogador.ModificadorDano;
+
+                    var alvo = batalha.Inimigos[AlvoController.SelecionarAlvo(batalha.Inimigos)];
+
+                    alvo.SofrerDano(batalha.Jogador, danoFinal, false, true);
+
+                    if(alvo.VidaAtual <= 0)
+                    {
+                        batalha.Jogador.Curar(5);
+                        TextoController.CentralizarTexto($"{batalha.Jogador.Nome} drenou o sangue de {alvo.Nome} e curou 5 de vida!");
+                    }
+
+                }
+            };
+        }
+
         public static ICartaUsavel CriarEscudo()
         {
             return new CartaGenerica
@@ -1415,7 +1755,7 @@ namespace CardsAndDragons.ClassesDasCartas
                     batalha.Jogador.ModificadorDano += 5;
                     PersonagemController.ComprarCartasExtras(batalha.Jogador, 1);
 
-                    foreach(var carta in batalha.Jogador.Mao)
+                    foreach (var carta in batalha.Jogador.Mao)
                     {
                         if (carta is CartaRecarregavel cartaRecarregavel)
                         {
@@ -1501,6 +1841,32 @@ namespace CardsAndDragons.ClassesDasCartas
                 }
             };
         }
+
+        public static ICartaUsavel CriarEconomiaLocal()
+        {
+            return new CartaGenerica
+            {
+                Nome = "Economia Local",
+                Descricao = "Ganha 10 de ouro. Ganha +1 de juros para cada 25 de ouro.",
+                RaridadeCarta = Raridade.Comum,
+                Preco = GerarPreco(Raridade.Comum),
+                CustoStamina = 10,
+                CustoOuro = 5,
+                Modelo = GerarModeloCarta("$", 1),
+                Efeito = batalha =>
+                {
+                    batalha.Jogador.Ouro += 10;
+
+                    int juros = (int)batalha.Jogador.Ouro / 25;
+
+
+                    batalha.Jogador.Ouro += juros;
+                    TextoController.CentralizarTexto($"{batalha.Jogador.Nome} ganhou 10 de ouros e {juros} de juros!");
+
+                }
+            };
+        }
+
 
         #endregion
 

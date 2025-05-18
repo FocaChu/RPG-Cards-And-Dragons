@@ -18,7 +18,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospédeiro sofre de efeitos de envenenamento.";
 
-        public Intoxicacao(TipoDoenca tipo) { }
+        public Intoxicacao() { }
 
         public Intoxicacao(Intoxicacao original)
         {

@@ -76,6 +76,9 @@
     <Compile Include="condicoes\doencas\efeitoDoenca\Sensibilidade.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\ConfusaoMental.cs" />
     <Compile Include="condicoes\doencas\efeitoDoenca\Zumbificacao.cs" />
+    <Compile Include="condicoes\doencas\tipoDoenca\TipoBacteriofago.cs" />
+    <Compile Include="condicoes\doencas\tipoDoenca\TipoBacteria.cs" />
+    <Compile Include="condicoes\doencas\tipoDoenca\TipoVirus.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoParasita.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoFungo.cs" />
     <Compile Include="condicoes\doencas\tipoDoenca\TipoDoenca.cs" />

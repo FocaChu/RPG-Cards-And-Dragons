@@ -56,7 +56,7 @@ namespace CardsAndDragons.Controllers
             Console.WriteLine("\n\n\n\n");
             TextoController.CentralizarTexto($"========================================   - {biomaAtual.Nome} -   =======================================" + "\n\n");
 
-            TextoController.CentralizarTexto($"{jogador.Nome} adentra um novo território {biomaAtual.Nome}.\n");
+            TextoController.CentralizarTexto($"{jogador.Nome} adentra um novo território...{biomaAtual.Nome}.\n\n");
             TextoController.CentralizarTexto($"{biomaAtual.Descricao}.\n");
 
             List<string> modeloBioma = biomaAtual.DefinirModelo();
@@ -269,11 +269,14 @@ namespace CardsAndDragons.Controllers
                 case Raridade.Rara:
                     Console.ForegroundColor = ConsoleColor.Blue;
                     break;
+                case Raridade.Epica:
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    break;
                 case Raridade.Lendaria:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     break;
                 case Raridade.Profana:
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.ForegroundColor = ConsoleColor.Red;
                     break;
                 default:
                     Console.ForegroundColor = ConsoleColor.Gray;

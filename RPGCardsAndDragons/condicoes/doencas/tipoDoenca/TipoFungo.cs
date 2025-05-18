@@ -40,9 +40,9 @@ namespace RPGCardsAndDragons.condicoes.doencas.tipoDoenca
         {
             return new List<IEfeitoDoenca>
         {
-            new Necrose(this),
-            new Sensibilidade(this),
-            new Zumbificacao(this)
+            new Necrose(),
+            new Sensibilidade(),
+            new Zumbificacao()
         };
         }
 

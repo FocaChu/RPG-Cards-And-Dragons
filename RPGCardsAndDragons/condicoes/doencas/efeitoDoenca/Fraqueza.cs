@@ -17,7 +17,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
 
         public string Descricao { get; set; } = "O hospedeiro causa menos dano em seus golpes.";
 
-        public Fraqueza(TipoDoenca tipo) { }
+        public Fraqueza() { }
 
         public Fraqueza(Fraqueza original)
         {
@@ -25,7 +25,7 @@ namespace RPGCardsAndDragons.condicoes.doencas.efeitoDoenca
             Descricao = original.Descricao;
         }
 
-        public  void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
+        public void Aplicar(Batalha batalha, OInimigo alvo, int nivel)
         {
             batalha.Aplicadores.Add(new AplicadorCondicao(new ModificacaoDano(nivel * -1, 1), alvo));
 

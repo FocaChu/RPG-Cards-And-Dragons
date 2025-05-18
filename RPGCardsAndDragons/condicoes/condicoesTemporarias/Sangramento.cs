@@ -50,12 +50,12 @@ namespace CardsAndDragons.ClassesCondicoes
 
         public void AplicarEfeito(ICriaturaCombatente criatura)
         {
-            if(criatura is RoboAliado robo)
+            if (criatura is RoboAliado robo)
             {
                 TextoController.CentralizarTexto($"{criatura.Nome} é imune a essa condicao");
                 this.Duracao = 0;
             }
-            else if(Nivel > 0 && Duracao > 0)
+            else if (Nivel > 0 && Duracao > 0)
             {
                 criatura.SofrerDano(criatura, Nivel, true, false);
                 TextoController.CentralizarTexto($"{criatura.Nome} sofre {Nivel} de dano por Sangramento!");

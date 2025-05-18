@@ -17,10 +17,11 @@ namespace CardsAndDragons.ClassesEspecies
         public override List<ICartaUsavel> DefinirCartasIniciais()
         {
             return new List<ICartaUsavel>
-    {
-        FabricaDeCartas.CriarMimico(), FabricaDeCartas.CriarMimico(),
-        FabricaDeCartas.CriarSilenciar(), FabricaDeCartas.CriarInseguranca(),
-    };
+            {
+                FabricaDeCartas.CriarMimico(), FabricaDeCartas.CriarMimico(), FabricaDeCartas.CriarMimico(),
+                FabricaDeCartas.CriarSilenciar(), 
+                FabricaDeCartas.CriarInseguranca(),
+            };
         }
     }
 }

@@ -272,13 +272,13 @@ namespace CardsAndDragons.Aliados
                     alvo.Curar(curaTotal);
                 }
 
-                if(alvo.Condicoes.Count > 0)
+                if (alvo.Condicoes.Count > 0)
                 {
                     foreach (var condicao in alvo.Condicoes)
                     {
                         if (condicao is Sangramento sangramento)
                         {
-                            if(sangramento.Duracao > 0)
+                            if (sangramento.Duracao > 0)
                             {
                                 sangramento.Atualizar();
                                 TextoController.CentralizarTexto($"{this.Nome} tratou o sangramento de {alvo.Nome}");
@@ -289,7 +289,7 @@ namespace CardsAndDragons.Aliados
                     {
                         if (condicao is Veneno veneno)
                         {
-                            if(veneno.Duracao > 0)
+                            if (veneno.Duracao > 0)
                             {
                                 veneno.Atualizar();
                                 TextoController.CentralizarTexto($"{this.Nome} tratou o envenamento de {alvo.Nome}");

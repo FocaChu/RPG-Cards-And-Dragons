@@ -538,7 +538,6 @@ namespace CardsAndDragons
 
             if (jogador.BaralhoCompra.Count == 0)
             {
-                TextoController.CentralizarTexto("Baralho vazio. Reciclando descarte...");
                 jogador.BaralhoCompra = PersonagemController.EmbaralharCartas(jogador.BaralhoDescarte);
                 jogador.BaralhoDescarte.Clear();
             }
@@ -583,7 +582,7 @@ namespace CardsAndDragons
 
             for (int i = 0; i < qtdCartas; i++)
             {
-                if (jogador.BaralhoCompra.Count > 0)
+                if (jogador.BaralhoCompra.Count > 0 && jogador.Mao.Count < 10)
                 {
                     var cartaComprada = jogador.BaralhoCompra.Dequeue();
                     cartasCompradas.Add(cartaComprada);
@@ -592,7 +591,7 @@ namespace CardsAndDragons
                 else
                 {
                     Console.WriteLine();
-                    TextoController.CentralizarTexto($"{jogador.Nome} não possuia cartas para comprar");
+                    TextoController.CentralizarTexto($"{jogador.Nome} não pode comprar mais cartas");
                 }
             }
 
@@ -629,19 +628,6 @@ namespace CardsAndDragons
             }
         }
 
-        public static void RecarregarBaralho(Personagem jogador)
-        {
-            if (jogador.BaralhoDescarte.Count > 0)
-            {
-                TextoController.CentralizarTexto("Reciclando cartas do baralho...");
-                jogador.BaralhoCompra = PersonagemController.EmbaralharCartas(jogador.BaralhoDescarte);
-                jogador.BaralhoDescarte.Clear();
-            }
-            else
-            {
-                TextoController.CentralizarTexto("Não há mais cartas para reciclar.");
-            }
-        }
 
         //Working in progress
         public static void AdicionarCartaAoBaralho(Personagem jogador, ICartaUsavel carta)

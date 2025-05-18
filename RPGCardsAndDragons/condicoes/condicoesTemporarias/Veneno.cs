@@ -38,7 +38,7 @@ namespace CardsAndDragons.ClassesCondicoes
         public void AplicarEfeito(Personagem jogador)
         {
             if (Nivel > 0 && Duracao > 0)
-            {    
+            {
                 jogador.VidaAtual -= Nivel;
                 TextoController.CentralizarTexto($"{jogador.Nome} sofre {Nivel} de Veneno!");
             }

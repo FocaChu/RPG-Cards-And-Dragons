@@ -11,7 +11,7 @@ namespace RPGCardsAndDragons.fases
     public class BiomaCaverna : BiomaJogo
     {
 
-        public override string Nome => "Caverna Escura";
+        public override string Nome => "A Caverna Escura";
 
         public override string Descricao => "Uma caverna escura com camâras grandes, cheias de estruturas de pedra antiga. É dificil identificar os vultos e movimentos no escuro.";
 

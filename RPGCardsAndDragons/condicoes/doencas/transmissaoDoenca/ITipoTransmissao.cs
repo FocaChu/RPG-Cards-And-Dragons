@@ -16,7 +16,7 @@ namespace RPGCardsAndDragons.doencas
 
         string Descricao { get; }
 
-        bool TentarTransmitir(Doenca doenca,Batalha batalha, int chance);
+        bool TentarTransmitir(Doenca doenca, Batalha batalha, int chance);
     }
 
 }

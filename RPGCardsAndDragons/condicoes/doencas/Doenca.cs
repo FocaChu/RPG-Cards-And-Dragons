@@ -53,7 +53,10 @@ namespace RPGCardsAndDragons.doencas
         public void AplicarEfeito(OInimigo alvo, Batalha batalha)
         {
             foreach (var efeito in Efeitos)
+            {
+                Console.WriteLine();
                 efeito.Aplicar(batalha, alvo, this.NivelAtual);
+            }
 
             int chance = NivelAtual * 5;
 
@@ -99,7 +102,7 @@ namespace RPGCardsAndDragons.doencas
             if (numeroAleatorio <= chanceDeReduzir)
             {
                 Duracao--;
-               TextoController.CentralizarTexto($"{Nome}: A duração foi reduzida! Turnos restantes: {Duracao}");
+                TextoController.CentralizarTexto($"{Nome}: A duração foi reduzida! Turnos restantes: {Duracao}");
             }
             else
             {

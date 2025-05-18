@@ -67,7 +67,7 @@ namespace CardsAndDragons.Cartas
 
                 EfeitoPadrao?.Invoke(batalha);
 
-                if(usosAteEvoluir < 99)
+                if (usosAteEvoluir < 99)
                 {
                     if (VezesUso >= usosAteEvoluir)
                     {
@@ -75,7 +75,7 @@ namespace CardsAndDragons.Cartas
                         TextoController.CentralizarTexto($"A carta {Nome} evoluiu para {NomeEvolucao}!");
                         VezesUso = 0;
                     }
-                } 
+                }
             }
 
             return true;

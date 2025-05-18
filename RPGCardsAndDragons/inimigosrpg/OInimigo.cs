@@ -127,11 +127,14 @@ namespace CardsAndDragonsJogo
                 }
 
                 int chance = nivelAtracao * 10;
-                BatalhaController.GerarRNG(chance);
+                int resultado = BatalhaController.GerarRNG(chance);
 
-                if (chance == 0)
+                if (resultado == 0)
                 {
                     TextoController.CentralizarTexto($"{this.Nome} está apaixonado e evita {batalha.Jogador.Nome}!");
+
+                    if (batalha.Aliados.Count < 1) return;
+
                     var alvo = AlvoController.EscolherAlvoAliadoAleatorio(batalha.Aliados);
 
                     Atacar(batalha, alvo);
@@ -197,7 +200,7 @@ namespace CardsAndDragonsJogo
 
                     CondicaoController.SangrarFerida(this);
 
-                    if(aoSofrerDano) AoSofrerDano(agressor, danoFinal);
+                    if (aoSofrerDano) AoSofrerDano(agressor, danoFinal);
                 }
                 else
                 {
