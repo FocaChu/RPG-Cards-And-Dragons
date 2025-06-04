@@ -9,9 +9,7 @@ Neste universo, humanóides lutam pela sobrevivência em biomas selvagens, enfre
 - Sistema de batalha com fases e encontros aleatórios com inimigos.
 - Combate baseado em cartas, com custos, modelos e efeitos próprios.
 - Condições especiais como Silêncio e Veneno afetam a dinâmica do combate.
-- O jogador pode recrutar aliados como robôs, pets, criaturas invocadas ou até inimigos revividos.
-- Eventos como lojas, ruínas, templos e saques aleatórios entre as batalhas.
-- Modo sandbox para testes rápidos e demonstrações.
+- O jogador pode recrutar aliados como robôs e inimigos revividos.
 
 ## **Objetivo**
 Monte seu baralho com estratégia, explore os biomas e derrote os dragões selvagens em seus ninhos. Gerencie cartas, recursos e aliados com inteligência para superar os desafios.
