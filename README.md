@@ -17,4 +17,4 @@ Neste universo, humanóides lutam pela sobrevivência em biomas selvagens, enfre
 Monte seu baralho com estratégia, explore os biomas e derrote os dragões selvagens em seus ninhos. Gerencie cartas, recursos e aliados com inteligência para superar os desafios.
 
 ## **Desenvolvimento**
-Desenvolvido em C# com .NET Framework, aplicando princípios de POO e práticas iniciais de código limpo. O projeto é modular, bem estruturado e documentado, focado tanto no aprendizado quanto na diversão.
+Desenvolvido em C# com .NET Framework, aplicando princípios de POO e práticas iniciais de código limpo.
